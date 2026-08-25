@@ -37,17 +37,19 @@ $client = new PlatformTemplateClient(new ClientConfiguration(
 $template = $client->getTemplate('operator-id');
 ```
 
-The platform-template client exposes both the current direct-save workflow and
-the retained legacy draft workflow:
+The platform-template client reads the current gameplay configuration through
+`PredictionConfigAdmin.GetGameplayConfig`. The request intentionally leaves
+`game_type` and `symbol` unset so the service returns every gameplay rule. The
+result is mapped to the existing `current.rules` shape for host compatibility.
+The client also retains the existing platform mutation workflows:
 
 - `getTemplate()`
 - `saveSymbolConfig()`
 - `saveDraft()`
 - `publish()`
 
-For the direct-save management page, call `getTemplate($operatorId, 0, false)`
-and submit the selected gameplay and symbol through `saveSymbolConfig()`.
-`includeDraft` defaults to `true` only to keep existing integrations compatible.
+For the direct-save management page, call `getTemplate($operatorId)` and submit
+the selected gameplay and symbol through `saveSymbolConfig()`.
 
 It sends the bearer token and trusted operator subject as gRPC metadata. Trace
 IDs and RPC permissions are resolved by the prediction service. Failures are reported as

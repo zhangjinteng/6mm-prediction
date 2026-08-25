@@ -336,7 +336,7 @@ final class PlatformTemplateClient
     private function mapDecimalConfigField(DecimalConfigField $field): array
     {
         return [
-            'default_value' => $field->getDefaultValue(),
+            'default_value' => $field->getValue(),
             'minimum_value' => $field->getMinimumValue(),
             'maximum_value' => $field->getMaximumValue(),
             'merchant_editable' => $field->getMerchantEditable(),
@@ -347,7 +347,7 @@ final class PlatformTemplateClient
     private function mapIntegerConfigField(IntegerConfigField $field): array
     {
         return [
-            'default_value' => (int) $field->getDefaultValue(),
+            'default_value' => (int) $field->getValue(),
             'minimum_value' => (int) $field->getMinimumValue(),
             'maximum_value' => (int) $field->getMaximumValue(),
             'merchant_editable' => $field->getMerchantEditable(),

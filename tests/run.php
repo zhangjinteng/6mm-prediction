@@ -295,7 +295,7 @@ $assertSame(null, $template['draft'], 'Unified gameplay queries should not expos
 $assertSame(8, $template['current']['version'], 'Template versions should be mapped from gameplay configuration.');
 $assertSame('8:0', $template['current']['version_id'], 'Effective versions should become compatibility IDs.');
 $assertSame('HIGH_LOW', $template['current']['rules'][0]['game_type'], 'Gameplay rules should be mapped.');
-$assertSame('1.80', $template['current']['rules'][0]['fixed_odds']['default_value'], 'Config fields should map to template constraints.');
+$assertSame('1.70', $template['current']['rules'][0]['fixed_odds']['default_value'], 'Config fields should map the current effective value.');
 $orderPageRequest = (new ListAdminOrdersRequest())
     ->setPageNo(2)
     ->setPageSize(20);
