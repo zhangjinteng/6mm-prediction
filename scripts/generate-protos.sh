@@ -12,6 +12,7 @@ GRPC_PHP_PLUGIN_BIN="${GRPC_PHP_PLUGIN_BIN:-$(command -v grpc_php_plugin)}"
   --grpc_out="${ROOT_DIR}/generated" \
   --plugin="protoc-gen-grpc=${GRPC_PHP_PLUGIN_BIN}" \
   "${ROOT_DIR}/proto/prediction/v1/common.proto" \
-  "${ROOT_DIR}/proto/prediction/v1/config.proto"
+  "${ROOT_DIR}/proto/prediction/v1/config.proto" \
+  "${ROOT_DIR}/proto/prediction/v1/admin.proto"
 
 printf 'Prediction PHP gRPC classes regenerated.\n'

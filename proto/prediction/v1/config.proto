@@ -9,6 +9,8 @@ option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
 // PredictionPlatformAdmin 由总后台调用，操作人和权限只来自可信 metadata。
 service PredictionPlatformAdmin {
   rpc GetPlatformTemplate(GetPlatformTemplateRequest) returns (GetPlatformTemplateResponse);
+  // SavePlatformSymbolConfig 对应玩法配置页的“保存配置”，成功即发布新版本。
+  rpc SavePlatformSymbolConfig(SavePlatformSymbolConfigRequest) returns (SavePlatformSymbolConfigResponse);
   rpc SavePlatformTemplateDraft(SavePlatformTemplateDraftRequest) returns (SavePlatformTemplateDraftResponse);
   rpc PublishPlatformTemplate(PublishPlatformTemplateRequest) returns (PublishPlatformTemplateResponse);
   rpc ListPlatformTemplateVersions(ListPlatformTemplateVersionsRequest) returns (PlatformTemplateVersionPage);
@@ -25,6 +27,8 @@ service PredictionPlatformAdmin {
 // PredictionMerchantAdmin 只管理 metadata 中商户自身的稀疏覆盖，请求体不接受 merchant_id。
 service PredictionMerchantAdmin {
   rpc GetMerchantConfig(GetOwnMerchantConfigRequest) returns (GetOwnMerchantConfigResponse);
+  // SaveMerchantSymbolConfig 对应商户玩法配置页的“保存配置”，成功即发布新商户版本。
+  rpc SaveMerchantSymbolConfig(SaveMerchantSymbolConfigRequest) returns (SaveMerchantSymbolConfigResponse);
   rpc SaveMerchantConfigDraft(SaveMerchantConfigDraftRequest) returns (SaveMerchantConfigDraftResponse);
   rpc PublishMerchantConfig(PublishMerchantConfigRequest) returns (PublishMerchantConfigResponse);
   rpc ListMerchantConfigVersions(ListMerchantConfigVersionsRequest) returns (MerchantConfigVersionPage);
@@ -149,6 +153,8 @@ message MerchantEffectiveRule {
   string effective_version = 6;
   ConfigValidationStatus validation_status = 7;
   repeated ForcedConfigAdjustment forced_adjustments = 8;
+  // template_rule 是商户当前可调整的总平台约束，页面据此展示范围和可编辑性。
+  PlatformRuleTemplate template_rule = 9;
 }
 
 message MerchantConfig {
@@ -235,6 +241,24 @@ message GetPlatformTemplateResponse {
   PlatformTemplateVersion current = 2;
 }
 
+message SavePlatformSymbolConfigRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  int64 based_on_version = 4;
+  GameType game_type = 5;
+  string symbol = 6;
+  // 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
+  optional bool platform_enabled = 7;
+  // 当前玩法和币种的完整周期配置；每条规则的 game_type、symbol 必须与请求一致。
+  repeated PlatformRuleTemplate rules = 8;
+}
+
+message SavePlatformSymbolConfigResponse {
+  PlatformTemplateVersion version = 1;
+  OperationReceipt receipt = 2;
+}
+
 message SavePlatformTemplateDraftRequest {
   uint32 schema_version = 1;
   string client_request_id = 2;
@@ -314,6 +338,26 @@ message GetPlatformMerchantConfigResponse {
 message GetOwnMerchantConfigResponse {
   MerchantConfig configuration = 1;
   optional MerchantConfigDraft draft = 2;
+}
+
+message SaveMerchantSymbolConfigRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  int64 based_on_template_version = 4;
+  int64 based_on_merchant_version = 5;
+  GameType game_type = 6;
+  string symbol = 7;
+  // 仅控制该币种能否在当前商户的预测玩法页面游玩。
+  optional bool merchant_enabled = 8;
+  // 当前玩法和币种在总平台模板中的完整周期覆盖；不允许漏传或增加平台未配置周期。
+  repeated MerchantRuleOverride overrides = 9;
+}
+
+message SaveMerchantSymbolConfigResponse {
+  MerchantConfigVersion version = 1;
+  MerchantConfig configuration = 2;
+  OperationReceipt receipt = 3;
 }
 
 message DisableMerchantOverrideRequest {

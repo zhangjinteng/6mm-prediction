@@ -32,6 +32,21 @@ class PredictionMerchantAdminClient extends \Grpc\BaseStub {
     }
 
     /**
+     * SaveMerchantSymbolConfig 对应商户玩法配置页的“保存配置”，成功即发布新商户版本。
+     * @param \Prediction\V1\SaveMerchantSymbolConfigRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\SaveMerchantSymbolConfigResponse>
+     */
+    public function SaveMerchantSymbolConfig(\Prediction\V1\SaveMerchantSymbolConfigRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionMerchantAdmin/SaveMerchantSymbolConfig',
+        $argument,
+        ['\Prediction\V1\SaveMerchantSymbolConfigResponse', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
      * @param \Prediction\V1\SaveMerchantConfigDraftRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options

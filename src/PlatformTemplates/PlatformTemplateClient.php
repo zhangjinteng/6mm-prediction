@@ -22,6 +22,8 @@ use Prediction\V1\PublishPlatformTemplateResponse;
 use Prediction\V1\ReconciliationJobState;
 use Prediction\V1\SavePlatformTemplateDraftRequest;
 use Prediction\V1\SavePlatformTemplateDraftResponse;
+use Prediction\V1\SavePlatformSymbolConfigRequest;
+use Prediction\V1\SavePlatformSymbolConfigResponse;
 use Prediction\V1\TemplateReconciliationJob;
 use SixMm\Prediction\ClientConfiguration;
 use SixMm\Prediction\Exceptions\PredictionRpcException;
@@ -59,11 +61,11 @@ final class PlatformTemplateClient
     }
 
     /** @return array{draft: array<string, mixed>|null, current: array<string, mixed>} */
-    public function getTemplate(string $operatorId, int $version = 0): array
+    public function getTemplate(string $operatorId, int $version = 0, bool $includeDraft = true): array
     {
         $request = (new GetPlatformTemplateRequest())
             ->setVersion($version)
-            ->setIncludeDraft(true);
+            ->setIncludeDraft($includeDraft);
         $response = $this->invoke('GetPlatformTemplate', $request, $operatorId, self::CAPABILITY_READ);
 
         if (!$response instanceof GetPlatformTemplateResponse || !$response->hasCurrent()) {
@@ -73,6 +75,35 @@ final class PlatformTemplateClient
         return [
             'draft' => $response->hasDraft() ? $this->mapDraft($response->getDraft()) : null,
             'current' => $this->mapVersion($response->getCurrent()),
+        ];
+    }
+
+    /** @return array{version: array<string, mixed>, receipt: array<string, mixed>|null} */
+    public function saveSymbolConfig(string $operatorId, array $data): array
+    {
+        $request = (new SavePlatformSymbolConfigRequest())
+            ->setSchemaVersion(self::SCHEMA_VERSION)
+            ->setClientRequestId((string) $data['client_request_id'])
+            ->setReason(trim((string) $data['reason']))
+            ->setBasedOnVersion((int) $data['based_on_version'])
+            ->setGameType($this->gameTypeValue((string) $data['game_type']))
+            ->setSymbol((string) $data['symbol'])
+            ->setPlatformEnabled((bool) $data['platform_enabled'])
+            ->setRules(array_map(fn (array $rule): PlatformRuleTemplate => $this->makeRule($rule), $data['rules']));
+        $response = $this->invoke(
+            'SavePlatformSymbolConfig',
+            $request,
+            $operatorId,
+            self::CAPABILITY_PUBLISH
+        );
+
+        if (!$response instanceof SavePlatformSymbolConfigResponse || !$response->hasVersion()) {
+            throw new PredictionRpcException('SavePlatformSymbolConfig', 13, 'missing published version');
+        }
+
+        return [
+            'version' => $this->mapVersion($response->getVersion()),
+            'receipt' => $response->hasReceipt() ? $this->mapReceipt($response->getReceipt()) : null,
         ];
     }
 
@@ -160,7 +191,7 @@ final class PlatformTemplateClient
             ['credentials' => $credentials]
         );
 
-        return function (string $method, object $request, string $operatorId, string $capability) use ($client): array {
+        return function (string $method, object $request, string $operatorId, string $_capability) use ($client): array {
             if ($this->configuration->token === '') {
                 throw new PredictionRpcException($method, 16, 'authentication token is not configured');
             }
@@ -170,8 +201,6 @@ final class PlatformTemplateClient
                 [
                     'authorization' => ["Bearer {$this->configuration->token}"],
                     'x-subject-id' => [$operatorId],
-                    'x-capabilities' => [$capability],
-                    'x-trace-id' => [($this->traceIdGenerator)()],
                 ],
                 ['timeout' => $this->configuration->timeoutMicroseconds]
             )->wait();

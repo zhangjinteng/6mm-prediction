@@ -6,12 +6,16 @@ use Prediction\V1\DecimalConstraint;
 use Prediction\V1\GameType;
 use Prediction\V1\GetPlatformTemplateResponse;
 use Prediction\V1\IntegerConstraint;
+use Prediction\V1\OperationReceipt;
 use Prediction\V1\PlatformRuleTemplate;
 use Prediction\V1\PlatformTemplateDraft;
 use Prediction\V1\PlatformTemplateVersion;
+use Prediction\V1\PredictionAdminClient;
 use Prediction\V1\PriceRule;
 use Prediction\V1\PublishPlatformTemplateResponse;
+use Prediction\V1\SaveMerchantSymbolConfigRequest;
 use Prediction\V1\SavePlatformTemplateDraftResponse;
+use Prediction\V1\SavePlatformSymbolConfigResponse;
 use Prediction\V1\TemplateReconciliationJob;
 use SixMm\Prediction\ClientConfiguration;
 use SixMm\Prediction\Exceptions\PredictionRpcException;
@@ -153,6 +157,7 @@ $getClient = new PlatformTemplateClient(
     ): array {
         $assertSame('GetPlatformTemplate', $method, 'The expected RPC method should be invoked.');
         $assertSame('operator-1', $operatorId, 'The operator ID should be forwarded.');
+        $assertSame(false, $request->getIncludeDraft(), 'Current template queries should not request legacy drafts.');
         $assertSame(
             PlatformTemplateClient::CAPABILITY_READ,
             $capability,
@@ -162,11 +167,61 @@ $getClient = new PlatformTemplateClient(
         return [$response, (object) ['code' => 0, 'details' => '']];
     }
 );
-$template = $getClient->getTemplate('operator-1');
+$template = $getClient->getTemplate('operator-1', 0, false);
 $assertSame('UP_DOWN', $template['draft']['rules'][0]['game_type'], 'UP_DOWN rules should be mapped.');
 $assertSame(null, $template['draft']['rules'][0]['fixed_odds'], 'Unused UP_DOWN constraints must stay sparse.');
 $assertSame('HIGH_LOW', $template['draft']['rules'][1]['game_type'], 'HIGH_LOW rules should be mapped.');
 $assertSame(null, $template['draft']['rules'][1]['bet_open_seconds'], 'Unused HIGH_LOW constraints must stay sparse.');
+
+$capturedSymbolRequest = null;
+$saveSymbolClient = new PlatformTemplateClient(
+    $configuration,
+    static function (string $method, object $request) use (&$capturedSymbolRequest, $upDownRule): array {
+        $capturedSymbolRequest = $request;
+
+        return [
+            (new SavePlatformSymbolConfigResponse())
+                ->setVersion((new PlatformTemplateVersion())
+                    ->setVersionId('version-8')
+                    ->setVersion(8)
+                    ->setRules([$upDownRule()]))
+                ->setReceipt((new OperationReceipt())
+                    ->setOperationId('operation-8')
+                    ->setClientRequestId('save-symbol-request-1')),
+            (object) ['code' => 0, 'details' => ''],
+        ];
+    }
+);
+$savedSymbol = $saveSymbolClient->saveSymbolConfig('operator-1', [
+    'client_request_id' => 'save-symbol-request-1',
+    'reason' => 'save BTCUSDT prediction configuration',
+    'based_on_version' => 7,
+    'game_type' => 'UP_DOWN',
+    'symbol' => 'BTCUSDT',
+    'platform_enabled' => true,
+    'rules' => [$upDownData()],
+]);
+$assertSame(1, $capturedSymbolRequest->getSchemaVersion(), 'Symbol saves should set the schema version.');
+$assertSame(7, $capturedSymbolRequest->getBasedOnVersion(), 'Symbol saves should preserve the base version.');
+$assertSame(GameType::GAME_TYPE_UP_DOWN, $capturedSymbolRequest->getGameType(), 'Game type should be mapped.');
+$assertSame('BTCUSDT', $capturedSymbolRequest->getSymbol(), 'Symbol saves should preserve the symbol.');
+$assertTrue($capturedSymbolRequest->hasPlatformEnabled(), 'Symbol saves should include the platform switch.');
+$assertTrue($capturedSymbolRequest->getPlatformEnabled(), 'The platform switch should preserve its value.');
+$assertSame(1, count($capturedSymbolRequest->getRules()), 'Symbol saves should include every supplied duration.');
+$assertSame(8, $savedSymbol['version']['version'], 'The directly published version should be mapped.');
+$assertSame('operation-8', $savedSymbol['receipt']['operation_id'], 'The direct-save receipt should be mapped.');
+
+$merchantSymbolRequest = (new SaveMerchantSymbolConfigRequest())->setMerchantEnabled(false);
+$assertTrue(
+    $merchantSymbolRequest->hasMerchantEnabled(),
+    'Generated merchant symbol requests should preserve optional switch presence.'
+);
+$assertTrue(
+    method_exists(PredictionAdminClient::class, 'ListOrders')
+        && method_exists(PredictionAdminClient::class, 'ListRounds')
+        && method_exists(PredictionAdminClient::class, 'GetOrder'),
+    'The generated management client should expose the documented query RPCs.'
+);
 
 $capturedDraftRequest = null;
 $saveClient = new PlatformTemplateClient(

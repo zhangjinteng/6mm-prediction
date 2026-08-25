@@ -1,0 +1,239 @@
+syntax = "proto3";
+
+package prediction.v1;
+
+import "prediction/v1/common.proto";
+
+option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
+
+enum AdminOrderView {
+  ADMIN_ORDER_VIEW_UNSPECIFIED = 0;
+  ADMIN_ORDER_VIEW_CURRENT = 1;
+  ADMIN_ORDER_VIEW_HISTORY = 2;
+}
+
+enum AdminOrderSortField {
+  ADMIN_ORDER_SORT_FIELD_UNSPECIFIED = 0;
+  ADMIN_ORDER_SORT_FIELD_CREATED_AT = 1;
+  ADMIN_ORDER_SORT_FIELD_SETTLED_AT = 2;
+  ADMIN_ORDER_SORT_FIELD_STAKE = 3;
+  ADMIN_ORDER_SORT_FIELD_FINAL_RETURN = 4;
+}
+
+enum AdminRoundSortField {
+  ADMIN_ROUND_SORT_FIELD_UNSPECIFIED = 0;
+  ADMIN_ROUND_SORT_FIELD_BET_OPEN_AT = 1;
+  ADMIN_ROUND_SORT_FIELD_BET_CLOSE_AT = 2;
+  ADMIN_ROUND_SORT_FIELD_TOTAL_STAKE = 3;
+  ADMIN_ROUND_SORT_FIELD_MERCHANT_REVENUE = 4;
+}
+
+enum SortDirection {
+  SORT_DIRECTION_UNSPECIFIED = 0;
+  SORT_DIRECTION_ASC = 1;
+  SORT_DIRECTION_DESC = 2;
+}
+
+// PredictionAdmin 只接受可信 Gateway 管理端的内部调用。
+// Gateway 必须从已经验证的管理上下文注入 operator 和 capability；变更请求体不得携带 operator_id。
+service PredictionAdmin {
+  // 需要 prediction.admin.order.read。
+  rpc ListOrders(ListAdminOrdersRequest) returns (AdminOrderPage);
+  // 需要 prediction.admin.order.read。
+  rpc GetOrder(GetAdminOrderRequest) returns (AdminOrderDetail);
+  // 需要 prediction.admin.round.read。
+  rpc ListRounds(ListAdminRoundsRequest) returns (AdminRoundPage);
+  // 需要 prediction.admin.exception.read。
+  rpc ListExceptionalTasks(ListExceptionalTasksRequest) returns (ExceptionalTaskPage);
+  // 需要 prediction.admin.config.read。
+  rpc ListConfigVersions(ListConfigVersionsRequest) returns (ConfigVersionPage);
+  // 需要 prediction.admin.audit.read。
+  rpc ListAuditLogs(ListAuditLogsRequest) returns (AuditLogPage);
+  // 需要 prediction.admin.config.edit。
+  rpc SavePlatformConfig(SavePlatformConfigRequest) returns (SavePlatformConfigResponse);
+  // 需要 prediction.admin.config.edit。
+  rpc SaveRuleDraft(SaveRuleDraftRequest) returns (SaveRuleDraftResponse);
+  // 需要 prediction.admin.config.publish。
+  rpc PublishRuleDraft(PublishRuleDraftRequest) returns (PublishRuleDraftResponse);
+  // 需要 prediction.admin.config.toggle。
+  rpc ToggleRuleVersion(ToggleRuleVersionRequest) returns (ToggleRuleVersionResponse);
+  // 需要 prediction.admin.funds.requeue。
+  rpc RequeueOutbox(RequeueOutboxRequest) returns (RequeueOutboxResponse);
+}
+
+message ListAdminOrdersRequest {
+  string order_id = 1;
+  // user_id 是目标玩家筛选，不是可信操作人身份。
+  string user_id = 2;
+  GameType game_type = 3;
+  string symbol = 4;
+  BusinessStatus business_status = 5;
+  FundStatus fund_status = 6;
+  OrderResult result = 7;
+  int64 from_ms = 8;
+  int64 to_ms = 9;
+  int32 page_size = 10;
+  string cursor = 11;
+  string merchant_id = 12;
+  AdminOrderView view = 13;
+  string round_id = 14;
+  int64 duration_seconds = 15;
+  Direction direction = 16;
+  AdminOrderSortField sort_field = 17;
+  SortDirection sort_direction = 18;
+}
+
+message AdminOrderPage {
+  repeated AdminOrderSummary items = 1;
+  string next_cursor = 2;
+}
+
+message GetAdminOrderRequest {
+  string order_id = 1;
+  string merchant_id = 2;
+}
+
+message ListAdminRoundsRequest {
+  string symbol = 1;
+  RoundState state = 2;
+  OrderResult result = 3;
+  int64 from_ms = 4;
+  int64 to_ms = 5;
+  int32 page_size = 6;
+  string cursor = 7;
+  string merchant_id = 8;
+  string round_id = 9;
+  int64 duration_seconds = 10;
+  AdminRoundSortField sort_field = 11;
+  SortDirection sort_direction = 12;
+}
+
+message AdminRoundPage {
+  repeated AdminRound items = 1;
+  string next_cursor = 2;
+}
+
+message ListExceptionalTasksRequest {
+  ExceptionalKind kind = 1;
+  int64 from_ms = 2;
+  int64 to_ms = 3;
+  int32 page_size = 4;
+  string cursor = 5;
+  string merchant_id = 6;
+}
+
+message ExceptionalTaskPage {
+  repeated ExceptionalTask items = 1;
+  string next_cursor = 2;
+}
+
+message ListConfigVersionsRequest {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 duration_seconds = 3;
+  optional bool enabled = 4;
+  int64 from_ms = 5;
+  int64 to_ms = 6;
+  int32 page_size = 7;
+  string cursor = 8;
+}
+
+message ConfigVersionPage {
+  repeated ConfigVersion items = 1;
+  string next_cursor = 2;
+}
+
+message ListAuditLogsRequest {
+  // operator_id 是目标操作人筛选，不是当前调用者身份。
+  string operator_id = 1;
+  AdminAction action = 2;
+  OperationResult result = 3;
+  int64 from_ms = 4;
+  int64 to_ms = 5;
+  int32 page_size = 6;
+  string cursor = 7;
+}
+
+message AuditLogPage {
+  repeated OperationReceipt items = 1;
+  string next_cursor = 2;
+}
+
+message PlatformConfigInput {
+  bool gameplay_enabled = 1;
+  string settlement_asset = 2;
+  int32 amount_scale = 3;
+  PriceRule price_rule = 4;
+}
+
+message SavePlatformConfigRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  PlatformConfigInput configuration = 4;
+}
+
+message RuleDraftInput {
+  string draft_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
+  oneof rule {
+    UpDownRule up_down = 4;
+    HighLowRule high_low = 5;
+  }
+}
+
+message SaveRuleDraftRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  RuleDraftInput draft = 4;
+}
+
+message PublishRuleDraftRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string draft_id = 4;
+}
+
+message ToggleRuleVersionRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  int64 version_id = 4;
+  bool enabled = 5;
+}
+
+message ConfigMutationResult {
+  optional ConfigVersion version = 1;
+  OperationReceipt receipt = 2;
+}
+
+message SavePlatformConfigResponse {
+  ConfigMutationResult result = 1;
+}
+
+message SaveRuleDraftResponse {
+  ConfigMutationResult result = 1;
+}
+
+message PublishRuleDraftResponse {
+  ConfigMutationResult result = 1;
+}
+
+message ToggleRuleVersionResponse {
+  ConfigMutationResult result = 1;
+}
+
+message RequeueOutboxRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string event_id = 4;
+}
+
+message RequeueOutboxResponse {
+  RequeueDisposition disposition = 1;
+  OperationReceipt receipt = 2;
+}

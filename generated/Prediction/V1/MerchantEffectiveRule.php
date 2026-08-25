@@ -46,6 +46,12 @@ class MerchantEffectiveRule extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>repeated .prediction.v1.ForcedConfigAdjustment forced_adjustments = 8;</code>
      */
     private $forced_adjustments;
+    /**
+     * template_rule 是商户当前可调整的总平台约束，页面据此展示范围和可编辑性。
+     *
+     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 9;</code>
+     */
+    protected $template_rule = null;
 
     /**
      * Constructor.
@@ -61,6 +67,8 @@ class MerchantEffectiveRule extends \Google\Protobuf\Internal\Message
      *     @type string $effective_version
      *     @type int $validation_status
      *     @type \Prediction\V1\ForcedConfigAdjustment[] $forced_adjustments
+     *     @type \Prediction\V1\PlatformRuleTemplate $template_rule
+     *           template_rule 是商户当前可调整的总平台约束，页面据此展示范围和可编辑性。
      * }
      */
     public function __construct($data = NULL) {
@@ -258,6 +266,41 @@ class MerchantEffectiveRule extends \Google\Protobuf\Internal\Message
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\ForcedConfigAdjustment::class);
         $this->forced_adjustments = $arr;
+
+        return $this;
+    }
+
+    /**
+     * template_rule 是商户当前可调整的总平台约束，页面据此展示范围和可编辑性。
+     *
+     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 9;</code>
+     * @return \Prediction\V1\PlatformRuleTemplate|null
+     */
+    public function getTemplateRule()
+    {
+        return $this->template_rule;
+    }
+
+    public function hasTemplateRule()
+    {
+        return isset($this->template_rule);
+    }
+
+    public function clearTemplateRule()
+    {
+        unset($this->template_rule);
+    }
+
+    /**
+     * template_rule 是商户当前可调整的总平台约束，页面据此展示范围和可编辑性。
+     *
+     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 9;</code>
+     * @param \Prediction\V1\PlatformRuleTemplate $var
+     * @return $this
+     */
+    public function setTemplateRule(\Prediction\V1\PlatformRuleTemplate|null $var)
+    {
+        $this->template_rule = $var;
 
         return $this;
     }

@@ -32,6 +32,21 @@ class PredictionPlatformAdminClient extends \Grpc\BaseStub {
     }
 
     /**
+     * SavePlatformSymbolConfig 对应玩法配置页的“保存配置”，成功即发布新版本。
+     * @param \Prediction\V1\SavePlatformSymbolConfigRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\SavePlatformSymbolConfigResponse>
+     */
+    public function SavePlatformSymbolConfig(\Prediction\V1\SavePlatformSymbolConfigRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionPlatformAdmin/SavePlatformSymbolConfig',
+        $argument,
+        ['\Prediction\V1\SavePlatformSymbolConfigResponse', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
      * @param \Prediction\V1\SavePlatformTemplateDraftRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
