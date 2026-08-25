@@ -1,0 +1,41 @@
+{
+    "name": "zhangjinteng/6mm-prediction",
+    "description": "Framework-agnostic PHP client and generated gRPC contracts for 6MM prediction services.",
+    "type": "library",
+    "license": "proprietary",
+    "require": {
+        "php": "^8.2",
+        "ext-grpc": "*",
+        "google/protobuf": "^4.33.6",
+        "grpc/grpc": "^1.57"
+    },
+    "autoload": {
+        "psr-4": {
+            "SixMm\\Prediction\\": "src/",
+            "Prediction\\": "generated/Prediction/",
+            "GPBMetadata\\Prediction\\": "generated/GPBMetadata/Prediction/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "SixMm\\Prediction\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "scripts": {
+        "generate": "bash scripts/generate-protos.sh",
+        "test": "@php tests/run.php"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "repositories": [{
+        "name": "packagist.org",
+        "type": "composer",
+        "url": "https://repo.packagist.org"
+    }]
+}

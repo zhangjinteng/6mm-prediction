@@ -1,0 +1,452 @@
+syntax = "proto3";
+
+package prediction.v1;
+
+option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
+
+enum GameType {
+  GAME_TYPE_UNSPECIFIED = 0;
+  GAME_TYPE_UP_DOWN = 1;
+  GAME_TYPE_HIGH_LOW = 2;
+}
+
+enum Direction {
+  DIRECTION_UNSPECIFIED = 0;
+  DIRECTION_UP = 1;
+  DIRECTION_DOWN = 2;
+}
+
+enum BusinessStatus {
+  BUSINESS_STATUS_UNSPECIFIED = 0;
+  BUSINESS_STATUS_PENDING = 1;
+  BUSINESS_STATUS_ACTIVE = 2;
+  BUSINESS_STATUS_RESULT_READY = 3;
+  BUSINESS_STATUS_SETTLED = 4;
+  BUSINESS_STATUS_CANCELED = 5;
+}
+
+enum FundStatus {
+  FUND_STATUS_UNSPECIFIED = 0;
+  FUND_STATUS_PENDING = 1;
+  FUND_STATUS_DEBITED = 2;
+  FUND_STATUS_SETTLE_PENDING = 3;
+  FUND_STATUS_SETTLED = 4;
+  FUND_STATUS_REFUND_PENDING = 5;
+  FUND_STATUS_REFUNDED = 6;
+  FUND_STATUS_UNKNOWN = 7;
+}
+
+enum OrderResult {
+  ORDER_RESULT_UNSPECIFIED = 0;
+  ORDER_RESULT_PENDING = 1;
+  ORDER_RESULT_WIN = 2;
+  ORDER_RESULT_LOSE = 3;
+  ORDER_RESULT_DRAW = 4;
+  ORDER_RESULT_CANCELED = 5;
+}
+
+enum RoundState {
+  ROUND_STATE_UNSPECIFIED = 0;
+  ROUND_STATE_PREPARING = 1;
+  ROUND_STATE_BETTING = 2;
+  ROUND_STATE_LOCKED = 3;
+  ROUND_STATE_OBSERVING = 4;
+  ROUND_STATE_RESULTING = 5;
+  ROUND_STATE_SETTLING = 6;
+  ROUND_STATE_FINISHED = 7;
+}
+
+enum RoundCancelReason {
+  ROUND_CANCEL_REASON_UNSPECIFIED = 0;
+  ROUND_CANCEL_REASON_SINGLE_SIDED_POOL = 1;
+  ROUND_CANCEL_REASON_NO_VALID_PRICE = 2;
+}
+
+enum PlayerOrderView {
+  PLAYER_ORDER_VIEW_UNSPECIFIED = 0;
+  PLAYER_ORDER_VIEW_HOLDINGS = 1;
+  PLAYER_ORDER_VIEW_HISTORY = 2;
+}
+
+enum ExceptionalKind {
+  EXCEPTIONAL_KIND_UNSPECIFIED = 0;
+  EXCEPTIONAL_KIND_FUNDS_UNKNOWN = 1;
+  EXCEPTIONAL_KIND_OUTBOX_RETRY = 2;
+}
+
+enum AdminAction {
+  ADMIN_ACTION_UNSPECIFIED = 0;
+  ADMIN_ACTION_PLATFORM_CONFIG_SAVE = 1;
+  ADMIN_ACTION_RULE_DRAFT_SAVE = 2;
+  ADMIN_ACTION_RULE_DRAFT_PUBLISH = 3;
+  ADMIN_ACTION_RULE_VERSION_TOGGLE = 4;
+  ADMIN_ACTION_OUTBOX_REQUEUE = 5;
+  ADMIN_ACTION_PLATFORM_TEMPLATE_DRAFT_SAVE = 6;
+  ADMIN_ACTION_PLATFORM_TEMPLATE_PUBLISH = 7;
+  ADMIN_ACTION_PLATFORM_TEMPLATE_ACTIVATE = 8;
+  ADMIN_ACTION_MERCHANT_CONFIG_DRAFT_SAVE = 9;
+  ADMIN_ACTION_MERCHANT_CONFIG_PUBLISH = 10;
+  ADMIN_ACTION_MERCHANT_OVERRIDE_DISABLE = 11;
+  ADMIN_ACTION_MERCHANT_CONFIG_RESET = 12;
+  ADMIN_ACTION_MERCHANT_CONFIG_RECONCILE = 13;
+  ADMIN_ACTION_TEMPLATE_RECONCILIATION_START = 14;
+}
+
+enum OperationResult {
+  OPERATION_RESULT_UNSPECIFIED = 0;
+  OPERATION_RESULT_SUCCEEDED = 1;
+  OPERATION_RESULT_FAILED = 2;
+}
+
+enum RequeueDisposition {
+  REQUEUE_DISPOSITION_UNSPECIFIED = 0;
+  REQUEUE_DISPOSITION_REQUEUED = 1;
+  REQUEUE_DISPOSITION_ALREADY_SUCCEEDED = 2;
+  REQUEUE_DISPOSITION_TASK_PROCESSING = 3;
+}
+
+enum FeatureState {
+  FEATURE_STATE_UNSPECIFIED = 0;
+  FEATURE_STATE_AVAILABLE = 1;
+  FEATURE_STATE_RESERVED = 2;
+}
+
+enum ConfigValueSource {
+  CONFIG_VALUE_SOURCE_UNSPECIFIED = 0;
+  CONFIG_VALUE_SOURCE_PLATFORM_DEFAULT = 1;
+  CONFIG_VALUE_SOURCE_MERCHANT_OVERRIDE = 2;
+  CONFIG_VALUE_SOURCE_PLATFORM_RECONCILIATION = 3;
+}
+
+enum ConfigValidationStatus {
+  CONFIG_VALIDATION_STATUS_UNSPECIFIED = 0;
+  CONFIG_VALIDATION_STATUS_VALID = 1;
+  CONFIG_VALIDATION_STATUS_ADJUSTED = 2;
+  CONFIG_VALIDATION_STATUS_DISABLED = 3;
+}
+
+// ErrorCode 是 Gateway 映射 gRPC status 和外部响应时使用的稳定业务错误码。
+enum ErrorCode {
+  ERROR_CODE_UNSPECIFIED = 0;
+  ERROR_CODE_INVALID_ARGUMENT = 1;
+  ERROR_CODE_UNAUTHENTICATED = 2;
+  ERROR_CODE_PERMISSION_DENIED = 3;
+  ERROR_CODE_NOT_FOUND = 4;
+  ERROR_CODE_CONFLICT = 5;
+  ERROR_CODE_OUTCOME_UNKNOWN = 6;
+  ERROR_CODE_UNAVAILABLE = 7;
+  ERROR_CODE_CANCELED = 8;
+  ERROR_CODE_INTERNAL = 9;
+}
+
+// PredictionErrorDetail 可放入 gRPC status details；message 只提供中文诊断，不作为业务分支依据。
+message PredictionErrorDetail {
+  ErrorCode code = 1;
+  string message = 2;
+  optional int64 current_template_version = 3;
+}
+
+message DecimalConstraint {
+  string default_value = 1;
+  string minimum_value = 2;
+  string maximum_value = 3;
+  bool merchant_editable = 4;
+}
+
+message IntegerConstraint {
+  int64 default_value = 1;
+  int64 minimum_value = 2;
+  int64 maximum_value = 3;
+  bool merchant_editable = 4;
+}
+
+message PriceRule {
+  int64 max_age_milliseconds = 1;
+  int64 late_arrival_grace_milliseconds = 2;
+}
+
+message PricePoint {
+  string symbol = 1;
+  string price = 2;
+  int64 event_time_ms = 3;
+  int64 received_at_ms = 4;
+  uint64 sequence = 5;
+  string quality = 6;
+}
+
+message Room {
+  string code = 1;
+  string min_stake = 2;
+  string max_stake = 3;
+}
+
+message UpDownRule {
+  int64 bet_duration_seconds = 1;
+  int64 observe_duration_seconds = 2;
+  int64 settlement_display_seconds = 3;
+  string pool_share = 4;
+  repeated Room rooms = 5;
+}
+
+message HighLowRule {
+  int64 duration_seconds = 1;
+  string net_return_rate = 2;
+  string min_stake = 3;
+  string max_stake = 4;
+}
+
+message Gameplay {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 duration_seconds = 3;
+  int64 config_version = 4;
+  string settlement_asset = 5;
+  int32 amount_scale = 6;
+  PriceRule price_rule = 7;
+  oneof rule {
+    UpDownRule up_down = 8;
+    HighLowRule high_low = 9;
+  }
+  int64 template_version = 10;
+  int64 merchant_version = 11;
+  string effective_version = 12;
+  bool enabled = 13;
+  string minimum_stake = 14;
+  string maximum_stake = 15;
+  string fixed_odds = 16;
+  string target_payout_rate = 17;
+  string minimum_odds = 18;
+  string maximum_odds = 19;
+  int64 bet_open_seconds = 20;
+}
+
+message Odds {
+  string numerator = 1;
+  string denominator = 2;
+}
+
+message PlayerRound {
+  string round_id = 1;
+  string symbol = 2;
+  string room_code = 3;
+  RoundState state = 4;
+  OrderResult result = 5;
+  RoundCancelReason cancel_reason = 6;
+  int64 config_version = 7;
+  string settlement_asset = 8;
+  string pool_share = 9;
+  string up_pool = 10;
+  string down_pool = 11;
+  Odds up_odds = 12;
+  Odds down_odds = 13;
+  optional string start_price = 14;
+  optional string end_price = 15;
+  int64 bet_open_at_ms = 16;
+  int64 bet_close_at_ms = 17;
+  int64 observe_end_at_ms = 18;
+  int64 display_end_at_ms = 19;
+  int64 duration_seconds = 20;
+  int64 participant_count = 21;
+  int64 order_count = 22;
+}
+
+message AdminRound {
+  string round_id = 1;
+  string generation_id = 2;
+  string symbol = 3;
+  string room_code = 4;
+  RoundState state = 5;
+  OrderResult result = 6;
+  RoundCancelReason cancel_reason = 7;
+  int64 config_version = 8;
+  string settlement_asset = 9;
+  string pool_share = 10;
+  string up_pool = 11;
+  string down_pool = 12;
+  string locked_up_pool = 13;
+  string locked_down_pool = 14;
+  Odds up_odds = 15;
+  Odds down_odds = 16;
+  optional string start_price = 17;
+  optional string end_price = 18;
+  int64 bet_open_at_ms = 19;
+  int64 bet_close_at_ms = 20;
+  int64 observe_end_at_ms = 21;
+  int64 display_end_at_ms = 22;
+  string platform_revenue = 23 [deprecated = true];
+  string truncation_tail = 24;
+  string merchant_id = 25;
+  int64 duration_seconds = 26;
+  optional int64 result_at_ms = 27;
+  int64 participant_count = 28;
+  int64 order_count = 29;
+  string total_stake = 30;
+  string total_return = 31;
+  string merchant_profit = 32;
+  optional int64 settled_at_ms = 33;
+}
+
+message PlayerOrderSummary {
+  string order_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
+  Direction direction = 4;
+  string settlement_asset = 5;
+  string stake = 6;
+  string estimated_net_profit = 7;
+  string estimated_return = 8;
+  optional string final_net_profit = 9;
+  optional string final_return = 10;
+  BusinessStatus business_status = 11;
+  FundStatus fund_status = 12;
+  FundStatus unknown_from = 13;
+  OrderResult result = 14;
+  int64 config_version = 15;
+  int64 created_at_ms = 16;
+  optional int64 accepted_at_ms = 17;
+  optional int64 expire_at_ms = 18;
+  optional int64 result_at_ms = 19;
+  optional int64 settled_at_ms = 20;
+  string round_id = 21;
+  int64 duration_seconds = 22;
+}
+
+message AdminOrderSummary {
+  string order_id = 1;
+  string user_id = 2;
+  GameType game_type = 3;
+  string symbol = 4;
+  Direction direction = 5;
+  string settlement_asset = 6;
+  string stake = 7;
+  string estimated_net_profit = 8;
+  string estimated_return = 9;
+  optional string final_net_profit = 10;
+  optional string final_return = 11;
+  BusinessStatus business_status = 12;
+  FundStatus fund_status = 13;
+  FundStatus unknown_from = 14;
+  OrderResult result = 15;
+  int64 config_version = 16;
+  int64 created_at_ms = 17;
+  optional int64 accepted_at_ms = 18;
+  optional int64 expire_at_ms = 19;
+  optional int64 result_at_ms = 20;
+  optional int64 settled_at_ms = 21;
+  string merchant_id = 22;
+  string round_id = 23;
+  int64 duration_seconds = 24;
+  optional string open_price = 25;
+  optional string result_price = 26;
+  string funds_transaction_id = 27;
+  string merchant_profit = 28;
+}
+
+message PriceEvidence {
+  string evidence_type = 1;
+  string price = 2;
+  int64 event_time_ms = 3;
+  int64 received_at_ms = 4;
+  uint64 sequence = 5;
+  int32 source_count = 6;
+  string quality = 7;
+  string provider_version = 8;
+  string invalid_reason = 9;
+}
+
+message PlayerUpDownOrderDetail {
+  string round_id = 1;
+  string room_code = 2;
+  string final_odds_numerator = 3;
+  string final_odds_denominator = 4;
+  int64 duration_seconds = 5;
+}
+
+message PlayerHighLowOrderDetail {
+  int64 duration_seconds = 1;
+  string net_return_rate = 2;
+  string open_price = 3;
+  optional string expiry_price = 4;
+  string fixed_odds = 5;
+}
+
+message PlayerOrderDetail {
+  PlayerOrderSummary summary = 1;
+  oneof game_detail {
+    PlayerUpDownOrderDetail up_down = 2;
+    PlayerHighLowOrderDetail high_low = 3;
+  }
+  repeated PriceEvidence price_evidence = 4;
+}
+
+message AdminUpDownOrderDetail {
+  string round_id = 1;
+  string room_code = 2;
+  Odds final_odds = 3;
+  repeated PriceEvidence price_evidence = 4;
+  string platform_revenue = 5 [deprecated = true];
+  string truncation_tail = 6;
+  int64 duration_seconds = 7;
+  string merchant_profit = 8;
+}
+
+message AdminHighLowOrderDetail {
+  int64 duration_seconds = 1;
+  string net_return_rate = 2;
+  string open_price = 3;
+  optional string expiry_price = 4;
+  string risk_reserve = 5;
+  repeated PriceEvidence price_evidence = 6;
+  string fixed_odds = 7;
+  string merchant_profit = 8;
+}
+
+message AdminOrderDetail {
+  AdminOrderSummary summary = 1;
+  oneof game_detail {
+    AdminUpDownOrderDetail up_down = 2;
+    AdminHighLowOrderDetail high_low = 3;
+  }
+}
+
+message ExceptionalTask {
+  ExceptionalKind kind = 1;
+  string id = 2;
+  string order_id = 3;
+  string event_id = 4;
+  string event_type = 5;
+  GameType game_type = 6;
+  string symbol = 7;
+  BusinessStatus business_status = 8;
+  FundStatus fund_status = 9;
+  FundStatus unknown_from = 10;
+  int64 created_at_ms = 11;
+}
+
+message ConfigVersion {
+  int64 id = 1;
+  int64 version = 2;
+  string draft_id = 3;
+  GameType game_type = 4;
+  string symbol = 5;
+  int64 duration_seconds = 6;
+  bool enabled = 7;
+  int64 published_at_ms = 8;
+}
+
+message OperationReceipt {
+  string operation_id = 1;
+  string operator_id = 2;
+  string client_request_id = 3;
+  string capability = 4;
+  AdminAction action = 5;
+  string target_type = 6;
+  string target_id = 7;
+  string reason = 8;
+  bytes before_json = 9;
+  bytes after_json = 10;
+  OperationResult result = 11;
+  string error_code = 12;
+  int64 created_at_ms = 13;
+  int64 completed_at_ms = 14;
+}

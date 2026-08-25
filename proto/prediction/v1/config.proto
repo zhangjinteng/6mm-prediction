@@ -1,0 +1,432 @@
+syntax = "proto3";
+
+package prediction.v1;
+
+import "prediction/v1/common.proto";
+
+option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
+
+// PredictionPlatformAdmin 由总后台调用，操作人和权限只来自可信 metadata。
+service PredictionPlatformAdmin {
+  rpc GetPlatformTemplate(GetPlatformTemplateRequest) returns (GetPlatformTemplateResponse);
+  rpc SavePlatformTemplateDraft(SavePlatformTemplateDraftRequest) returns (SavePlatformTemplateDraftResponse);
+  rpc PublishPlatformTemplate(PublishPlatformTemplateRequest) returns (PublishPlatformTemplateResponse);
+  rpc ListPlatformTemplateVersions(ListPlatformTemplateVersionsRequest) returns (PlatformTemplateVersionPage);
+  rpc ActivatePlatformTemplateVersion(ActivatePlatformTemplateVersionRequest) returns (ActivatePlatformTemplateVersionResponse);
+  rpc ListMerchantConfigStates(ListMerchantConfigStatesRequest) returns (MerchantConfigStatePage);
+  rpc GetMerchantConfig(GetPlatformMerchantConfigRequest) returns (GetPlatformMerchantConfigResponse);
+  rpc DisableMerchantOverride(DisableMerchantOverrideRequest) returns (DisableMerchantOverrideResponse);
+  rpc ResetMerchantConfig(ResetMerchantConfigRequest) returns (ResetMerchantConfigResponse);
+  rpc GetTemplateReconciliationJob(GetTemplateReconciliationJobRequest) returns (GetTemplateReconciliationJobResponse);
+  rpc ListConfigAuditLogs(ListConfigAuditLogsRequest) returns (ListConfigAuditLogsResponse);
+  rpc GetFeatureAvailability(GetPlatformFeatureAvailabilityRequest) returns (GetPlatformFeatureAvailabilityResponse);
+}
+
+// PredictionMerchantAdmin 只管理 metadata 中商户自身的稀疏覆盖，请求体不接受 merchant_id。
+service PredictionMerchantAdmin {
+  rpc GetMerchantConfig(GetOwnMerchantConfigRequest) returns (GetOwnMerchantConfigResponse);
+  rpc SaveMerchantConfigDraft(SaveMerchantConfigDraftRequest) returns (SaveMerchantConfigDraftResponse);
+  rpc PublishMerchantConfig(PublishMerchantConfigRequest) returns (PublishMerchantConfigResponse);
+  rpc ListMerchantConfigVersions(ListMerchantConfigVersionsRequest) returns (MerchantConfigVersionPage);
+  rpc ListMerchantConfigAuditLogs(ListMerchantConfigAuditLogsRequest) returns (ListMerchantConfigAuditLogsResponse);
+  rpc GetFeatureAvailability(GetMerchantFeatureAvailabilityRequest) returns (GetMerchantFeatureAvailabilityResponse);
+}
+
+enum ConfigVersionState {
+  CONFIG_VERSION_STATE_UNSPECIFIED = 0;
+  CONFIG_VERSION_STATE_DRAFT = 1;
+  CONFIG_VERSION_STATE_PUBLISHED = 2;
+  CONFIG_VERSION_STATE_ACTIVE = 3;
+  CONFIG_VERSION_STATE_SUPERSEDED = 4;
+}
+
+enum MerchantOverrideState {
+  MERCHANT_OVERRIDE_STATE_UNSPECIFIED = 0;
+  MERCHANT_OVERRIDE_STATE_ENABLED = 1;
+  MERCHANT_OVERRIDE_STATE_DISABLED = 2;
+  MERCHANT_OVERRIDE_STATE_INHERITED = 3;
+}
+
+enum ReconciliationJobState {
+  RECONCILIATION_JOB_STATE_UNSPECIFIED = 0;
+  RECONCILIATION_JOB_STATE_PENDING = 1;
+  RECONCILIATION_JOB_STATE_RUNNING = 2;
+  RECONCILIATION_JOB_STATE_SUCCEEDED = 3;
+  RECONCILIATION_JOB_STATE_PARTIALLY_FAILED = 4;
+  RECONCILIATION_JOB_STATE_FAILED = 5;
+}
+
+enum PredictionFeature {
+  PREDICTION_FEATURE_UNSPECIFIED = 0;
+  PREDICTION_FEATURE_UP_DOWN = 1;
+  PREDICTION_FEATURE_HIGH_LOW = 2;
+  PREDICTION_FEATURE_UP_DOWN_MARKET_MAKING = 3;
+  PREDICTION_FEATURE_PREDICTION_GRID = 4;
+}
+
+message PlatformRuleTemplate {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 duration_seconds = 3;
+  bool enabled_by_default = 4;
+  IntegerConstraint bet_open_seconds = 5;
+  DecimalConstraint target_payout_rate = 6;
+  DecimalConstraint minimum_odds = 7;
+  DecimalConstraint maximum_odds = 8;
+  DecimalConstraint fixed_odds = 9;
+  DecimalConstraint minimum_stake = 10;
+  DecimalConstraint maximum_stake = 11;
+  int64 settlement_display_seconds = 12;
+  PriceRule price_rule = 13;
+}
+
+message PlatformTemplateDraft {
+  string draft_id = 1;
+  int64 based_on_version = 2;
+  repeated PlatformRuleTemplate rules = 3;
+  int64 updated_at_ms = 4;
+}
+
+message PlatformTemplateVersion {
+  string version_id = 1;
+  int64 version = 2;
+  ConfigVersionState state = 3;
+  repeated PlatformRuleTemplate rules = 4;
+  int64 created_at_ms = 5;
+  int64 published_at_ms = 6;
+  optional int64 activated_at_ms = 7;
+}
+
+message MerchantRuleOverride {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 duration_seconds = 3;
+  optional bool enabled = 4;
+  optional int64 bet_open_seconds = 5;
+  optional string target_payout_rate = 6;
+  optional string minimum_odds = 7;
+  optional string maximum_odds = 8;
+  optional string fixed_odds = 9;
+  optional string minimum_stake = 10;
+  optional string maximum_stake = 11;
+}
+
+message EffectiveRule {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 duration_seconds = 3;
+  bool enabled = 4;
+  int64 bet_open_seconds = 5;
+  string target_payout_rate = 6;
+  string minimum_odds = 7;
+  string maximum_odds = 8;
+  string fixed_odds = 9;
+  string minimum_stake = 10;
+  string maximum_stake = 11;
+  int64 settlement_display_seconds = 12;
+  PriceRule price_rule = 13;
+}
+
+message ConfigFieldSource {
+  string field = 1;
+  ConfigValueSource source = 2;
+}
+
+message ForcedConfigAdjustment {
+  string field = 1;
+  string before_value = 2;
+  string after_value = 3;
+  string reason = 4;
+  int64 adjusted_at_ms = 5;
+}
+
+message MerchantEffectiveRule {
+  MerchantRuleOverride merchant_override = 1;
+  EffectiveRule effective_value = 2;
+  repeated ConfigFieldSource value_sources = 3;
+  int64 template_version = 4;
+  int64 merchant_version = 5;
+  string effective_version = 6;
+  ConfigValidationStatus validation_status = 7;
+  repeated ForcedConfigAdjustment forced_adjustments = 8;
+}
+
+message MerchantConfig {
+  string merchant_id = 1;
+  MerchantOverrideState override_state = 2;
+  int64 based_on_template_version = 3;
+  int64 merchant_version = 4;
+  string effective_version = 5;
+  repeated MerchantEffectiveRule rules = 6;
+  int64 updated_at_ms = 7;
+}
+
+message MerchantConfigDraft {
+  string draft_id = 1;
+  int64 based_on_template_version = 2;
+  repeated MerchantRuleOverride overrides = 3;
+  int64 updated_at_ms = 4;
+}
+
+message MerchantConfigVersion {
+  string version_id = 1;
+  int64 version = 2;
+  int64 based_on_template_version = 3;
+  ConfigVersionState state = 4;
+  MerchantOverrideState override_state = 5;
+  repeated MerchantRuleOverride overrides = 6;
+  int64 published_at_ms = 7;
+}
+
+message MerchantConfigState {
+  string merchant_id = 1;
+  MerchantOverrideState override_state = 2;
+  int64 template_version = 3;
+  int64 merchant_version = 4;
+  string effective_version = 5;
+  ConfigValidationStatus validation_status = 6;
+  int64 updated_at_ms = 7;
+}
+
+message TemplateReconciliationJob {
+  string job_id = 1;
+  int64 template_version = 2;
+  ReconciliationJobState state = 3;
+  int64 scanned_count = 4;
+  int64 affected_count = 5;
+  int64 updated_count = 6;
+  int64 failed_count = 7;
+  string cursor = 8;
+  int64 created_at_ms = 9;
+  int64 updated_at_ms = 10;
+  optional int64 completed_at_ms = 11;
+}
+
+message ConfigAuditLog {
+  string operation_id = 1;
+  string operator_id = 2;
+  string merchant_id = 3;
+  string source = 4;
+  string action = 5;
+  string target_type = 6;
+  string target_id = 7;
+  string reason = 8;
+  bytes before_json = 9;
+  bytes after_json = 10;
+  OperationResult result = 11;
+  string error_code = 12;
+  int64 created_at_ms = 13;
+  int64 completed_at_ms = 14;
+}
+
+message FeatureAvailability {
+  PredictionFeature feature = 1;
+  FeatureState state = 2;
+  string reason = 3;
+}
+
+message GetPlatformTemplateRequest {
+  int64 version = 1;
+  bool include_draft = 2;
+}
+
+message GetPlatformTemplateResponse {
+  optional PlatformTemplateDraft draft = 1;
+  PlatformTemplateVersion current = 2;
+}
+
+message SavePlatformTemplateDraftRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string draft_id = 4;
+  int64 based_on_version = 5;
+  repeated PlatformRuleTemplate rules = 6;
+}
+
+message SavePlatformTemplateDraftResponse {
+  PlatformTemplateDraft draft = 1;
+  OperationReceipt receipt = 2;
+}
+
+message PublishPlatformTemplateRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string draft_id = 4;
+}
+
+message PublishPlatformTemplateResponse {
+  PlatformTemplateVersion version = 1;
+  TemplateReconciliationJob reconciliation_job = 2;
+  OperationReceipt receipt = 3;
+}
+
+message ListPlatformTemplateVersionsRequest {
+  int32 page_size = 1;
+  string cursor = 2;
+}
+
+message PlatformTemplateVersionPage {
+  repeated PlatformTemplateVersion items = 1;
+  string next_cursor = 2;
+}
+
+message ActivatePlatformTemplateVersionRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  int64 version = 4;
+}
+
+message ActivatePlatformTemplateVersionResponse {
+  PlatformTemplateVersion version = 1;
+  TemplateReconciliationJob reconciliation_job = 2;
+  OperationReceipt receipt = 3;
+}
+
+message ListMerchantConfigStatesRequest {
+  string merchant_id = 1;
+  MerchantOverrideState override_state = 2;
+  ConfigValidationStatus validation_status = 3;
+  int32 page_size = 4;
+  string cursor = 5;
+}
+
+message MerchantConfigStatePage {
+  repeated MerchantConfigState items = 1;
+  string next_cursor = 2;
+}
+
+message GetPlatformMerchantConfigRequest {
+  string merchant_id = 1;
+}
+
+message GetOwnMerchantConfigRequest {
+  bool include_draft = 1;
+}
+
+message GetPlatformMerchantConfigResponse {
+  MerchantConfig configuration = 1;
+  optional MerchantConfigDraft draft = 2;
+}
+
+message GetOwnMerchantConfigResponse {
+  MerchantConfig configuration = 1;
+  optional MerchantConfigDraft draft = 2;
+}
+
+message DisableMerchantOverrideRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string merchant_id = 4;
+}
+
+message ResetMerchantConfigRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string merchant_id = 4;
+}
+
+message DisableMerchantOverrideResponse {
+  MerchantConfigVersion version = 1;
+  MerchantConfig configuration = 2;
+  OperationReceipt receipt = 3;
+}
+
+message ResetMerchantConfigResponse {
+  MerchantConfigVersion version = 1;
+  MerchantConfig configuration = 2;
+  OperationReceipt receipt = 3;
+}
+
+message GetTemplateReconciliationJobRequest {
+  string job_id = 1;
+}
+
+message GetTemplateReconciliationJobResponse {
+  TemplateReconciliationJob job = 1;
+}
+
+message ListConfigAuditLogsRequest {
+  string merchant_id = 1;
+  string operator_id = 2;
+  string action = 3;
+  OperationResult result = 4;
+  int64 from_ms = 5;
+  int64 to_ms = 6;
+  int32 page_size = 7;
+  string cursor = 8;
+}
+
+message ListMerchantConfigAuditLogsRequest {
+  string operator_id = 1;
+  string action = 2;
+  OperationResult result = 3;
+  int64 from_ms = 4;
+  int64 to_ms = 5;
+  int32 page_size = 6;
+  string cursor = 7;
+}
+
+message ListConfigAuditLogsResponse {
+  repeated ConfigAuditLog items = 1;
+  string next_cursor = 2;
+}
+
+message ListMerchantConfigAuditLogsResponse {
+  repeated ConfigAuditLog items = 1;
+  string next_cursor = 2;
+}
+
+message GetPlatformFeatureAvailabilityRequest {}
+
+message GetMerchantFeatureAvailabilityRequest {}
+
+message GetPlatformFeatureAvailabilityResponse {
+  repeated FeatureAvailability items = 1;
+}
+
+message GetMerchantFeatureAvailabilityResponse {
+  repeated FeatureAvailability items = 1;
+}
+
+message SaveMerchantConfigDraftRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string draft_id = 4;
+  int64 based_on_template_version = 5;
+  repeated MerchantRuleOverride overrides = 6;
+}
+
+message SaveMerchantConfigDraftResponse {
+  MerchantConfigDraft draft = 1;
+  OperationReceipt receipt = 2;
+}
+
+message PublishMerchantConfigRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  string draft_id = 4;
+  int64 based_on_template_version = 5;
+}
+
+message PublishMerchantConfigResponse {
+  MerchantConfigVersion version = 1;
+  MerchantConfig configuration = 2;
+  OperationReceipt receipt = 3;
+}
+
+message ListMerchantConfigVersionsRequest {
+  int32 page_size = 1;
+  string cursor = 2;
+}
+
+message MerchantConfigVersionPage {
+  repeated MerchantConfigVersion items = 1;
+  string next_cursor = 2;
+}

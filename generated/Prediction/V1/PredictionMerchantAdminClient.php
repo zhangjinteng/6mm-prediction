@@ -1,0 +1,104 @@
+<?php
+// GENERATED CODE -- DO NOT EDIT!
+
+namespace Prediction\V1;
+
+/**
+ * PredictionMerchantAdmin 只管理 metadata 中商户自身的稀疏覆盖，请求体不接受 merchant_id。
+ */
+class PredictionMerchantAdminClient extends \Grpc\BaseStub {
+
+    /**
+     * @param string $hostname hostname
+     * @param array $opts channel options
+     * @param \Grpc\Channel $channel (optional) re-use channel object
+     */
+    public function __construct($hostname, $opts, $channel = null) {
+        parent::__construct($hostname, $opts, $channel);
+    }
+
+    /**
+     * @param \Prediction\V1\GetOwnMerchantConfigRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\GetOwnMerchantConfigResponse>
+     */
+    public function GetMerchantConfig(\Prediction\V1\GetOwnMerchantConfigRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionMerchantAdmin/GetMerchantConfig',
+        $argument,
+        ['\Prediction\V1\GetOwnMerchantConfigResponse', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
+     * @param \Prediction\V1\SaveMerchantConfigDraftRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\SaveMerchantConfigDraftResponse>
+     */
+    public function SaveMerchantConfigDraft(\Prediction\V1\SaveMerchantConfigDraftRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionMerchantAdmin/SaveMerchantConfigDraft',
+        $argument,
+        ['\Prediction\V1\SaveMerchantConfigDraftResponse', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
+     * @param \Prediction\V1\PublishMerchantConfigRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\PublishMerchantConfigResponse>
+     */
+    public function PublishMerchantConfig(\Prediction\V1\PublishMerchantConfigRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionMerchantAdmin/PublishMerchantConfig',
+        $argument,
+        ['\Prediction\V1\PublishMerchantConfigResponse', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
+     * @param \Prediction\V1\ListMerchantConfigVersionsRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\MerchantConfigVersionPage>
+     */
+    public function ListMerchantConfigVersions(\Prediction\V1\ListMerchantConfigVersionsRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionMerchantAdmin/ListMerchantConfigVersions',
+        $argument,
+        ['\Prediction\V1\MerchantConfigVersionPage', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
+     * @param \Prediction\V1\ListMerchantConfigAuditLogsRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\ListMerchantConfigAuditLogsResponse>
+     */
+    public function ListMerchantConfigAuditLogs(\Prediction\V1\ListMerchantConfigAuditLogsRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionMerchantAdmin/ListMerchantConfigAuditLogs',
+        $argument,
+        ['\Prediction\V1\ListMerchantConfigAuditLogsResponse', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
+     * @param \Prediction\V1\GetMerchantFeatureAvailabilityRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall<\Prediction\V1\GetMerchantFeatureAvailabilityResponse>
+     */
+    public function GetFeatureAvailability(\Prediction\V1\GetMerchantFeatureAvailabilityRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionMerchantAdmin/GetFeatureAvailability',
+        $argument,
+        ['\Prediction\V1\GetMerchantFeatureAvailabilityResponse', 'decode'],
+        $metadata, $options);
+    }
+
+}
