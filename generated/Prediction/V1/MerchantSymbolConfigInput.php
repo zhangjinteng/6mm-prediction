@@ -21,6 +21,9 @@ class MerchantSymbolConfigInput extends \Google\Protobuf\Internal\Message
      */
     protected $enabled = null;
     /**
+     * 只提交本次需要替换的周期；周期内可省略与外层重复的 game_type、symbol。
+     * 未提交周期保持不变，已提交周期中未设置的 optional 字段恢复继承平台模板。
+     *
      * Generated from protobuf field <code>repeated .prediction.v1.MerchantRuleOverride overrides = 2;</code>
      */
     private $overrides;
@@ -34,6 +37,8 @@ class MerchantSymbolConfigInput extends \Google\Protobuf\Internal\Message
      *     @type bool $enabled
      *           仅控制该币种能否在当前商户的预测玩法页面游玩。
      *     @type \Prediction\V1\MerchantRuleOverride[] $overrides
+     *           只提交本次需要替换的周期；周期内可省略与外层重复的 game_type、symbol。
+     *           未提交周期保持不变，已提交周期中未设置的 optional 字段恢复继承平台模板。
      * }
      */
     public function __construct($data = NULL) {
@@ -77,6 +82,9 @@ class MerchantSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 只提交本次需要替换的周期；周期内可省略与外层重复的 game_type、symbol。
+     * 未提交周期保持不变，已提交周期中未设置的 optional 字段恢复继承平台模板。
+     *
      * Generated from protobuf field <code>repeated .prediction.v1.MerchantRuleOverride overrides = 2;</code>
      * @return RepeatedField<\Prediction\V1\MerchantRuleOverride>
      */
@@ -86,6 +94,9 @@ class MerchantSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 只提交本次需要替换的周期；周期内可省略与外层重复的 game_type、symbol。
+     * 未提交周期保持不变，已提交周期中未设置的 optional 字段恢复继承平台模板。
+     *
      * Generated from protobuf field <code>repeated .prediction.v1.MerchantRuleOverride overrides = 2;</code>
      * @param \Prediction\V1\MerchantRuleOverride[] $var
      * @return $this

@@ -10,26 +10,30 @@ use Google\Protobuf\Internal\GPBUtil;
 use Google\Protobuf\RepeatedField;
 
 /**
- * GameplayConfigRule 是统一页面规则视图。平台范围没有 merchant_override；商户范围始终带 template_rule。
+ * GameplayConfigRule 是统一页面规则视图。平台和商户范围使用相同的扁平字段结构。
  *
  * Generated from protobuf message <code>prediction.v1.GameplayConfigRule</code>
  */
 class GameplayConfigRule extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1;</code>
+     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1 [deprecated = true];</code>
+     * @deprecated
      */
     protected $template_rule = null;
     /**
-     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2;</code>
+     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2 [deprecated = true];</code>
+     * @deprecated
      */
     protected $merchant_override = null;
     /**
-     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3;</code>
+     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3 [deprecated = true];</code>
+     * @deprecated
      */
     protected $effective_value = null;
     /**
-     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4;</code>
+     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4 [deprecated = true];</code>
+     * @deprecated
      */
     private $value_sources;
     /**
@@ -40,6 +44,62 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>repeated .prediction.v1.ForcedConfigAdjustment forced_adjustments = 6;</code>
      */
     private $forced_adjustments;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.GameType game_type = 7;</code>
+     */
+    protected $game_type = 0;
+    /**
+     * Generated from protobuf field <code>string symbol = 8;</code>
+     */
+    protected $symbol = '';
+    /**
+     * Generated from protobuf field <code>int64 duration_seconds = 9;</code>
+     */
+    protected $duration_seconds = 0;
+    /**
+     * Generated from protobuf field <code>bool enabled = 10;</code>
+     */
+    protected $enabled = false;
+    /**
+     * Generated from protobuf field <code>bool enabled_by_default = 11;</code>
+     */
+    protected $enabled_by_default = false;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.IntegerConfigField bet_open_seconds = 12;</code>
+     */
+    protected $bet_open_seconds = null;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField target_payout_rate = 13;</code>
+     */
+    protected $target_payout_rate = null;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField minimum_odds = 14;</code>
+     */
+    protected $minimum_odds = null;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField maximum_odds = 15;</code>
+     */
+    protected $maximum_odds = null;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField fixed_odds = 16;</code>
+     */
+    protected $fixed_odds = null;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField minimum_stake = 17;</code>
+     */
+    protected $minimum_stake = null;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField maximum_stake = 18;</code>
+     */
+    protected $maximum_stake = null;
+    /**
+     * Generated from protobuf field <code>int64 settlement_display_seconds = 19;</code>
+     */
+    protected $settlement_display_seconds = 0;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.PriceRule price_rule = 20;</code>
+     */
+    protected $price_rule = null;
 
     /**
      * Constructor.
@@ -53,6 +113,20 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      *     @type \Prediction\V1\ConfigFieldSource[] $value_sources
      *     @type int $validation_status
      *     @type \Prediction\V1\ForcedConfigAdjustment[] $forced_adjustments
+     *     @type int $game_type
+     *     @type string $symbol
+     *     @type int|string $duration_seconds
+     *     @type bool $enabled
+     *     @type bool $enabled_by_default
+     *     @type \Prediction\V1\IntegerConfigField $bet_open_seconds
+     *     @type \Prediction\V1\DecimalConfigField $target_payout_rate
+     *     @type \Prediction\V1\DecimalConfigField $minimum_odds
+     *     @type \Prediction\V1\DecimalConfigField $maximum_odds
+     *     @type \Prediction\V1\DecimalConfigField $fixed_odds
+     *     @type \Prediction\V1\DecimalConfigField $minimum_stake
+     *     @type \Prediction\V1\DecimalConfigField $maximum_stake
+     *     @type int|string $settlement_display_seconds
+     *     @type \Prediction\V1\PriceRule $price_rule
      * }
      */
     public function __construct($data = NULL) {
@@ -61,115 +135,153 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1;</code>
+     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1 [deprecated = true];</code>
      * @return \Prediction\V1\PlatformRuleTemplate|null
+     * @deprecated
      */
     public function getTemplateRule()
     {
+        if (isset($this->template_rule)) {
+            @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->template_rule;
     }
 
     public function hasTemplateRule()
     {
+        if (isset($this->template_rule)) {
+            @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
+        }
         return isset($this->template_rule);
     }
 
     public function clearTemplateRule()
     {
+        @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
         unset($this->template_rule);
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1;</code>
+     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1 [deprecated = true];</code>
      * @param \Prediction\V1\PlatformRuleTemplate $var
      * @return $this
+     * @deprecated
      */
     public function setTemplateRule(\Prediction\V1\PlatformRuleTemplate|null $var)
     {
+        @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
         $this->template_rule = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2;</code>
+     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2 [deprecated = true];</code>
      * @return \Prediction\V1\MerchantRuleOverride|null
+     * @deprecated
      */
     public function getMerchantOverride()
     {
+        if (isset($this->merchant_override)) {
+            @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->merchant_override;
     }
 
     public function hasMerchantOverride()
     {
+        if (isset($this->merchant_override)) {
+            @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
+        }
         return isset($this->merchant_override);
     }
 
     public function clearMerchantOverride()
     {
+        @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
         unset($this->merchant_override);
     }
 
     /**
-     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2;</code>
+     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2 [deprecated = true];</code>
      * @param \Prediction\V1\MerchantRuleOverride $var
      * @return $this
+     * @deprecated
      */
     public function setMerchantOverride(\Prediction\V1\MerchantRuleOverride|null $var)
     {
+        @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
         $this->merchant_override = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3;</code>
+     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3 [deprecated = true];</code>
      * @return \Prediction\V1\EffectiveRule|null
+     * @deprecated
      */
     public function getEffectiveValue()
     {
+        if (isset($this->effective_value)) {
+            @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->effective_value;
     }
 
     public function hasEffectiveValue()
     {
+        if (isset($this->effective_value)) {
+            @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
+        }
         return isset($this->effective_value);
     }
 
     public function clearEffectiveValue()
     {
+        @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
         unset($this->effective_value);
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3;</code>
+     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3 [deprecated = true];</code>
      * @param \Prediction\V1\EffectiveRule $var
      * @return $this
+     * @deprecated
      */
     public function setEffectiveValue(\Prediction\V1\EffectiveRule|null $var)
     {
+        @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
         $this->effective_value = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4;</code>
+     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4 [deprecated = true];</code>
      * @return RepeatedField<\Prediction\V1\ConfigFieldSource>
+     * @deprecated
      */
     public function getValueSources()
     {
+        if (count($this->value_sources) !== 0) {
+            @trigger_error('value_sources is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->value_sources;
     }
 
     /**
-     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4;</code>
+     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4 [deprecated = true];</code>
      * @param \Prediction\V1\ConfigFieldSource[] $var
      * @return $this
+     * @deprecated
      */
     public function setValueSources(array|RepeatedField $var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\ConfigFieldSource::class);
+        if (count($arr) !== 0) {
+            @trigger_error('value_sources is deprecated.', E_USER_DEPRECATED);
+        }
         $this->value_sources = $arr;
 
         return $this;
@@ -215,6 +327,384 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\ForcedConfigAdjustment::class);
         $this->forced_adjustments = $arr;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.GameType game_type = 7;</code>
+     * @return int one of the values in {@see \Prediction\V1\GameType}
+     */
+    public function getGameType()
+    {
+        return $this->game_type;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.GameType game_type = 7;</code>
+     * @param int $var one of the values in {@see \Prediction\V1\GameType}
+     * @return $this
+     */
+    public function setGameType(int $var)
+    {
+        GPBUtil::checkEnum($var, \Prediction\V1\GameType::class);
+        $this->game_type = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string symbol = 8;</code>
+     * @return string
+     */
+    public function getSymbol()
+    {
+        return $this->symbol;
+    }
+
+    /**
+     * Generated from protobuf field <code>string symbol = 8;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSymbol(string $var)
+    {
+        GPBUtil::checkString($var, true);
+        $this->symbol = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 duration_seconds = 9;</code>
+     * @return int|string
+     */
+    public function getDurationSeconds()
+    {
+        return $this->duration_seconds;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 duration_seconds = 9;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setDurationSeconds(int|string $var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->duration_seconds = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool enabled = 10;</code>
+     * @return bool
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool enabled = 10;</code>
+     * @param bool $var
+     * @return $this
+     */
+    public function setEnabled(bool $var)
+    {
+        $this->enabled = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool enabled_by_default = 11;</code>
+     * @return bool
+     */
+    public function getEnabledByDefault()
+    {
+        return $this->enabled_by_default;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool enabled_by_default = 11;</code>
+     * @param bool $var
+     * @return $this
+     */
+    public function setEnabledByDefault(bool $var)
+    {
+        $this->enabled_by_default = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.IntegerConfigField bet_open_seconds = 12;</code>
+     * @return \Prediction\V1\IntegerConfigField|null
+     */
+    public function getBetOpenSeconds()
+    {
+        return $this->bet_open_seconds;
+    }
+
+    public function hasBetOpenSeconds()
+    {
+        return isset($this->bet_open_seconds);
+    }
+
+    public function clearBetOpenSeconds()
+    {
+        unset($this->bet_open_seconds);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.IntegerConfigField bet_open_seconds = 12;</code>
+     * @param \Prediction\V1\IntegerConfigField $var
+     * @return $this
+     */
+    public function setBetOpenSeconds(\Prediction\V1\IntegerConfigField|null $var)
+    {
+        $this->bet_open_seconds = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField target_payout_rate = 13;</code>
+     * @return \Prediction\V1\DecimalConfigField|null
+     */
+    public function getTargetPayoutRate()
+    {
+        return $this->target_payout_rate;
+    }
+
+    public function hasTargetPayoutRate()
+    {
+        return isset($this->target_payout_rate);
+    }
+
+    public function clearTargetPayoutRate()
+    {
+        unset($this->target_payout_rate);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField target_payout_rate = 13;</code>
+     * @param \Prediction\V1\DecimalConfigField $var
+     * @return $this
+     */
+    public function setTargetPayoutRate(\Prediction\V1\DecimalConfigField|null $var)
+    {
+        $this->target_payout_rate = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField minimum_odds = 14;</code>
+     * @return \Prediction\V1\DecimalConfigField|null
+     */
+    public function getMinimumOdds()
+    {
+        return $this->minimum_odds;
+    }
+
+    public function hasMinimumOdds()
+    {
+        return isset($this->minimum_odds);
+    }
+
+    public function clearMinimumOdds()
+    {
+        unset($this->minimum_odds);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField minimum_odds = 14;</code>
+     * @param \Prediction\V1\DecimalConfigField $var
+     * @return $this
+     */
+    public function setMinimumOdds(\Prediction\V1\DecimalConfigField|null $var)
+    {
+        $this->minimum_odds = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField maximum_odds = 15;</code>
+     * @return \Prediction\V1\DecimalConfigField|null
+     */
+    public function getMaximumOdds()
+    {
+        return $this->maximum_odds;
+    }
+
+    public function hasMaximumOdds()
+    {
+        return isset($this->maximum_odds);
+    }
+
+    public function clearMaximumOdds()
+    {
+        unset($this->maximum_odds);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField maximum_odds = 15;</code>
+     * @param \Prediction\V1\DecimalConfigField $var
+     * @return $this
+     */
+    public function setMaximumOdds(\Prediction\V1\DecimalConfigField|null $var)
+    {
+        $this->maximum_odds = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField fixed_odds = 16;</code>
+     * @return \Prediction\V1\DecimalConfigField|null
+     */
+    public function getFixedOdds()
+    {
+        return $this->fixed_odds;
+    }
+
+    public function hasFixedOdds()
+    {
+        return isset($this->fixed_odds);
+    }
+
+    public function clearFixedOdds()
+    {
+        unset($this->fixed_odds);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField fixed_odds = 16;</code>
+     * @param \Prediction\V1\DecimalConfigField $var
+     * @return $this
+     */
+    public function setFixedOdds(\Prediction\V1\DecimalConfigField|null $var)
+    {
+        $this->fixed_odds = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField minimum_stake = 17;</code>
+     * @return \Prediction\V1\DecimalConfigField|null
+     */
+    public function getMinimumStake()
+    {
+        return $this->minimum_stake;
+    }
+
+    public function hasMinimumStake()
+    {
+        return isset($this->minimum_stake);
+    }
+
+    public function clearMinimumStake()
+    {
+        unset($this->minimum_stake);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField minimum_stake = 17;</code>
+     * @param \Prediction\V1\DecimalConfigField $var
+     * @return $this
+     */
+    public function setMinimumStake(\Prediction\V1\DecimalConfigField|null $var)
+    {
+        $this->minimum_stake = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField maximum_stake = 18;</code>
+     * @return \Prediction\V1\DecimalConfigField|null
+     */
+    public function getMaximumStake()
+    {
+        return $this->maximum_stake;
+    }
+
+    public function hasMaximumStake()
+    {
+        return isset($this->maximum_stake);
+    }
+
+    public function clearMaximumStake()
+    {
+        unset($this->maximum_stake);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.DecimalConfigField maximum_stake = 18;</code>
+     * @param \Prediction\V1\DecimalConfigField $var
+     * @return $this
+     */
+    public function setMaximumStake(\Prediction\V1\DecimalConfigField|null $var)
+    {
+        $this->maximum_stake = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 settlement_display_seconds = 19;</code>
+     * @return int|string
+     */
+    public function getSettlementDisplaySeconds()
+    {
+        return $this->settlement_display_seconds;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 settlement_display_seconds = 19;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setSettlementDisplaySeconds(int|string $var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->settlement_display_seconds = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.PriceRule price_rule = 20;</code>
+     * @return \Prediction\V1\PriceRule|null
+     */
+    public function getPriceRule()
+    {
+        return $this->price_rule;
+    }
+
+    public function hasPriceRule()
+    {
+        return isset($this->price_rule);
+    }
+
+    public function clearPriceRule()
+    {
+        unset($this->price_rule);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.PriceRule price_rule = 20;</code>
+     * @param \Prediction\V1\PriceRule $var
+     * @return $this
+     */
+    public function setPriceRule(\Prediction\V1\PriceRule|null $var)
+    {
+        $this->price_rule = $var;
 
         return $this;
     }

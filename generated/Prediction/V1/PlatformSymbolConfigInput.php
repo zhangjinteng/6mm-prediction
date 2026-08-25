@@ -21,6 +21,8 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
      */
     protected $enabled = null;
     /**
+     * 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
+     *
      * Generated from protobuf field <code>repeated .prediction.v1.PlatformRuleTemplate rules = 2;</code>
      */
     private $rules;
@@ -34,6 +36,7 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
      *     @type bool $enabled
      *           仅控制该币种能否出现在预测玩法页面并接受新预测订单。
      *     @type \Prediction\V1\PlatformRuleTemplate[] $rules
+     *           平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
      * }
      */
     public function __construct($data = NULL) {
@@ -77,6 +80,8 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
+     *
      * Generated from protobuf field <code>repeated .prediction.v1.PlatformRuleTemplate rules = 2;</code>
      * @return RepeatedField<\Prediction\V1\PlatformRuleTemplate>
      */
@@ -86,6 +91,8 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
+     *
      * Generated from protobuf field <code>repeated .prediction.v1.PlatformRuleTemplate rules = 2;</code>
      * @param \Prediction\V1\PlatformRuleTemplate[] $var
      * @return $this

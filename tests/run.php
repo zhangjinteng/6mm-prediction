@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 use Prediction\V1\AdminOrderPage;
 use Prediction\V1\ConfigScope;
+use Prediction\V1\ConfigValidationStatus;
+use Prediction\V1\DecimalConfigField;
 use Prediction\V1\DecimalConstraint;
 use Prediction\V1\GameType;
 use Prediction\V1\GameplayConfig;
+use Prediction\V1\GameplayConfigRule;
 use Prediction\V1\GetGameplayConfigRequest;
 use Prediction\V1\GetPlatformTemplateResponse;
+use Prediction\V1\IntegerConfigField;
 use Prediction\V1\IntegerConstraint;
 use Prediction\V1\ListAdminOrdersRequest;
 use Prediction\V1\OperationReceipt;
@@ -251,6 +255,48 @@ $configurationView = (new GameplayConfig())
     ->setEffectiveVersion('8:0');
 $assertSame(ConfigScope::CONFIG_SCOPE_PLATFORM, $configurationView->getScope(), 'Unified config should expose the response scope.');
 $assertSame('8:0', $configurationView->getEffectiveVersion(), 'Unified config should expose the effective version.');
+$flatGameplayRule = (new GameplayConfigRule())
+    ->setGameType(GameType::GAME_TYPE_HIGH_LOW)
+    ->setSymbol('BTCUSDT')
+    ->setDurationSeconds(60)
+    ->setEnabled(true)
+    ->setEnabledByDefault(true)
+    ->setValidationStatus(ConfigValidationStatus::CONFIG_VALIDATION_STATUS_VALID)
+    ->setBetOpenSeconds((new IntegerConfigField())
+        ->setValue(45)
+        ->setTemplateValue(50)
+        ->setDefaultValue(50)
+        ->setMinimumValue(10)
+        ->setMaximumValue(60)
+        ->setMerchantEditable(true)
+        ->setOverridden(true))
+    ->setFixedOdds((new DecimalConfigField())
+        ->setValue('1.70')
+        ->setTemplateValue('1.80')
+        ->setDefaultValue('1.80')
+        ->setMinimumValue('1.10')
+        ->setMaximumValue('3.00')
+        ->setMerchantEditable(true)
+        ->setOverridden(true))
+    ->setMinimumStake((new DecimalConfigField())
+        ->setValue('1.00')
+        ->setTemplateValue('1.00')
+        ->setDefaultValue('1.00')
+        ->setMinimumValue('0.10')
+        ->setMaximumValue('100.00')
+        ->setMerchantEditable(true)
+        ->setOverridden(false))
+    ->setSettlementDisplaySeconds(5)
+    ->setPriceRule((new PriceRule())
+        ->setMaxAgeMilliseconds(3000)
+        ->setLateArrivalGraceMilliseconds(500));
+$configurationView->setRules([$flatGameplayRule]);
+$assertSame('BTCUSDT', $configurationView->getRules()[0]->getSymbol(), 'Unified config rules should expose the flat symbol field.');
+$assertSame(60, $configurationView->getRules()[0]->getDurationSeconds(), 'Unified config rules should expose the flat duration field.');
+$assertSame(50, $configurationView->getRules()[0]->getBetOpenSeconds()->getTemplateValue(), 'Integer config fields should expose template value.');
+$assertTrue($configurationView->getRules()[0]->getBetOpenSeconds()->getOverridden(), 'Integer config fields should expose override state.');
+$assertSame('1.80', $configurationView->getRules()[0]->getFixedOdds()->getTemplateValue(), 'Decimal config fields should expose template value.');
+$assertTrue(!$configurationView->getRules()[0]->getMinimumStake()->getOverridden(), 'Decimal config fields should expose inherited state.');
 $orderPageRequest = (new ListAdminOrdersRequest())
     ->setPageNo(2)
     ->setPageSize(20);

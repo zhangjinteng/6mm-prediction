@@ -68,6 +68,11 @@ configuration page RPCs:
 - `GetGameplayConfig`
 - `SaveSymbolConfig`
 
+`GameplayConfigRule` now also exposes flat page fields such as `game_type`,
+`symbol`, `duration_seconds`, and config field objects with `value`,
+`template_value`, `merchant_editable`, and `overridden`, so platform and
+merchant pages can consume the same response shape.
+
 Regenerate after updating the protocol files:
 
 ```bash

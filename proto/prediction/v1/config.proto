@@ -181,14 +181,50 @@ message MerchantConfig {
   int64 updated_at_ms = 7;
 }
 
-// GameplayConfigRule 是统一页面规则视图。平台范围没有 merchant_override；商户范围始终带 template_rule。
+// IntegerConfigField 让平台和商户页面使用同一字段结构。
+// value 是当前范围的生效值，template_value 是商户不可突破的平台模板值。
+message IntegerConfigField {
+  int64 value = 1;
+  int64 template_value = 2;
+  int64 default_value = 3;
+  int64 minimum_value = 4;
+  int64 maximum_value = 5;
+  bool merchant_editable = 6;
+  bool overridden = 7;
+}
+
+message DecimalConfigField {
+  string value = 1;
+  string template_value = 2;
+  string default_value = 3;
+  string minimum_value = 4;
+  string maximum_value = 5;
+  bool merchant_editable = 6;
+  bool overridden = 7;
+}
+
+// GameplayConfigRule 是统一页面规则视图。平台和商户范围使用相同的扁平字段结构。
 message GameplayConfigRule {
-  PlatformRuleTemplate template_rule = 1;
-  optional MerchantRuleOverride merchant_override = 2;
-  EffectiveRule effective_value = 3;
-  repeated ConfigFieldSource value_sources = 4;
+  PlatformRuleTemplate template_rule = 1 [deprecated = true];
+  optional MerchantRuleOverride merchant_override = 2 [deprecated = true];
+  EffectiveRule effective_value = 3 [deprecated = true];
+  repeated ConfigFieldSource value_sources = 4 [deprecated = true];
   ConfigValidationStatus validation_status = 5;
   repeated ForcedConfigAdjustment forced_adjustments = 6;
+  GameType game_type = 7;
+  string symbol = 8;
+  int64 duration_seconds = 9;
+  bool enabled = 10;
+  bool enabled_by_default = 11;
+  IntegerConfigField bet_open_seconds = 12;
+  DecimalConfigField target_payout_rate = 13;
+  DecimalConfigField minimum_odds = 14;
+  DecimalConfigField maximum_odds = 15;
+  DecimalConfigField fixed_odds = 16;
+  DecimalConfigField minimum_stake = 17;
+  DecimalConfigField maximum_stake = 18;
+  int64 settlement_display_seconds = 19;
+  PriceRule price_rule = 20;
 }
 
 message GameplayConfig {
@@ -214,12 +250,15 @@ message GetGameplayConfigResponse {
 message PlatformSymbolConfigInput {
   // 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
   optional bool enabled = 1;
+  // 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
   repeated PlatformRuleTemplate rules = 2;
 }
 
 message MerchantSymbolConfigInput {
   // 仅控制该币种能否在当前商户的预测玩法页面游玩。
   optional bool enabled = 1;
+  // 只提交本次需要替换的周期；周期内可省略与外层重复的 game_type、symbol。
+  // 未提交周期保持不变，已提交周期中未设置的 optional 字段恢复继承平台模板。
   repeated MerchantRuleOverride overrides = 2;
 }
 
