@@ -4,7 +4,7 @@
 namespace Prediction\V1;
 
 /**
- * PredictionPlatformAdmin 由总后台调用，操作人和权限只来自可信 metadata。
+ * PredictionPlatformAdmin 是兼容旧调用的管理接口；新玩法配置页面使用 PredictionConfigAdmin。
  */
 class PredictionPlatformAdminClient extends \Grpc\BaseStub {
 

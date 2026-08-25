@@ -4,7 +4,7 @@
 namespace Prediction\V1;
 
 /**
- * PredictionMerchantAdmin 只管理 metadata 中商户自身的稀疏覆盖，请求体不接受 merchant_id。
+ * PredictionMerchantAdmin 是兼容旧调用的商户接口；新玩法配置页面使用 PredictionConfigAdmin。
  */
 class PredictionMerchantAdminClient extends \Grpc\BaseStub {
 

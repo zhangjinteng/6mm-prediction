@@ -57,7 +57,8 @@ class ListAdminOrdersRequest extends \Google\Protobuf\Internal\Message
      */
     protected $page_size = 0;
     /**
-     * Generated from protobuf field <code>string cursor = 11;</code>
+     * Generated from protobuf field <code>string cursor = 11 [deprecated = true];</code>
+     * @deprecated
      */
     protected $cursor = '';
     /**
@@ -88,6 +89,10 @@ class ListAdminOrdersRequest extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.prediction.v1.SortDirection sort_direction = 18;</code>
      */
     protected $sort_direction = 0;
+    /**
+     * Generated from protobuf field <code>int32 page_no = 19;</code>
+     */
+    protected $page_no = 0;
 
     /**
      * Constructor.
@@ -114,6 +119,7 @@ class ListAdminOrdersRequest extends \Google\Protobuf\Internal\Message
      *     @type int $direction
      *     @type int $sort_field
      *     @type int $sort_direction
+     *     @type int $page_no
      * }
      */
     public function __construct($data = NULL) {
@@ -346,21 +352,27 @@ class ListAdminOrdersRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>string cursor = 11;</code>
+     * Generated from protobuf field <code>string cursor = 11 [deprecated = true];</code>
      * @return string
+     * @deprecated
      */
     public function getCursor()
     {
+        if ($this->cursor !== '') {
+            @trigger_error('cursor is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->cursor;
     }
 
     /**
-     * Generated from protobuf field <code>string cursor = 11;</code>
+     * Generated from protobuf field <code>string cursor = 11 [deprecated = true];</code>
      * @param string $var
      * @return $this
+     * @deprecated
      */
     public function setCursor(string $var)
     {
+        @trigger_error('cursor is deprecated.', E_USER_DEPRECATED);
         GPBUtil::checkString($var, true);
         $this->cursor = $var;
 
@@ -517,6 +529,28 @@ class ListAdminOrdersRequest extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkEnum($var, \Prediction\V1\SortDirection::class);
         $this->sort_direction = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 page_no = 19;</code>
+     * @return int
+     */
+    public function getPageNo()
+    {
+        return $this->page_no;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 page_no = 19;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setPageNo(int $var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->page_no = $var;
 
         return $this;
     }

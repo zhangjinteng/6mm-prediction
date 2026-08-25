@@ -2,18 +2,27 @@
 
 declare(strict_types=1);
 
+use Prediction\V1\AdminOrderPage;
+use Prediction\V1\ConfigScope;
 use Prediction\V1\DecimalConstraint;
 use Prediction\V1\GameType;
+use Prediction\V1\GameplayConfig;
+use Prediction\V1\GetGameplayConfigRequest;
 use Prediction\V1\GetPlatformTemplateResponse;
 use Prediction\V1\IntegerConstraint;
+use Prediction\V1\ListAdminOrdersRequest;
 use Prediction\V1\OperationReceipt;
+use Prediction\V1\PageExtend;
 use Prediction\V1\PlatformRuleTemplate;
+use Prediction\V1\PlatformSymbolConfigInput;
 use Prediction\V1\PlatformTemplateDraft;
 use Prediction\V1\PlatformTemplateVersion;
 use Prediction\V1\PredictionAdminClient;
+use Prediction\V1\PredictionConfigAdminClient;
 use Prediction\V1\PriceRule;
 use Prediction\V1\PublishPlatformTemplateResponse;
 use Prediction\V1\SaveMerchantSymbolConfigRequest;
+use Prediction\V1\SaveSymbolConfigRequest;
 use Prediction\V1\SavePlatformTemplateDraftResponse;
 use Prediction\V1\SavePlatformSymbolConfigResponse;
 use Prediction\V1\TemplateReconciliationJob;
@@ -216,11 +225,53 @@ $assertTrue(
     $merchantSymbolRequest->hasMerchantEnabled(),
     'Generated merchant symbol requests should preserve optional switch presence.'
 );
+$unifiedGameplayRequest = (new GetGameplayConfigRequest())
+    ->setGameType(GameType::GAME_TYPE_UP_DOWN)
+    ->setSymbol('BTCUSDT');
+$assertSame(GameType::GAME_TYPE_UP_DOWN, $unifiedGameplayRequest->getGameType(), 'Unified gameplay queries should set game type.');
+$assertSame('BTCUSDT', $unifiedGameplayRequest->getSymbol(), 'Unified gameplay queries should set symbol.');
+$unifiedSaveRequest = (new SaveSymbolConfigRequest())
+    ->setSchemaVersion(1)
+    ->setClientRequestId('unified-save-request-1')
+    ->setReason('package unified save test')
+    ->setBasedOnTemplateVersion(8)
+    ->setBasedOnMerchantVersion(0)
+    ->setGameType(GameType::GAME_TYPE_UP_DOWN)
+    ->setSymbol('BTCUSDT')
+    ->setPlatformTemplate((new PlatformSymbolConfigInput())
+        ->setEnabled(true)
+        ->setRules([$upDownRule()]));
+$assertTrue($unifiedSaveRequest->hasPlatformTemplate(), 'Unified saves should support platform-template oneof input.');
+$assertTrue($unifiedSaveRequest->getPlatformTemplate()->hasEnabled(), 'Unified platform saves should preserve optional enabled presence.');
+$assertSame(1, count($unifiedSaveRequest->getPlatformTemplate()->getRules()), 'Unified platform saves should carry symbol rules.');
+$configurationView = (new GameplayConfig())
+    ->setScope(ConfigScope::CONFIG_SCOPE_PLATFORM)
+    ->setTemplateVersion(8)
+    ->setMerchantVersion(0)
+    ->setEffectiveVersion('8:0');
+$assertSame(ConfigScope::CONFIG_SCOPE_PLATFORM, $configurationView->getScope(), 'Unified config should expose the response scope.');
+$assertSame('8:0', $configurationView->getEffectiveVersion(), 'Unified config should expose the effective version.');
+$orderPageRequest = (new ListAdminOrdersRequest())
+    ->setPageNo(2)
+    ->setPageSize(20);
+$assertSame(2, $orderPageRequest->getPageNo(), 'Admin order queries should support page_no.');
+$orderPage = (new AdminOrderPage())
+    ->setPageNo(2)
+    ->setPageSize(20)
+    ->setCount(123)
+    ->setExtend([(new PageExtend())->setKey('total_stake')->setValue('0')]);
+$assertSame(123, $orderPage->getCount(), 'Admin order pages should expose count.');
+$assertSame('total_stake', $orderPage->getExtend()[0]->getKey(), 'Admin order pages should expose extend entries.');
 $assertTrue(
     method_exists(PredictionAdminClient::class, 'ListOrders')
         && method_exists(PredictionAdminClient::class, 'ListRounds')
         && method_exists(PredictionAdminClient::class, 'GetOrder'),
     'The generated management client should expose the documented query RPCs.'
+);
+$assertTrue(
+    method_exists(PredictionConfigAdminClient::class, 'GetGameplayConfig')
+        && method_exists(PredictionConfigAdminClient::class, 'SaveSymbolConfig'),
+    'The generated unified config client should expose the documented config RPCs.'
 );
 
 $capturedDraftRequest = null;

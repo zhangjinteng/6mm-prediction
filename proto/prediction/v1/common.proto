@@ -146,6 +146,19 @@ message PredictionErrorDetail {
   optional int64 current_template_version = 3;
 }
 
+message Pagination {
+  int32 page_number = 1;
+  int32 page_size = 2;
+  int64 total_count = 3;
+  int64 total_pages = 4;
+}
+
+// PageExtend 是管理后台通用分页扩展项，当前订单和场次列表不返回扩展数据。
+message PageExtend {
+  string key = 1;
+  string value = 2;
+}
+
 message DecimalConstraint {
   string default_value = 1;
   string minimum_value = 2;

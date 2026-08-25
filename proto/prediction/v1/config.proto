@@ -6,7 +6,15 @@ import "prediction/v1/common.proto";
 
 option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
 
-// PredictionPlatformAdmin 由总后台调用，操作人和权限只来自可信 metadata。
+// PredictionConfigAdmin 是平台管理员和商户管理员共用的玩法配置页面入口。
+// 服务根据可信 metadata 中是否存在 x-merchant-id 自动确定配置范围，请求体不得选择商户身份。
+service PredictionConfigAdmin {
+  rpc GetGameplayConfig(GetGameplayConfigRequest) returns (GetGameplayConfigResponse);
+  // SaveSymbolConfig 对应玩法配置页的“保存配置”，成功即发布新版本。
+  rpc SaveSymbolConfig(SaveSymbolConfigRequest) returns (SaveSymbolConfigResponse);
+}
+
+// PredictionPlatformAdmin 是兼容旧调用的管理接口；新玩法配置页面使用 PredictionConfigAdmin。
 service PredictionPlatformAdmin {
   rpc GetPlatformTemplate(GetPlatformTemplateRequest) returns (GetPlatformTemplateResponse);
   // SavePlatformSymbolConfig 对应玩法配置页的“保存配置”，成功即发布新版本。
@@ -24,7 +32,7 @@ service PredictionPlatformAdmin {
   rpc GetFeatureAvailability(GetPlatformFeatureAvailabilityRequest) returns (GetPlatformFeatureAvailabilityResponse);
 }
 
-// PredictionMerchantAdmin 只管理 metadata 中商户自身的稀疏覆盖，请求体不接受 merchant_id。
+// PredictionMerchantAdmin 是兼容旧调用的商户接口；新玩法配置页面使用 PredictionConfigAdmin。
 service PredictionMerchantAdmin {
   rpc GetMerchantConfig(GetOwnMerchantConfigRequest) returns (GetOwnMerchantConfigResponse);
   // SaveMerchantSymbolConfig 对应商户玩法配置页的“保存配置”，成功即发布新商户版本。
@@ -58,6 +66,12 @@ enum ReconciliationJobState {
   RECONCILIATION_JOB_STATE_SUCCEEDED = 3;
   RECONCILIATION_JOB_STATE_PARTIALLY_FAILED = 4;
   RECONCILIATION_JOB_STATE_FAILED = 5;
+}
+
+enum ConfigScope {
+  CONFIG_SCOPE_UNSPECIFIED = 0;
+  CONFIG_SCOPE_PLATFORM = 1;
+  CONFIG_SCOPE_MERCHANT = 2;
 }
 
 enum PredictionFeature {
@@ -165,6 +179,68 @@ message MerchantConfig {
   string effective_version = 5;
   repeated MerchantEffectiveRule rules = 6;
   int64 updated_at_ms = 7;
+}
+
+// GameplayConfigRule 是统一页面规则视图。平台范围没有 merchant_override；商户范围始终带 template_rule。
+message GameplayConfigRule {
+  PlatformRuleTemplate template_rule = 1;
+  optional MerchantRuleOverride merchant_override = 2;
+  EffectiveRule effective_value = 3;
+  repeated ConfigFieldSource value_sources = 4;
+  ConfigValidationStatus validation_status = 5;
+  repeated ForcedConfigAdjustment forced_adjustments = 6;
+}
+
+message GameplayConfig {
+  ConfigScope scope = 1;
+  // merchant_id 只由服务根据可信 metadata 回显，平台范围为空。
+  string merchant_id = 2;
+  int64 template_version = 3;
+  int64 merchant_version = 4;
+  string effective_version = 5;
+  repeated GameplayConfigRule rules = 6;
+  int64 updated_at_ms = 7;
+}
+
+message GetGameplayConfigRequest {
+  GameType game_type = 1;
+  string symbol = 2;
+}
+
+message GetGameplayConfigResponse {
+  GameplayConfig configuration = 1;
+}
+
+message PlatformSymbolConfigInput {
+  // 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
+  optional bool enabled = 1;
+  repeated PlatformRuleTemplate rules = 2;
+}
+
+message MerchantSymbolConfigInput {
+  // 仅控制该币种能否在当前商户的预测玩法页面游玩。
+  optional bool enabled = 1;
+  repeated MerchantRuleOverride overrides = 2;
+}
+
+message SaveSymbolConfigRequest {
+  uint32 schema_version = 1;
+  string client_request_id = 2;
+  string reason = 3;
+  int64 based_on_template_version = 4;
+  int64 based_on_merchant_version = 5;
+  GameType game_type = 6;
+  string symbol = 7;
+  oneof configuration {
+    PlatformSymbolConfigInput platform_template = 8;
+    MerchantSymbolConfigInput merchant_override = 9;
+  }
+}
+
+message SaveSymbolConfigResponse {
+  GameplayConfig configuration = 1;
+  OperationReceipt receipt = 2;
+  optional TemplateReconciliationJob reconciliation_job = 3;
 }
 
 message MerchantConfigDraft {

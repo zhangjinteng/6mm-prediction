@@ -15,13 +15,35 @@ use Google\Protobuf\RepeatedField;
 class AdminOrderPage extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>repeated .prediction.v1.AdminOrderSummary items = 1;</code>
+     * Generated from protobuf field <code>repeated .prediction.v1.AdminOrderSummary lists = 1;</code>
      */
-    private $items;
+    private $lists;
     /**
-     * Generated from protobuf field <code>string next_cursor = 2;</code>
+     * Generated from protobuf field <code>string next_cursor = 2 [deprecated = true];</code>
+     * @deprecated
      */
     protected $next_cursor = '';
+    /**
+     * Generated from protobuf field <code>.prediction.v1.Pagination pagination = 3 [deprecated = true];</code>
+     * @deprecated
+     */
+    protected $pagination = null;
+    /**
+     * Generated from protobuf field <code>int32 page_no = 4;</code>
+     */
+    protected $page_no = 0;
+    /**
+     * Generated from protobuf field <code>int32 page_size = 5;</code>
+     */
+    protected $page_size = 0;
+    /**
+     * Generated from protobuf field <code>int64 count = 6;</code>
+     */
+    protected $count = 0;
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.PageExtend extend = 7;</code>
+     */
+    private $extend;
 
     /**
      * Constructor.
@@ -29,8 +51,13 @@ class AdminOrderPage extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Prediction\V1\AdminOrderSummary[] $items
+     *     @type \Prediction\V1\AdminOrderSummary[] $lists
      *     @type string $next_cursor
+     *     @type \Prediction\V1\Pagination $pagination
+     *     @type int $page_no
+     *     @type int $page_size
+     *     @type int|string $count
+     *     @type \Prediction\V1\PageExtend[] $extend
      * }
      */
     public function __construct($data = NULL) {
@@ -39,45 +66,180 @@ class AdminOrderPage extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>repeated .prediction.v1.AdminOrderSummary items = 1;</code>
+     * Generated from protobuf field <code>repeated .prediction.v1.AdminOrderSummary lists = 1;</code>
      * @return RepeatedField<\Prediction\V1\AdminOrderSummary>
      */
-    public function getItems()
+    public function getLists()
     {
-        return $this->items;
+        return $this->lists;
     }
 
     /**
-     * Generated from protobuf field <code>repeated .prediction.v1.AdminOrderSummary items = 1;</code>
+     * Generated from protobuf field <code>repeated .prediction.v1.AdminOrderSummary lists = 1;</code>
      * @param \Prediction\V1\AdminOrderSummary[] $var
      * @return $this
      */
-    public function setItems(array|RepeatedField $var)
+    public function setLists(array|RepeatedField $var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\AdminOrderSummary::class);
-        $this->items = $arr;
+        $this->lists = $arr;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string next_cursor = 2;</code>
+     * Generated from protobuf field <code>string next_cursor = 2 [deprecated = true];</code>
      * @return string
+     * @deprecated
      */
     public function getNextCursor()
     {
+        if ($this->next_cursor !== '') {
+            @trigger_error('next_cursor is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->next_cursor;
     }
 
     /**
-     * Generated from protobuf field <code>string next_cursor = 2;</code>
+     * Generated from protobuf field <code>string next_cursor = 2 [deprecated = true];</code>
      * @param string $var
      * @return $this
+     * @deprecated
      */
     public function setNextCursor(string $var)
     {
+        @trigger_error('next_cursor is deprecated.', E_USER_DEPRECATED);
         GPBUtil::checkString($var, true);
         $this->next_cursor = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.Pagination pagination = 3 [deprecated = true];</code>
+     * @return \Prediction\V1\Pagination|null
+     * @deprecated
+     */
+    public function getPagination()
+    {
+        if (isset($this->pagination)) {
+            @trigger_error('pagination is deprecated.', E_USER_DEPRECATED);
+        }
+        return $this->pagination;
+    }
+
+    public function hasPagination()
+    {
+        if (isset($this->pagination)) {
+            @trigger_error('pagination is deprecated.', E_USER_DEPRECATED);
+        }
+        return isset($this->pagination);
+    }
+
+    public function clearPagination()
+    {
+        @trigger_error('pagination is deprecated.', E_USER_DEPRECATED);
+        unset($this->pagination);
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.Pagination pagination = 3 [deprecated = true];</code>
+     * @param \Prediction\V1\Pagination $var
+     * @return $this
+     * @deprecated
+     */
+    public function setPagination(\Prediction\V1\Pagination|null $var)
+    {
+        @trigger_error('pagination is deprecated.', E_USER_DEPRECATED);
+        $this->pagination = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 page_no = 4;</code>
+     * @return int
+     */
+    public function getPageNo()
+    {
+        return $this->page_no;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 page_no = 4;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setPageNo(int $var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->page_no = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 page_size = 5;</code>
+     * @return int
+     */
+    public function getPageSize()
+    {
+        return $this->page_size;
+    }
+
+    /**
+     * Generated from protobuf field <code>int32 page_size = 5;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setPageSize(int $var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->page_size = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 count = 6;</code>
+     * @return int|string
+     */
+    public function getCount()
+    {
+        return $this->count;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 count = 6;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setCount(int|string $var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->count = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.PageExtend extend = 7;</code>
+     * @return RepeatedField<\Prediction\V1\PageExtend>
+     */
+    public function getExtend()
+    {
+        return $this->extend;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.PageExtend extend = 7;</code>
+     * @param \Prediction\V1\PageExtend[] $var
+     * @return $this
+     */
+    public function setExtend(array|RepeatedField $var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\PageExtend::class);
+        $this->extend = $arr;
 
         return $this;
     }

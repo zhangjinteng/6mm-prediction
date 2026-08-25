@@ -58,9 +58,15 @@ gRPC status code and details.
 
 Canonical `common.proto`, `config.proto`, and `admin.proto` files are under
 `proto/prediction/v1`. Generated PHP messages and clients for
-`PredictionPlatformAdmin`, `PredictionMerchantAdmin`, and `PredictionAdmin`
-are committed under `generated`, so production deployments do not need
-`protoc` or `grpc_php_plugin`.
+`PredictionConfigAdmin`, `PredictionPlatformAdmin`, `PredictionMerchantAdmin`,
+and `PredictionAdmin` are committed under `generated`, so production
+deployments do not need `protoc` or `grpc_php_plugin`.
+
+The unified `PredictionConfigAdmin` service exposes the current gameplay
+configuration page RPCs:
+
+- `GetGameplayConfig`
+- `SaveSymbolConfig`
 
 Regenerate after updating the protocol files:
 

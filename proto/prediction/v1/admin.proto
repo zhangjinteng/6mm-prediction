@@ -73,7 +73,7 @@ message ListAdminOrdersRequest {
   int64 from_ms = 8;
   int64 to_ms = 9;
   int32 page_size = 10;
-  string cursor = 11;
+  string cursor = 11 [deprecated = true];
   string merchant_id = 12;
   AdminOrderView view = 13;
   string round_id = 14;
@@ -81,11 +81,17 @@ message ListAdminOrdersRequest {
   Direction direction = 16;
   AdminOrderSortField sort_field = 17;
   SortDirection sort_direction = 18;
+  int32 page_no = 19;
 }
 
 message AdminOrderPage {
-  repeated AdminOrderSummary items = 1;
-  string next_cursor = 2;
+  repeated AdminOrderSummary lists = 1;
+  string next_cursor = 2 [deprecated = true];
+  Pagination pagination = 3 [deprecated = true];
+  int32 page_no = 4;
+  int32 page_size = 5;
+  int64 count = 6;
+  repeated PageExtend extend = 7;
 }
 
 message GetAdminOrderRequest {
@@ -100,17 +106,23 @@ message ListAdminRoundsRequest {
   int64 from_ms = 4;
   int64 to_ms = 5;
   int32 page_size = 6;
-  string cursor = 7;
+  string cursor = 7 [deprecated = true];
   string merchant_id = 8;
   string round_id = 9;
   int64 duration_seconds = 10;
   AdminRoundSortField sort_field = 11;
   SortDirection sort_direction = 12;
+  int32 page_no = 13;
 }
 
 message AdminRoundPage {
-  repeated AdminRound items = 1;
-  string next_cursor = 2;
+  repeated AdminRound lists = 1;
+  string next_cursor = 2 [deprecated = true];
+  Pagination pagination = 3 [deprecated = true];
+  int32 page_no = 4;
+  int32 page_size = 5;
+  int64 count = 6;
+  repeated PageExtend extend = 7;
 }
 
 message ListExceptionalTasksRequest {
