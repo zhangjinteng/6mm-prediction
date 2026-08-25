@@ -6,15 +6,20 @@ namespace SixMm\Prediction\PlatformTemplates;
 
 use Grpc\ChannelCredentials;
 use Prediction\V1\ConfigVersionState;
+use Prediction\V1\DecimalConfigField;
 use Prediction\V1\DecimalConstraint;
 use Prediction\V1\GameType;
-use Prediction\V1\GetPlatformTemplateRequest;
-use Prediction\V1\GetPlatformTemplateResponse;
+use Prediction\V1\GameplayConfig;
+use Prediction\V1\GameplayConfigRule;
+use Prediction\V1\GetGameplayConfigRequest;
+use Prediction\V1\GetGameplayConfigResponse;
+use Prediction\V1\IntegerConfigField;
 use Prediction\V1\IntegerConstraint;
 use Prediction\V1\OperationReceipt;
 use Prediction\V1\PlatformRuleTemplate;
 use Prediction\V1\PlatformTemplateDraft;
 use Prediction\V1\PlatformTemplateVersion;
+use Prediction\V1\PredictionConfigAdminClient;
 use Prediction\V1\PredictionPlatformAdminClient;
 use Prediction\V1\PriceRule;
 use Prediction\V1\PublishPlatformTemplateRequest;
@@ -63,18 +68,16 @@ final class PlatformTemplateClient
     /** @return array{draft: array<string, mixed>|null, current: array<string, mixed>} */
     public function getTemplate(string $operatorId, int $version = 0, bool $includeDraft = true): array
     {
-        $request = (new GetPlatformTemplateRequest())
-            ->setVersion($version)
-            ->setIncludeDraft($includeDraft);
-        $response = $this->invoke('GetPlatformTemplate', $request, $operatorId, self::CAPABILITY_READ);
+        $request = new GetGameplayConfigRequest();
+        $response = $this->invoke('GetGameplayConfig', $request, $operatorId, self::CAPABILITY_READ);
 
-        if (!$response instanceof GetPlatformTemplateResponse || !$response->hasCurrent()) {
-            throw new PredictionRpcException('GetPlatformTemplate', 13, 'missing current template');
+        if (!$response instanceof GetGameplayConfigResponse || !$response->hasConfiguration()) {
+            throw new PredictionRpcException('GetGameplayConfig', 13, 'missing gameplay configuration');
         }
 
         return [
-            'draft' => $response->hasDraft() ? $this->mapDraft($response->getDraft()) : null,
-            'current' => $this->mapVersion($response->getCurrent()),
+            'draft' => null,
+            'current' => $this->mapGameplayConfiguration($response->getConfiguration()),
         ];
     }
 
@@ -186,15 +189,26 @@ final class PlatformTemplateClient
         $credentials = $this->configuration->tls
             ? ChannelCredentials::createSsl()
             : ChannelCredentials::createInsecure();
-        $client = new PredictionPlatformAdminClient(
+        $platformClient = new PredictionPlatformAdminClient(
+            $this->configuration->target,
+            ['credentials' => $credentials]
+        );
+        $configClient = new PredictionConfigAdminClient(
             $this->configuration->target,
             ['credentials' => $credentials]
         );
 
-        return function (string $method, object $request, string $operatorId, string $_capability) use ($client): array {
+        return function (
+            string $method,
+            object $request,
+            string $operatorId,
+            string $_capability
+        ) use ($configClient, $platformClient): array {
             if ($this->configuration->token === '') {
                 throw new PredictionRpcException($method, 16, 'authentication token is not configured');
             }
+
+            $client = $method === 'GetGameplayConfig' ? $configClient : $platformClient;
 
             return $client->{$method}(
                 $request,
@@ -250,6 +264,94 @@ final class PlatformTemplateClient
             ->setMinimumValue((int) $constraint['minimum_value'])
             ->setMaximumValue((int) $constraint['maximum_value'])
             ->setMerchantEditable((bool) $constraint['merchant_editable']);
+    }
+
+    /** @return array<string, mixed> */
+    private function mapGameplayConfiguration(GameplayConfig $configuration): array
+    {
+        $version = (int) $configuration->getTemplateVersion();
+        $updatedAt = (int) $configuration->getUpdatedAtMs();
+        $versionId = trim($configuration->getEffectiveVersion());
+
+        return [
+            'version_id' => $versionId !== '' ? $versionId : "template-{$version}",
+            'version' => $version,
+            'state' => 'ACTIVE',
+            'rules' => $this->mapGameplayRules($configuration->getRules()),
+            'created_at_ms' => $updatedAt,
+            'published_at_ms' => $updatedAt,
+            'activated_at_ms' => $updatedAt > 0 ? $updatedAt : null,
+        ];
+    }
+
+    /** @return list<array<string, mixed>> */
+    private function mapGameplayRules(iterable $rules): array
+    {
+        $result = [];
+        foreach ($rules as $rule) {
+            $result[] = $this->mapGameplayRule($rule);
+        }
+
+        return $result;
+    }
+
+    /** @return array<string, mixed> */
+    private function mapGameplayRule(GameplayConfigRule $rule): array
+    {
+        return [
+            'game_type' => $this->gameTypeName($rule->getGameType()),
+            'symbol' => $rule->getSymbol(),
+            'duration_seconds' => (int) $rule->getDurationSeconds(),
+            'enabled_by_default' => $rule->getEnabledByDefault(),
+            'bet_open_seconds' => $rule->hasBetOpenSeconds()
+                ? $this->mapIntegerConfigField($rule->getBetOpenSeconds())
+                : null,
+            'target_payout_rate' => $rule->hasTargetPayoutRate()
+                ? $this->mapDecimalConfigField($rule->getTargetPayoutRate())
+                : null,
+            'minimum_odds' => $rule->hasMinimumOdds()
+                ? $this->mapDecimalConfigField($rule->getMinimumOdds())
+                : null,
+            'maximum_odds' => $rule->hasMaximumOdds()
+                ? $this->mapDecimalConfigField($rule->getMaximumOdds())
+                : null,
+            'fixed_odds' => $rule->hasFixedOdds()
+                ? $this->mapDecimalConfigField($rule->getFixedOdds())
+                : null,
+            'minimum_stake' => $rule->hasMinimumStake()
+                ? $this->mapDecimalConfigField($rule->getMinimumStake())
+                : null,
+            'maximum_stake' => $rule->hasMaximumStake()
+                ? $this->mapDecimalConfigField($rule->getMaximumStake())
+                : null,
+            'settlement_display_seconds' => (int) $rule->getSettlementDisplaySeconds(),
+            'price_rule' => $rule->hasPriceRule() ? [
+                'max_age_milliseconds' => (int) $rule->getPriceRule()->getMaxAgeMilliseconds(),
+                'late_arrival_grace_milliseconds' => (int) $rule->getPriceRule()->getLateArrivalGraceMilliseconds(),
+            ] : null,
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    private function mapDecimalConfigField(DecimalConfigField $field): array
+    {
+        return [
+            'default_value' => $field->getDefaultValue(),
+            'minimum_value' => $field->getMinimumValue(),
+            'maximum_value' => $field->getMaximumValue(),
+            'merchant_editable' => $field->getMerchantEditable(),
+        ];
+    }
+
+    /** @return array<string, mixed> */
+    private function mapIntegerConfigField(IntegerConfigField $field): array
+    {
+        return [
+            'default_value' => (int) $field->getDefaultValue(),
+            'minimum_value' => (int) $field->getMinimumValue(),
+            'maximum_value' => (int) $field->getMaximumValue(),
+            'merchant_editable' => $field->getMerchantEditable(),
+        ];
     }
 
     /** @return array<string, mixed> */

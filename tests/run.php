@@ -11,7 +11,7 @@ use Prediction\V1\GameType;
 use Prediction\V1\GameplayConfig;
 use Prediction\V1\GameplayConfigRule;
 use Prediction\V1\GetGameplayConfigRequest;
-use Prediction\V1\GetPlatformTemplateResponse;
+use Prediction\V1\GetGameplayConfigResponse;
 use Prediction\V1\IntegerConfigField;
 use Prediction\V1\IntegerConstraint;
 use Prediction\V1\ListAdminOrdersRequest;
@@ -153,39 +153,6 @@ $highLowData = static fn (): array => [
 
 $configuration = new ClientConfiguration('127.0.0.1:18081', 'test-token', 1000000, false);
 
-$response = (new GetPlatformTemplateResponse())
-    ->setDraft((new PlatformTemplateDraft())
-        ->setDraftId('draft-1')
-        ->setBasedOnVersion(7)
-        ->setRules([$upDownRule(), $highLowRule()]))
-    ->setCurrent((new PlatformTemplateVersion())
-        ->setVersionId('version-7')
-        ->setVersion(7)
-        ->setRules([$upDownRule(), $highLowRule()]));
-$getClient = new PlatformTemplateClient(
-    $configuration,
-    static function (string $method, object $request, string $operatorId, string $capability) use (
-        $response,
-        $assertSame
-    ): array {
-        $assertSame('GetPlatformTemplate', $method, 'The expected RPC method should be invoked.');
-        $assertSame('operator-1', $operatorId, 'The operator ID should be forwarded.');
-        $assertSame(false, $request->getIncludeDraft(), 'Current template queries should not request legacy drafts.');
-        $assertSame(
-            PlatformTemplateClient::CAPABILITY_READ,
-            $capability,
-            'The read capability should be forwarded.'
-        );
-
-        return [$response, (object) ['code' => 0, 'details' => '']];
-    }
-);
-$template = $getClient->getTemplate('operator-1', 0, false);
-$assertSame('UP_DOWN', $template['draft']['rules'][0]['game_type'], 'UP_DOWN rules should be mapped.');
-$assertSame(null, $template['draft']['rules'][0]['fixed_odds'], 'Unused UP_DOWN constraints must stay sparse.');
-$assertSame('HIGH_LOW', $template['draft']['rules'][1]['game_type'], 'HIGH_LOW rules should be mapped.');
-$assertSame(null, $template['draft']['rules'][1]['bet_open_seconds'], 'Unused HIGH_LOW constraints must stay sparse.');
-
 $capturedSymbolRequest = null;
 $saveSymbolClient = new PlatformTemplateClient(
     $configuration,
@@ -297,6 +264,38 @@ $assertSame(50, $configurationView->getRules()[0]->getBetOpenSeconds()->getTempl
 $assertTrue($configurationView->getRules()[0]->getBetOpenSeconds()->getOverridden(), 'Integer config fields should expose override state.');
 $assertSame('1.80', $configurationView->getRules()[0]->getFixedOdds()->getTemplateValue(), 'Decimal config fields should expose template value.');
 $assertTrue(!$configurationView->getRules()[0]->getMinimumStake()->getOverridden(), 'Decimal config fields should expose inherited state.');
+$getClient = new PlatformTemplateClient(
+    $configuration,
+    static function (string $method, object $request, string $operatorId, string $capability) use (
+        $configurationView,
+        $assertSame
+    ): array {
+        $assertSame('GetGameplayConfig', $method, 'The unified gameplay RPC should be invoked.');
+        $assertSame('operator-1', $operatorId, 'The operator ID should be forwarded.');
+        $assertSame(
+            GameType::GAME_TYPE_UNSPECIFIED,
+            $request->getGameType(),
+            'Unfiltered gameplay queries should not set a game type.'
+        );
+        $assertSame('', $request->getSymbol(), 'Unfiltered gameplay queries should not set a symbol.');
+        $assertSame(
+            PlatformTemplateClient::CAPABILITY_READ,
+            $capability,
+            'The read capability should be forwarded.'
+        );
+
+        return [
+            (new GetGameplayConfigResponse())->setConfiguration($configurationView),
+            (object) ['code' => 0, 'details' => ''],
+        ];
+    }
+);
+$template = $getClient->getTemplate('operator-1');
+$assertSame(null, $template['draft'], 'Unified gameplay queries should not expose legacy drafts.');
+$assertSame(8, $template['current']['version'], 'Template versions should be mapped from gameplay configuration.');
+$assertSame('8:0', $template['current']['version_id'], 'Effective versions should become compatibility IDs.');
+$assertSame('HIGH_LOW', $template['current']['rules'][0]['game_type'], 'Gameplay rules should be mapped.');
+$assertSame('1.80', $template['current']['rules'][0]['fixed_odds']['default_value'], 'Config fields should map to template constraints.');
 $orderPageRequest = (new ListAdminOrdersRequest())
     ->setPageNo(2)
     ->setPageSize(20);
