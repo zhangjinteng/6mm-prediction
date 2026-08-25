@@ -38,9 +38,10 @@ $template = $client->getTemplate('operator-id');
 ```
 
 The platform-template client reads the current gameplay configuration through
-`PredictionConfigAdmin.GetGameplayConfig`. The request intentionally leaves
-`game_type` and `symbol` unset so the service returns every gameplay rule. The
-result is mapped to the existing `current.rules` shape for host compatibility.
+`PredictionConfigAdmin.GetGameplayConfig`. Use `getTemplateByGameType()` to
+forward `UP_DOWN` or `HIGH_LOW` while leaving `symbol` unset; the legacy
+`getTemplate()` method keeps the unfiltered read for compatibility. The result
+is mapped to the existing `current.rules` shape for host compatibility.
 The client also retains the existing platform mutation workflows:
 
 - `getTemplate()`

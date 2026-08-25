@@ -296,6 +296,24 @@ $assertSame(8, $template['current']['version'], 'Template versions should be map
 $assertSame('8:0', $template['current']['version_id'], 'Effective versions should become compatibility IDs.');
 $assertSame('HIGH_LOW', $template['current']['rules'][0]['game_type'], 'Gameplay rules should be mapped.');
 $assertSame('1.70', $template['current']['rules'][0]['fixed_odds']['default_value'], 'Config fields should map the current effective value.');
+$filteredClient = new PlatformTemplateClient(
+    $configuration,
+    static function (string $method, object $request) use ($configurationView, $assertSame): array {
+        $assertSame('GetGameplayConfig', $method, 'Filtered reads should use the unified gameplay RPC.');
+        $assertSame(
+            GameType::GAME_TYPE_HIGH_LOW,
+            $request->getGameType(),
+            'Filtered reads should forward the requested gameplay type.'
+        );
+        $assertSame('', $request->getSymbol(), 'Gameplay reads should continue to leave symbol unset.');
+
+        return [
+            (new GetGameplayConfigResponse())->setConfiguration($configurationView),
+            (object) ['code' => 0, 'details' => ''],
+        ];
+    }
+);
+$filteredClient->getTemplateByGameType('operator-1', 'HIGH_LOW');
 $orderPageRequest = (new ListAdminOrdersRequest())
     ->setPageNo(2)
     ->setPageSize(20);

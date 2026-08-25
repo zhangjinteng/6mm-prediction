@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace SixMm\Prediction\PlatformTemplates;
 
 use Grpc\ChannelCredentials;
+use InvalidArgumentException;
 use Prediction\V1\ConfigVersionState;
 use Prediction\V1\DecimalConfigField;
 use Prediction\V1\DecimalConstraint;
@@ -68,7 +69,27 @@ final class PlatformTemplateClient
     /** @return array{draft: array<string, mixed>|null, current: array<string, mixed>} */
     public function getTemplate(string $operatorId, int $version = 0, bool $includeDraft = true): array
     {
+        return $this->getGameplayTemplate($operatorId);
+    }
+
+    /** @return array{draft: array<string, mixed>|null, current: array<string, mixed>} */
+    public function getTemplateByGameType(string $operatorId, string $gameType): array
+    {
+        $gameTypeValue = $this->gameTypeValue($gameType);
+        if ($gameTypeValue === GameType::GAME_TYPE_UNSPECIFIED) {
+            throw new InvalidArgumentException("Unsupported prediction game type: {$gameType}");
+        }
+
+        return $this->getGameplayTemplate($operatorId, $gameTypeValue);
+    }
+
+    /** @return array{draft: array<string, mixed>|null, current: array<string, mixed>} */
+    private function getGameplayTemplate(string $operatorId, ?int $gameType = null): array
+    {
         $request = new GetGameplayConfigRequest();
+        if ($gameType !== null) {
+            $request->setGameType($gameType);
+        }
         $response = $this->invoke('GetGameplayConfig', $request, $operatorId, self::CAPABILITY_READ);
 
         if (!$response instanceof GetGameplayConfigResponse || !$response->hasConfiguration()) {
