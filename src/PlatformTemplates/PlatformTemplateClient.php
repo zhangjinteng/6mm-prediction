@@ -323,6 +323,7 @@ final class PlatformTemplateClient
             'game_type' => $this->gameTypeName($rule->getGameType()),
             'symbol' => $rule->getSymbol(),
             'duration_seconds' => (int) $rule->getDurationSeconds(),
+            'enabled' => $rule->getEnabled(),
             'enabled_by_default' => $rule->getEnabledByDefault(),
             'bet_open_seconds' => $rule->hasBetOpenSeconds()
                 ? $this->mapIntegerConfigField($rule->getBetOpenSeconds())

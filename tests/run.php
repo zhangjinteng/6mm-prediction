@@ -295,6 +295,7 @@ $assertSame(null, $template['draft'], 'Unified gameplay queries should not expos
 $assertSame(8, $template['current']['version'], 'Template versions should be mapped from gameplay configuration.');
 $assertSame('8:0', $template['current']['version_id'], 'Effective versions should become compatibility IDs.');
 $assertSame('HIGH_LOW', $template['current']['rules'][0]['game_type'], 'Gameplay rules should be mapped.');
+$assertTrue($template['current']['rules'][0]['enabled'], 'Gameplay rules should expose the RPC enabled state.');
 $assertSame('1.70', $template['current']['rules'][0]['fixed_odds']['default_value'], 'Config fields should map the current effective value.');
 $filteredClient = new PlatformTemplateClient(
     $configuration,
