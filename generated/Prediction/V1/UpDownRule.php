@@ -15,10 +15,14 @@ use Google\Protobuf\RepeatedField;
 class UpDownRule extends \Google\Protobuf\Internal\Message
 {
     /**
+     * UP_DOWN 固定为 30 秒下注开放；历史快照仍可能携带旧值。
+     *
      * Generated from protobuf field <code>int64 bet_duration_seconds = 1;</code>
      */
     protected $bet_duration_seconds = 0;
     /**
+     * 页面房间时长；新配置固定为 5/10/15/30/60 秒。
+     *
      * Generated from protobuf field <code>int64 observe_duration_seconds = 2;</code>
      */
     protected $observe_duration_seconds = 0;
@@ -42,7 +46,9 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type int|string $bet_duration_seconds
+     *           UP_DOWN 固定为 30 秒下注开放；历史快照仍可能携带旧值。
      *     @type int|string $observe_duration_seconds
+     *           页面房间时长；新配置固定为 5/10/15/30/60 秒。
      *     @type int|string $settlement_display_seconds
      *     @type string $pool_share
      *     @type \Prediction\V1\Room[] $rooms
@@ -54,6 +60,8 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * UP_DOWN 固定为 30 秒下注开放；历史快照仍可能携带旧值。
+     *
      * Generated from protobuf field <code>int64 bet_duration_seconds = 1;</code>
      * @return int|string
      */
@@ -63,11 +71,13 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * UP_DOWN 固定为 30 秒下注开放；历史快照仍可能携带旧值。
+     *
      * Generated from protobuf field <code>int64 bet_duration_seconds = 1;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setBetDurationSeconds(int|string $var)
+    public function setBetDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->bet_duration_seconds = $var;
@@ -76,6 +86,8 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 页面房间时长；新配置固定为 5/10/15/30/60 秒。
+     *
      * Generated from protobuf field <code>int64 observe_duration_seconds = 2;</code>
      * @return int|string
      */
@@ -85,11 +97,13 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 页面房间时长；新配置固定为 5/10/15/30/60 秒。
+     *
      * Generated from protobuf field <code>int64 observe_duration_seconds = 2;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setObserveDurationSeconds(int|string $var)
+    public function setObserveDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->observe_duration_seconds = $var;
@@ -111,7 +125,7 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setSettlementDisplaySeconds(int|string $var)
+    public function setSettlementDisplaySeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->settlement_display_seconds = $var;
@@ -133,9 +147,9 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setPoolShare(string $var)
+    public function setPoolShare($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->pool_share = $var;
 
         return $this;
@@ -155,7 +169,7 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\Room[] $var
      * @return $this
      */
-    public function setRooms(array|RepeatedField $var)
+    public function setRooms($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\Room::class);
         $this->rooms = $arr;
@@ -164,4 +178,3 @@ class UpDownRule extends \Google\Protobuf\Internal\Message
     }
 
 }
-

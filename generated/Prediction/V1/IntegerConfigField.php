@@ -10,7 +10,7 @@ use Google\Protobuf\Internal\GPBUtil;
 use Google\Protobuf\RepeatedField;
 
 /**
- * IntegerConfigField 让平台和商户页面使用同一字段结构。
+ * IntegerConfigField 让平台和商户保存回执使用同一字段结构。
  * value 是当前范围的生效值，template_value 是商户不可突破的平台模板值。
  *
  * Generated from protobuf message <code>prediction.v1.IntegerConfigField</code>
@@ -38,9 +38,9 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      */
     protected $maximum_value = 0;
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 6;</code>
+     * Generated from protobuf field <code>bool agent_editable = 6;</code>
      */
-    protected $merchant_editable = false;
+    protected $agent_editable = false;
     /**
      * Generated from protobuf field <code>bool overridden = 7;</code>
      */
@@ -57,7 +57,7 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      *     @type int|string $default_value
      *     @type int|string $minimum_value
      *     @type int|string $maximum_value
-     *     @type bool $merchant_editable
+     *     @type bool $agent_editable
      *     @type bool $overridden
      * }
      */
@@ -80,7 +80,7 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setValue(int|string $var)
+    public function setValue($var)
     {
         GPBUtil::checkInt64($var);
         $this->value = $var;
@@ -102,7 +102,7 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setTemplateValue(int|string $var)
+    public function setTemplateValue($var)
     {
         GPBUtil::checkInt64($var);
         $this->template_value = $var;
@@ -124,7 +124,7 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setDefaultValue(int|string $var)
+    public function setDefaultValue($var)
     {
         GPBUtil::checkInt64($var);
         $this->default_value = $var;
@@ -146,7 +146,7 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setMinimumValue(int|string $var)
+    public function setMinimumValue($var)
     {
         GPBUtil::checkInt64($var);
         $this->minimum_value = $var;
@@ -168,7 +168,7 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setMaximumValue(int|string $var)
+    public function setMaximumValue($var)
     {
         GPBUtil::checkInt64($var);
         $this->maximum_value = $var;
@@ -177,22 +177,23 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 6;</code>
+     * Generated from protobuf field <code>bool agent_editable = 6;</code>
      * @return bool
      */
-    public function getMerchantEditable()
+    public function getAgentEditable()
     {
-        return $this->merchant_editable;
+        return $this->agent_editable;
     }
 
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 6;</code>
+     * Generated from protobuf field <code>bool agent_editable = 6;</code>
      * @param bool $var
      * @return $this
      */
-    public function setMerchantEditable(bool $var)
+    public function setAgentEditable($var)
     {
-        $this->merchant_editable = $var;
+        GPBUtil::checkBool($var);
+        $this->agent_editable = $var;
 
         return $this;
     }
@@ -211,12 +212,12 @@ class IntegerConfigField extends \Google\Protobuf\Internal\Message
      * @param bool $var
      * @return $this
      */
-    public function setOverridden(bool $var)
+    public function setOverridden($var)
     {
+        GPBUtil::checkBool($var);
         $this->overridden = $var;
 
         return $this;
     }
 
 }
-

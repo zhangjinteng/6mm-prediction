@@ -15,10 +15,6 @@ use Google\Protobuf\RepeatedField;
 class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
 {
     /**
-     * Generated from protobuf field <code>uint32 schema_version = 1;</code>
-     */
-    protected $schema_version = 0;
-    /**
      * Generated from protobuf field <code>string client_request_id = 2;</code>
      */
     protected $client_request_id = '';
@@ -31,9 +27,9 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
      */
     protected $based_on_template_version = 0;
     /**
-     * Generated from protobuf field <code>int64 based_on_merchant_version = 5;</code>
+     * Generated from protobuf field <code>int64 based_on_agent_version = 5;</code>
      */
-    protected $based_on_merchant_version = 0;
+    protected $based_on_agent_version = 0;
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 6;</code>
      */
@@ -50,42 +46,19 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type int $schema_version
      *     @type string $client_request_id
      *     @type string $reason
      *     @type int|string $based_on_template_version
-     *     @type int|string $based_on_merchant_version
+     *     @type int|string $based_on_agent_version
      *     @type int $game_type
      *     @type string $symbol
      *     @type \Prediction\V1\PlatformSymbolConfigInput $platform_template
-     *     @type \Prediction\V1\MerchantSymbolConfigInput $merchant_override
+     *     @type \Prediction\V1\AgentSymbolConfigInput $agent_override
      * }
      */
     public function __construct($data = NULL) {
         \GPBMetadata\Prediction\V1\Config::initOnce();
         parent::__construct($data);
-    }
-
-    /**
-     * Generated from protobuf field <code>uint32 schema_version = 1;</code>
-     * @return int
-     */
-    public function getSchemaVersion()
-    {
-        return $this->schema_version;
-    }
-
-    /**
-     * Generated from protobuf field <code>uint32 schema_version = 1;</code>
-     * @param int $var
-     * @return $this
-     */
-    public function setSchemaVersion(int $var)
-    {
-        GPBUtil::checkUint32($var);
-        $this->schema_version = $var;
-
-        return $this;
     }
 
     /**
@@ -102,9 +75,9 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setClientRequestId(string $var)
+    public function setClientRequestId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->client_request_id = $var;
 
         return $this;
@@ -124,9 +97,9 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setReason(string $var)
+    public function setReason($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->reason = $var;
 
         return $this;
@@ -146,7 +119,7 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setBasedOnTemplateVersion(int|string $var)
+    public function setBasedOnTemplateVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->based_on_template_version = $var;
@@ -155,30 +128,30 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 based_on_merchant_version = 5;</code>
+     * Generated from protobuf field <code>int64 based_on_agent_version = 5;</code>
      * @return int|string
      */
-    public function getBasedOnMerchantVersion()
+    public function getBasedOnAgentVersion()
     {
-        return $this->based_on_merchant_version;
+        return $this->based_on_agent_version;
     }
 
     /**
-     * Generated from protobuf field <code>int64 based_on_merchant_version = 5;</code>
+     * Generated from protobuf field <code>int64 based_on_agent_version = 5;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setBasedOnMerchantVersion(int|string $var)
+    public function setBasedOnAgentVersion($var)
     {
         GPBUtil::checkInt64($var);
-        $this->based_on_merchant_version = $var;
+        $this->based_on_agent_version = $var;
 
         return $this;
     }
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 6;</code>
-     * @return int one of the values in {@see \Prediction\V1\GameType}
+     * @return int
      */
     public function getGameType()
     {
@@ -187,10 +160,10 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 6;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\GameType}
+     * @param int $var
      * @return $this
      */
-    public function setGameType(int $var)
+    public function setGameType($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\GameType::class);
         $this->game_type = $var;
@@ -212,9 +185,9 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSymbol(string $var)
+    public function setSymbol($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->symbol = $var;
 
         return $this;
@@ -239,34 +212,36 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PlatformSymbolConfigInput $var
      * @return $this
      */
-    public function setPlatformTemplate(\Prediction\V1\PlatformSymbolConfigInput|null $var)
+    public function setPlatformTemplate($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\PlatformSymbolConfigInput::class);
         $this->writeOneof(8, $var);
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.MerchantSymbolConfigInput merchant_override = 9;</code>
-     * @return \Prediction\V1\MerchantSymbolConfigInput|null
+     * Generated from protobuf field <code>.prediction.v1.AgentSymbolConfigInput agent_override = 9;</code>
+     * @return \Prediction\V1\AgentSymbolConfigInput|null
      */
-    public function getMerchantOverride()
+    public function getAgentOverride()
     {
         return $this->readOneof(9);
     }
 
-    public function hasMerchantOverride()
+    public function hasAgentOverride()
     {
         return $this->hasOneof(9);
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.MerchantSymbolConfigInput merchant_override = 9;</code>
-     * @param \Prediction\V1\MerchantSymbolConfigInput $var
+     * Generated from protobuf field <code>.prediction.v1.AgentSymbolConfigInput agent_override = 9;</code>
+     * @param \Prediction\V1\AgentSymbolConfigInput $var
      * @return $this
      */
-    public function setMerchantOverride(\Prediction\V1\MerchantSymbolConfigInput|null $var)
+    public function setAgentOverride($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\AgentSymbolConfigInput::class);
         $this->writeOneof(9, $var);
 
         return $this;
@@ -281,4 +256,3 @@ class SaveSymbolConfigRequest extends \Google\Protobuf\Internal\Message
     }
 
 }
-

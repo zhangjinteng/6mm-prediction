@@ -54,6 +54,10 @@ class ErrorCode
      * Generated from protobuf enum <code>ERROR_CODE_INTERNAL = 9;</code>
      */
     const ERROR_CODE_INTERNAL = 9;
+    /**
+     * Generated from protobuf enum <code>ERROR_CODE_MARK_PRICE_UNAVAILABLE = 10;</code>
+     */
+    const ERROR_CODE_MARK_PRICE_UNAVAILABLE = 10;
 
     private static $valueToName = [
         self::ERROR_CODE_UNSPECIFIED => 'ERROR_CODE_UNSPECIFIED',
@@ -66,6 +70,7 @@ class ErrorCode
         self::ERROR_CODE_UNAVAILABLE => 'ERROR_CODE_UNAVAILABLE',
         self::ERROR_CODE_CANCELED => 'ERROR_CODE_CANCELED',
         self::ERROR_CODE_INTERNAL => 'ERROR_CODE_INTERNAL',
+        self::ERROR_CODE_MARK_PRICE_UNAVAILABLE => 'ERROR_CODE_MARK_PRICE_UNAVAILABLE',
     ];
 
     public static function name($value)
@@ -88,4 +93,3 @@ class ErrorCode
         return constant($const);
     }
 }
-

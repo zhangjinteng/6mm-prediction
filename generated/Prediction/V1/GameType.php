@@ -51,4 +51,3 @@ class GameType
         return constant($const);
     }
 }
-

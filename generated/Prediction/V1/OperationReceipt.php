@@ -70,6 +70,14 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>int64 completed_at_ms = 14;</code>
      */
     protected $completed_at_ms = 0;
+    /**
+     * Generated from protobuf field <code>string source_service = 15;</code>
+     */
+    protected $source_service = '';
+    /**
+     * Generated from protobuf field <code>string trace_id = 16;</code>
+     */
+    protected $trace_id = '';
 
     /**
      * Constructor.
@@ -91,6 +99,8 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      *     @type string $error_code
      *     @type int|string $created_at_ms
      *     @type int|string $completed_at_ms
+     *     @type string $source_service
+     *     @type string $trace_id
      * }
      */
     public function __construct($data = NULL) {
@@ -112,9 +122,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setOperationId(string $var)
+    public function setOperationId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->operation_id = $var;
 
         return $this;
@@ -134,9 +144,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setOperatorId(string $var)
+    public function setOperatorId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->operator_id = $var;
 
         return $this;
@@ -156,9 +166,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setClientRequestId(string $var)
+    public function setClientRequestId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->client_request_id = $var;
 
         return $this;
@@ -178,9 +188,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setCapability(string $var)
+    public function setCapability($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->capability = $var;
 
         return $this;
@@ -188,7 +198,7 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.AdminAction action = 5;</code>
-     * @return int one of the values in {@see \Prediction\V1\AdminAction}
+     * @return int
      */
     public function getAction()
     {
@@ -197,10 +207,10 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.AdminAction action = 5;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\AdminAction}
+     * @param int $var
      * @return $this
      */
-    public function setAction(int $var)
+    public function setAction($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\AdminAction::class);
         $this->action = $var;
@@ -222,9 +232,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setTargetType(string $var)
+    public function setTargetType($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->target_type = $var;
 
         return $this;
@@ -244,9 +254,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setTargetId(string $var)
+    public function setTargetId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->target_id = $var;
 
         return $this;
@@ -266,9 +276,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setReason(string $var)
+    public function setReason($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->reason = $var;
 
         return $this;
@@ -288,9 +298,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setBeforeJson(string $var)
+    public function setBeforeJson($var)
     {
-        GPBUtil::checkString($var, false);
+        GPBUtil::checkString($var, False);
         $this->before_json = $var;
 
         return $this;
@@ -310,9 +320,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setAfterJson(string $var)
+    public function setAfterJson($var)
     {
-        GPBUtil::checkString($var, false);
+        GPBUtil::checkString($var, False);
         $this->after_json = $var;
 
         return $this;
@@ -320,7 +330,7 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.OperationResult result = 11;</code>
-     * @return int one of the values in {@see \Prediction\V1\OperationResult}
+     * @return int
      */
     public function getResult()
     {
@@ -329,10 +339,10 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.OperationResult result = 11;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\OperationResult}
+     * @param int $var
      * @return $this
      */
-    public function setResult(int $var)
+    public function setResult($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\OperationResult::class);
         $this->result = $var;
@@ -354,9 +364,9 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setErrorCode(string $var)
+    public function setErrorCode($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->error_code = $var;
 
         return $this;
@@ -376,7 +386,7 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setCreatedAtMs(int|string $var)
+    public function setCreatedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->created_at_ms = $var;
@@ -398,7 +408,7 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setCompletedAtMs(int|string $var)
+    public function setCompletedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->completed_at_ms = $var;
@@ -406,5 +416,48 @@ class OperationReceipt extends \Google\Protobuf\Internal\Message
         return $this;
     }
 
-}
+    /**
+     * Generated from protobuf field <code>string source_service = 15;</code>
+     * @return string
+     */
+    public function getSourceService()
+    {
+        return $this->source_service;
+    }
 
+    /**
+     * Generated from protobuf field <code>string source_service = 15;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSourceService($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->source_service = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string trace_id = 16;</code>
+     * @return string
+     */
+    public function getTraceId()
+    {
+        return $this->trace_id;
+    }
+
+    /**
+     * Generated from protobuf field <code>string trace_id = 16;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setTraceId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->trace_id = $var;
+
+        return $this;
+    }
+
+}

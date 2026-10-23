@@ -62,7 +62,7 @@ class HighLowRule extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -84,9 +84,9 @@ class HighLowRule extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setNetReturnRate(string $var)
+    public function setNetReturnRate($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->net_return_rate = $var;
 
         return $this;
@@ -106,9 +106,9 @@ class HighLowRule extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMinStake(string $var)
+    public function setMinStake($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->min_stake = $var;
 
         return $this;
@@ -128,13 +128,12 @@ class HighLowRule extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMaxStake(string $var)
+    public function setMaxStake($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->max_stake = $var;
 
         return $this;
     }
 
 }
-

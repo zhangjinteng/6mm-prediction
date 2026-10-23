@@ -31,13 +31,13 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      */
     protected $received_at_ms = 0;
     /**
-     * Generated from protobuf field <code>uint64 sequence = 5;</code>
+     * Generated from protobuf field <code>uint64 local_sequence = 5;</code>
      */
-    protected $sequence = 0;
+    protected $local_sequence = 0;
     /**
-     * Generated from protobuf field <code>int32 source_count = 6;</code>
+     * Generated from protobuf field <code>optional uint64 producer_sequence = 6;</code>
      */
-    protected $source_count = 0;
+    protected $producer_sequence = null;
     /**
      * Generated from protobuf field <code>string quality = 7;</code>
      */
@@ -50,6 +50,38 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>string invalid_reason = 9;</code>
      */
     protected $invalid_reason = '';
+    /**
+     * Generated from protobuf field <code>int64 mark_price_tick_id = 10;</code>
+     */
+    protected $mark_price_tick_id = 0;
+    /**
+     * Generated from protobuf field <code>optional int32 source_count = 11;</code>
+     */
+    protected $source_count = null;
+    /**
+     * Generated from protobuf field <code>string mark_price_text = 12;</code>
+     */
+    protected $mark_price_text = '';
+    /**
+     * Generated from protobuf field <code>int64 producer_timestamp_ms = 13;</code>
+     */
+    protected $producer_timestamp_ms = 0;
+    /**
+     * Generated from protobuf field <code>string source_subject = 14;</code>
+     */
+    protected $source_subject = '';
+    /**
+     * Generated from protobuf field <code>bytes source_payload_hash = 15;</code>
+     */
+    protected $source_payload_hash = '';
+    /**
+     * Generated from protobuf field <code>string source_payload_text = 16;</code>
+     */
+    protected $source_payload_text = '';
+    /**
+     * Generated from protobuf field <code>string selection_rule_version = 17;</code>
+     */
+    protected $selection_rule_version = '';
 
     /**
      * Constructor.
@@ -61,11 +93,19 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      *     @type string $price
      *     @type int|string $event_time_ms
      *     @type int|string $received_at_ms
-     *     @type int|string $sequence
-     *     @type int $source_count
+     *     @type int|string $local_sequence
+     *     @type int|string $producer_sequence
      *     @type string $quality
      *     @type string $provider_version
      *     @type string $invalid_reason
+     *     @type int|string $mark_price_tick_id
+     *     @type int $source_count
+     *     @type string $mark_price_text
+     *     @type int|string $producer_timestamp_ms
+     *     @type string $source_subject
+     *     @type string $source_payload_hash
+     *     @type string $source_payload_text
+     *     @type string $selection_rule_version
      * }
      */
     public function __construct($data = NULL) {
@@ -87,9 +127,9 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setEvidenceType(string $var)
+    public function setEvidenceType($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->evidence_type = $var;
 
         return $this;
@@ -109,9 +149,9 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setPrice(string $var)
+    public function setPrice($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->price = $var;
 
         return $this;
@@ -131,7 +171,7 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setEventTimeMs(int|string $var)
+    public function setEventTimeMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->event_time_ms = $var;
@@ -153,7 +193,7 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setReceivedAtMs(int|string $var)
+    public function setReceivedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->received_at_ms = $var;
@@ -162,45 +202,55 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>uint64 sequence = 5;</code>
+     * Generated from protobuf field <code>uint64 local_sequence = 5;</code>
      * @return int|string
      */
-    public function getSequence()
+    public function getLocalSequence()
     {
-        return $this->sequence;
+        return $this->local_sequence;
     }
 
     /**
-     * Generated from protobuf field <code>uint64 sequence = 5;</code>
+     * Generated from protobuf field <code>uint64 local_sequence = 5;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setSequence(int|string $var)
+    public function setLocalSequence($var)
     {
         GPBUtil::checkUint64($var);
-        $this->sequence = $var;
+        $this->local_sequence = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>int32 source_count = 6;</code>
-     * @return int
+     * Generated from protobuf field <code>optional uint64 producer_sequence = 6;</code>
+     * @return int|string
      */
-    public function getSourceCount()
+    public function getProducerSequence()
     {
-        return $this->source_count;
+        return isset($this->producer_sequence) ? $this->producer_sequence : 0;
+    }
+
+    public function hasProducerSequence()
+    {
+        return isset($this->producer_sequence);
+    }
+
+    public function clearProducerSequence()
+    {
+        unset($this->producer_sequence);
     }
 
     /**
-     * Generated from protobuf field <code>int32 source_count = 6;</code>
-     * @param int $var
+     * Generated from protobuf field <code>optional uint64 producer_sequence = 6;</code>
+     * @param int|string $var
      * @return $this
      */
-    public function setSourceCount(int $var)
+    public function setProducerSequence($var)
     {
-        GPBUtil::checkInt32($var);
-        $this->source_count = $var;
+        GPBUtil::checkUint64($var);
+        $this->producer_sequence = $var;
 
         return $this;
     }
@@ -219,9 +269,9 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setQuality(string $var)
+    public function setQuality($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->quality = $var;
 
         return $this;
@@ -241,9 +291,9 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setProviderVersion(string $var)
+    public function setProviderVersion($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->provider_version = $var;
 
         return $this;
@@ -263,13 +313,198 @@ class PriceEvidence extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setInvalidReason(string $var)
+    public function setInvalidReason($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->invalid_reason = $var;
 
         return $this;
     }
 
-}
+    /**
+     * Generated from protobuf field <code>int64 mark_price_tick_id = 10;</code>
+     * @return int|string
+     */
+    public function getMarkPriceTickId()
+    {
+        return $this->mark_price_tick_id;
+    }
 
+    /**
+     * Generated from protobuf field <code>int64 mark_price_tick_id = 10;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setMarkPriceTickId($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->mark_price_tick_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional int32 source_count = 11;</code>
+     * @return int
+     */
+    public function getSourceCount()
+    {
+        return isset($this->source_count) ? $this->source_count : 0;
+    }
+
+    public function hasSourceCount()
+    {
+        return isset($this->source_count);
+    }
+
+    public function clearSourceCount()
+    {
+        unset($this->source_count);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional int32 source_count = 11;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setSourceCount($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->source_count = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string mark_price_text = 12;</code>
+     * @return string
+     */
+    public function getMarkPriceText()
+    {
+        return $this->mark_price_text;
+    }
+
+    /**
+     * Generated from protobuf field <code>string mark_price_text = 12;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setMarkPriceText($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->mark_price_text = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 producer_timestamp_ms = 13;</code>
+     * @return int|string
+     */
+    public function getProducerTimestampMs()
+    {
+        return $this->producer_timestamp_ms;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 producer_timestamp_ms = 13;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setProducerTimestampMs($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->producer_timestamp_ms = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string source_subject = 14;</code>
+     * @return string
+     */
+    public function getSourceSubject()
+    {
+        return $this->source_subject;
+    }
+
+    /**
+     * Generated from protobuf field <code>string source_subject = 14;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSourceSubject($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->source_subject = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>bytes source_payload_hash = 15;</code>
+     * @return string
+     */
+    public function getSourcePayloadHash()
+    {
+        return $this->source_payload_hash;
+    }
+
+    /**
+     * Generated from protobuf field <code>bytes source_payload_hash = 15;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSourcePayloadHash($var)
+    {
+        GPBUtil::checkString($var, False);
+        $this->source_payload_hash = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string source_payload_text = 16;</code>
+     * @return string
+     */
+    public function getSourcePayloadText()
+    {
+        return $this->source_payload_text;
+    }
+
+    /**
+     * Generated from protobuf field <code>string source_payload_text = 16;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSourcePayloadText($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->source_payload_text = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string selection_rule_version = 17;</code>
+     * @return string
+     */
+    public function getSelectionRuleVersion()
+    {
+        return $this->selection_rule_version;
+    }
+
+    /**
+     * Generated from protobuf field <code>string selection_rule_version = 17;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSelectionRuleVersion($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->selection_rule_version = $var;
+
+        return $this;
+    }
+
+}

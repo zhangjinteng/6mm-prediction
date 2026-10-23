@@ -22,6 +22,12 @@ class PriceRule extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>int64 late_arrival_grace_milliseconds = 2;</code>
      */
     protected $late_arrival_grace_milliseconds = 0;
+    /**
+     * Absent preserves legacy behavior; explicit zero truncates to integer.
+     *
+     * Generated from protobuf field <code>optional int32 price_decimals = 3;</code>
+     */
+    protected $price_decimals = null;
 
     /**
      * Constructor.
@@ -31,6 +37,8 @@ class PriceRule extends \Google\Protobuf\Internal\Message
      *
      *     @type int|string $max_age_milliseconds
      *     @type int|string $late_arrival_grace_milliseconds
+     *     @type int $price_decimals
+     *           Absent preserves legacy behavior; explicit zero truncates to integer.
      * }
      */
     public function __construct($data = NULL) {
@@ -52,7 +60,7 @@ class PriceRule extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setMaxAgeMilliseconds(int|string $var)
+    public function setMaxAgeMilliseconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->max_age_milliseconds = $var;
@@ -74,7 +82,7 @@ class PriceRule extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setLateArrivalGraceMilliseconds(int|string $var)
+    public function setLateArrivalGraceMilliseconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->late_arrival_grace_milliseconds = $var;
@@ -82,5 +90,40 @@ class PriceRule extends \Google\Protobuf\Internal\Message
         return $this;
     }
 
-}
+    /**
+     * Absent preserves legacy behavior; explicit zero truncates to integer.
+     *
+     * Generated from protobuf field <code>optional int32 price_decimals = 3;</code>
+     * @return int
+     */
+    public function getPriceDecimals()
+    {
+        return isset($this->price_decimals) ? $this->price_decimals : 0;
+    }
 
+    public function hasPriceDecimals()
+    {
+        return isset($this->price_decimals);
+    }
+
+    public function clearPriceDecimals()
+    {
+        unset($this->price_decimals);
+    }
+
+    /**
+     * Absent preserves legacy behavior; explicit zero truncates to integer.
+     *
+     * Generated from protobuf field <code>optional int32 price_decimals = 3;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setPriceDecimals($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->price_decimals = $var;
+
+        return $this;
+    }
+
+}

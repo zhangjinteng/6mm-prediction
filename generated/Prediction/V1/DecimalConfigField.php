@@ -35,9 +35,9 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      */
     protected $maximum_value = '';
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 6;</code>
+     * Generated from protobuf field <code>bool agent_editable = 6;</code>
      */
-    protected $merchant_editable = false;
+    protected $agent_editable = false;
     /**
      * Generated from protobuf field <code>bool overridden = 7;</code>
      */
@@ -54,7 +54,7 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      *     @type string $default_value
      *     @type string $minimum_value
      *     @type string $maximum_value
-     *     @type bool $merchant_editable
+     *     @type bool $agent_editable
      *     @type bool $overridden
      * }
      */
@@ -77,9 +77,9 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setValue(string $var)
+    public function setValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->value = $var;
 
         return $this;
@@ -99,9 +99,9 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setTemplateValue(string $var)
+    public function setTemplateValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->template_value = $var;
 
         return $this;
@@ -121,9 +121,9 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setDefaultValue(string $var)
+    public function setDefaultValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->default_value = $var;
 
         return $this;
@@ -143,9 +143,9 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMinimumValue(string $var)
+    public function setMinimumValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->minimum_value = $var;
 
         return $this;
@@ -165,31 +165,32 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMaximumValue(string $var)
+    public function setMaximumValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->maximum_value = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 6;</code>
+     * Generated from protobuf field <code>bool agent_editable = 6;</code>
      * @return bool
      */
-    public function getMerchantEditable()
+    public function getAgentEditable()
     {
-        return $this->merchant_editable;
+        return $this->agent_editable;
     }
 
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 6;</code>
+     * Generated from protobuf field <code>bool agent_editable = 6;</code>
      * @param bool $var
      * @return $this
      */
-    public function setMerchantEditable(bool $var)
+    public function setAgentEditable($var)
     {
-        $this->merchant_editable = $var;
+        GPBUtil::checkBool($var);
+        $this->agent_editable = $var;
 
         return $this;
     }
@@ -208,12 +209,12 @@ class DecimalConfigField extends \Google\Protobuf\Internal\Message
      * @param bool $var
      * @return $this
      */
-    public function setOverridden(bool $var)
+    public function setOverridden($var)
     {
+        GPBUtil::checkBool($var);
         $this->overridden = $var;
 
         return $this;
     }
 
 }
-

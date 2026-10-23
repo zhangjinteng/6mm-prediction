@@ -31,13 +31,29 @@ class PricePoint extends \Google\Protobuf\Internal\Message
      */
     protected $received_at_ms = 0;
     /**
-     * Generated from protobuf field <code>uint64 sequence = 5;</code>
+     * Generated from protobuf field <code>uint64 local_sequence = 5;</code>
      */
-    protected $sequence = 0;
+    protected $local_sequence = 0;
     /**
      * Generated from protobuf field <code>string quality = 6;</code>
      */
     protected $quality = '';
+    /**
+     * Generated from protobuf field <code>int64 mark_price_tick_id = 7;</code>
+     */
+    protected $mark_price_tick_id = 0;
+    /**
+     * Generated from protobuf field <code>optional uint64 producer_sequence = 8;</code>
+     */
+    protected $producer_sequence = null;
+    /**
+     * Generated from protobuf field <code>optional int32 source_count = 9;</code>
+     */
+    protected $source_count = null;
+    /**
+     * Generated from protobuf field <code>string provider_version = 10;</code>
+     */
+    protected $provider_version = '';
 
     /**
      * Constructor.
@@ -49,8 +65,12 @@ class PricePoint extends \Google\Protobuf\Internal\Message
      *     @type string $price
      *     @type int|string $event_time_ms
      *     @type int|string $received_at_ms
-     *     @type int|string $sequence
+     *     @type int|string $local_sequence
      *     @type string $quality
+     *     @type int|string $mark_price_tick_id
+     *     @type int|string $producer_sequence
+     *     @type int $source_count
+     *     @type string $provider_version
      * }
      */
     public function __construct($data = NULL) {
@@ -72,9 +92,9 @@ class PricePoint extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSymbol(string $var)
+    public function setSymbol($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->symbol = $var;
 
         return $this;
@@ -94,9 +114,9 @@ class PricePoint extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setPrice(string $var)
+    public function setPrice($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->price = $var;
 
         return $this;
@@ -116,7 +136,7 @@ class PricePoint extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setEventTimeMs(int|string $var)
+    public function setEventTimeMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->event_time_ms = $var;
@@ -138,7 +158,7 @@ class PricePoint extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setReceivedAtMs(int|string $var)
+    public function setReceivedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->received_at_ms = $var;
@@ -147,23 +167,23 @@ class PricePoint extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>uint64 sequence = 5;</code>
+     * Generated from protobuf field <code>uint64 local_sequence = 5;</code>
      * @return int|string
      */
-    public function getSequence()
+    public function getLocalSequence()
     {
-        return $this->sequence;
+        return $this->local_sequence;
     }
 
     /**
-     * Generated from protobuf field <code>uint64 sequence = 5;</code>
+     * Generated from protobuf field <code>uint64 local_sequence = 5;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setSequence(int|string $var)
+    public function setLocalSequence($var)
     {
         GPBUtil::checkUint64($var);
-        $this->sequence = $var;
+        $this->local_sequence = $var;
 
         return $this;
     }
@@ -182,13 +202,120 @@ class PricePoint extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setQuality(string $var)
+    public function setQuality($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->quality = $var;
 
         return $this;
     }
 
-}
+    /**
+     * Generated from protobuf field <code>int64 mark_price_tick_id = 7;</code>
+     * @return int|string
+     */
+    public function getMarkPriceTickId()
+    {
+        return $this->mark_price_tick_id;
+    }
 
+    /**
+     * Generated from protobuf field <code>int64 mark_price_tick_id = 7;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setMarkPriceTickId($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->mark_price_tick_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional uint64 producer_sequence = 8;</code>
+     * @return int|string
+     */
+    public function getProducerSequence()
+    {
+        return isset($this->producer_sequence) ? $this->producer_sequence : 0;
+    }
+
+    public function hasProducerSequence()
+    {
+        return isset($this->producer_sequence);
+    }
+
+    public function clearProducerSequence()
+    {
+        unset($this->producer_sequence);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional uint64 producer_sequence = 8;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setProducerSequence($var)
+    {
+        GPBUtil::checkUint64($var);
+        $this->producer_sequence = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>optional int32 source_count = 9;</code>
+     * @return int
+     */
+    public function getSourceCount()
+    {
+        return isset($this->source_count) ? $this->source_count : 0;
+    }
+
+    public function hasSourceCount()
+    {
+        return isset($this->source_count);
+    }
+
+    public function clearSourceCount()
+    {
+        unset($this->source_count);
+    }
+
+    /**
+     * Generated from protobuf field <code>optional int32 source_count = 9;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setSourceCount($var)
+    {
+        GPBUtil::checkInt32($var);
+        $this->source_count = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string provider_version = 10;</code>
+     * @return string
+     */
+    public function getProviderVersion()
+    {
+        return $this->provider_version;
+    }
+
+    /**
+     * Generated from protobuf field <code>string provider_version = 10;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setProviderVersion($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->provider_version = $var;
+
+        return $this;
+    }
+
+}

@@ -28,6 +28,30 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>optional int64 current_template_version = 3;</code>
      */
     protected $current_template_version = null;
+    /**
+     * Generated from protobuf field <code>string symbol = 4;</code>
+     */
+    protected $symbol = '';
+    /**
+     * Generated from protobuf field <code>.prediction.v1.MarkPriceUnavailableReason mark_price_unavailable_reason = 5;</code>
+     */
+    protected $mark_price_unavailable_reason = 0;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.PlayerErrorReason player_reason = 6;</code>
+     */
+    protected $player_reason = 0;
+    /**
+     * Generated from protobuf field <code>string round_id = 7;</code>
+     */
+    protected $round_id = '';
+    /**
+     * Generated from protobuf field <code>string stake_tier_id = 8;</code>
+     */
+    protected $stake_tier_id = '';
+    /**
+     * Generated from protobuf field <code>uint64 current_entity_version = 9;</code>
+     */
+    protected $current_entity_version = 0;
 
     /**
      * Constructor.
@@ -38,6 +62,12 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
      *     @type int $code
      *     @type string $message
      *     @type int|string $current_template_version
+     *     @type string $symbol
+     *     @type int $mark_price_unavailable_reason
+     *     @type int $player_reason
+     *     @type string $round_id
+     *     @type string $stake_tier_id
+     *     @type int|string $current_entity_version
      * }
      */
     public function __construct($data = NULL) {
@@ -47,7 +77,7 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.ErrorCode code = 1;</code>
-     * @return int one of the values in {@see \Prediction\V1\ErrorCode}
+     * @return int
      */
     public function getCode()
     {
@@ -56,10 +86,10 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.ErrorCode code = 1;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\ErrorCode}
+     * @param int $var
      * @return $this
      */
-    public function setCode(int $var)
+    public function setCode($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\ErrorCode::class);
         $this->code = $var;
@@ -81,9 +111,9 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMessage(string $var)
+    public function setMessage($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->message = $var;
 
         return $this;
@@ -95,7 +125,7 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
      */
     public function getCurrentTemplateVersion()
     {
-        return isset($this->current_template_version) ? $this->current_template_version : GPBUtil::compatibleInt64(0, '0');
+        return isset($this->current_template_version) ? $this->current_template_version : 0;
     }
 
     public function hasCurrentTemplateVersion()
@@ -113,7 +143,7 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setCurrentTemplateVersion(int|string $var)
+    public function setCurrentTemplateVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->current_template_version = $var;
@@ -121,5 +151,136 @@ class PredictionErrorDetail extends \Google\Protobuf\Internal\Message
         return $this;
     }
 
-}
+    /**
+     * Generated from protobuf field <code>string symbol = 4;</code>
+     * @return string
+     */
+    public function getSymbol()
+    {
+        return $this->symbol;
+    }
 
+    /**
+     * Generated from protobuf field <code>string symbol = 4;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setSymbol($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->symbol = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.MarkPriceUnavailableReason mark_price_unavailable_reason = 5;</code>
+     * @return int
+     */
+    public function getMarkPriceUnavailableReason()
+    {
+        return $this->mark_price_unavailable_reason;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.MarkPriceUnavailableReason mark_price_unavailable_reason = 5;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setMarkPriceUnavailableReason($var)
+    {
+        GPBUtil::checkEnum($var, \Prediction\V1\MarkPriceUnavailableReason::class);
+        $this->mark_price_unavailable_reason = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.PlayerErrorReason player_reason = 6;</code>
+     * @return int
+     */
+    public function getPlayerReason()
+    {
+        return $this->player_reason;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.PlayerErrorReason player_reason = 6;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setPlayerReason($var)
+    {
+        GPBUtil::checkEnum($var, \Prediction\V1\PlayerErrorReason::class);
+        $this->player_reason = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string round_id = 7;</code>
+     * @return string
+     */
+    public function getRoundId()
+    {
+        return $this->round_id;
+    }
+
+    /**
+     * Generated from protobuf field <code>string round_id = 7;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setRoundId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->round_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string stake_tier_id = 8;</code>
+     * @return string
+     */
+    public function getStakeTierId()
+    {
+        return $this->stake_tier_id;
+    }
+
+    /**
+     * Generated from protobuf field <code>string stake_tier_id = 8;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setStakeTierId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->stake_tier_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>uint64 current_entity_version = 9;</code>
+     * @return int|string
+     */
+    public function getCurrentEntityVersion()
+    {
+        return $this->current_entity_version;
+    }
+
+    /**
+     * Generated from protobuf field <code>uint64 current_entity_version = 9;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setCurrentEntityVersion($var)
+    {
+        GPBUtil::checkUint64($var);
+        $this->current_entity_version = $var;
+
+        return $this;
+    }
+
+}

@@ -97,9 +97,9 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setJobId(string $var)
+    public function setJobId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->job_id = $var;
 
         return $this;
@@ -119,7 +119,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setTemplateVersion(int|string $var)
+    public function setTemplateVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->template_version = $var;
@@ -129,7 +129,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.ReconciliationJobState state = 3;</code>
-     * @return int one of the values in {@see \Prediction\V1\ReconciliationJobState}
+     * @return int
      */
     public function getState()
     {
@@ -138,10 +138,10 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.ReconciliationJobState state = 3;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\ReconciliationJobState}
+     * @param int $var
      * @return $this
      */
-    public function setState(int $var)
+    public function setState($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\ReconciliationJobState::class);
         $this->state = $var;
@@ -163,7 +163,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setScannedCount(int|string $var)
+    public function setScannedCount($var)
     {
         GPBUtil::checkInt64($var);
         $this->scanned_count = $var;
@@ -185,7 +185,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setAffectedCount(int|string $var)
+    public function setAffectedCount($var)
     {
         GPBUtil::checkInt64($var);
         $this->affected_count = $var;
@@ -207,7 +207,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setUpdatedCount(int|string $var)
+    public function setUpdatedCount($var)
     {
         GPBUtil::checkInt64($var);
         $this->updated_count = $var;
@@ -229,7 +229,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setFailedCount(int|string $var)
+    public function setFailedCount($var)
     {
         GPBUtil::checkInt64($var);
         $this->failed_count = $var;
@@ -251,9 +251,9 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setCursor(string $var)
+    public function setCursor($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->cursor = $var;
 
         return $this;
@@ -273,7 +273,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setCreatedAtMs(int|string $var)
+    public function setCreatedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->created_at_ms = $var;
@@ -295,7 +295,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setUpdatedAtMs(int|string $var)
+    public function setUpdatedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->updated_at_ms = $var;
@@ -309,7 +309,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      */
     public function getCompletedAtMs()
     {
-        return isset($this->completed_at_ms) ? $this->completed_at_ms : GPBUtil::compatibleInt64(0, '0');
+        return isset($this->completed_at_ms) ? $this->completed_at_ms : 0;
     }
 
     public function hasCompletedAtMs()
@@ -327,7 +327,7 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setCompletedAtMs(int|string $var)
+    public function setCompletedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->completed_at_ms = $var;
@@ -336,4 +336,3 @@ class TemplateReconciliationJob extends \Google\Protobuf\Internal\Message
     }
 
 }
-

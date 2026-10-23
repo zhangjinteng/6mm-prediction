@@ -66,4 +66,3 @@ class BusinessStatus
         return constant($const);
     }
 }
-

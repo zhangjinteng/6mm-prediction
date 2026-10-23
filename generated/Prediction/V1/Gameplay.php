@@ -23,6 +23,8 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      */
     protected $symbol = '';
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 3;</code>
      */
     protected $duration_seconds = 0;
@@ -47,9 +49,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      */
     protected $template_version = 0;
     /**
-     * Generated from protobuf field <code>int64 merchant_version = 11;</code>
+     * Generated from protobuf field <code>int64 agent_version = 11;</code>
      */
-    protected $merchant_version = 0;
+    protected $agent_version = 0;
     /**
      * Generated from protobuf field <code>string effective_version = 12;</code>
      */
@@ -86,6 +88,40 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>int64 bet_open_seconds = 20;</code>
      */
     protected $bet_open_seconds = 0;
+    /**
+     * Generated from protobuf field <code>string market_id = 21;</code>
+     */
+    protected $market_id = '';
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.StakeTier stake_tiers = 22;</code>
+     */
+    private $stake_tiers;
+    /**
+     * SITE_V1 配置归属，独立于玩家 agent 与资金 home_site。
+     *
+     * Generated from protobuf field <code>string config_site_id = 23;</code>
+     */
+    protected $config_site_id = '';
+    /**
+     * Generated from protobuf field <code>int64 site_config_version = 24;</code>
+     */
+    protected $site_config_version = 0;
+    /**
+     * Generated from protobuf field <code>string config_owner_agent_id = 25;</code>
+     */
+    protected $config_owner_agent_id = '';
+    /**
+     * Generated from protobuf field <code>int64 owner_config_revision = 26;</code>
+     */
+    protected $owner_config_revision = 0;
+    /**
+     * Generated from protobuf field <code>int64 rule_epoch = 27;</code>
+     */
+    protected $rule_epoch = 0;
+    /**
+     * Generated from protobuf field <code>string config_model = 28;</code>
+     */
+    protected $config_model = '';
     protected $rule;
 
     /**
@@ -97,6 +133,7 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      *     @type int $game_type
      *     @type string $symbol
      *     @type int|string $duration_seconds
+     *           完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
      *     @type int|string $config_version
      *     @type string $settlement_asset
      *     @type int $amount_scale
@@ -104,7 +141,7 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      *     @type \Prediction\V1\UpDownRule $up_down
      *     @type \Prediction\V1\HighLowRule $high_low
      *     @type int|string $template_version
-     *     @type int|string $merchant_version
+     *     @type int|string $agent_version
      *     @type string $effective_version
      *     @type bool $enabled
      *     @type string $minimum_stake
@@ -114,6 +151,15 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      *     @type string $minimum_odds
      *     @type string $maximum_odds
      *     @type int|string $bet_open_seconds
+     *     @type string $market_id
+     *     @type \Prediction\V1\StakeTier[] $stake_tiers
+     *     @type string $config_site_id
+     *           SITE_V1 配置归属，独立于玩家 agent 与资金 home_site。
+     *     @type int|string $site_config_version
+     *     @type string $config_owner_agent_id
+     *     @type int|string $owner_config_revision
+     *     @type int|string $rule_epoch
+     *     @type string $config_model
      * }
      */
     public function __construct($data = NULL) {
@@ -123,7 +169,7 @@ class Gameplay extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 1;</code>
-     * @return int one of the values in {@see \Prediction\V1\GameType}
+     * @return int
      */
     public function getGameType()
     {
@@ -132,10 +178,10 @@ class Gameplay extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 1;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\GameType}
+     * @param int $var
      * @return $this
      */
-    public function setGameType(int $var)
+    public function setGameType($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\GameType::class);
         $this->game_type = $var;
@@ -157,15 +203,17 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSymbol(string $var)
+    public function setSymbol($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->symbol = $var;
 
         return $this;
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 3;</code>
      * @return int|string
      */
@@ -175,11 +223,13 @@ class Gameplay extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 3;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -201,7 +251,7 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setConfigVersion(int|string $var)
+    public function setConfigVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->config_version = $var;
@@ -223,9 +273,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSettlementAsset(string $var)
+    public function setSettlementAsset($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->settlement_asset = $var;
 
         return $this;
@@ -245,7 +295,7 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param int $var
      * @return $this
      */
-    public function setAmountScale(int $var)
+    public function setAmountScale($var)
     {
         GPBUtil::checkInt32($var);
         $this->amount_scale = $var;
@@ -277,8 +327,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PriceRule $var
      * @return $this
      */
-    public function setPriceRule(\Prediction\V1\PriceRule|null $var)
+    public function setPriceRule($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\PriceRule::class);
         $this->price_rule = $var;
 
         return $this;
@@ -303,8 +354,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\UpDownRule $var
      * @return $this
      */
-    public function setUpDown(\Prediction\V1\UpDownRule|null $var)
+    public function setUpDown($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\UpDownRule::class);
         $this->writeOneof(8, $var);
 
         return $this;
@@ -329,8 +381,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\HighLowRule $var
      * @return $this
      */
-    public function setHighLow(\Prediction\V1\HighLowRule|null $var)
+    public function setHighLow($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\HighLowRule::class);
         $this->writeOneof(9, $var);
 
         return $this;
@@ -350,7 +403,7 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setTemplateVersion(int|string $var)
+    public function setTemplateVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->template_version = $var;
@@ -359,23 +412,23 @@ class Gameplay extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 merchant_version = 11;</code>
+     * Generated from protobuf field <code>int64 agent_version = 11;</code>
      * @return int|string
      */
-    public function getMerchantVersion()
+    public function getAgentVersion()
     {
-        return $this->merchant_version;
+        return $this->agent_version;
     }
 
     /**
-     * Generated from protobuf field <code>int64 merchant_version = 11;</code>
+     * Generated from protobuf field <code>int64 agent_version = 11;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setMerchantVersion(int|string $var)
+    public function setAgentVersion($var)
     {
         GPBUtil::checkInt64($var);
-        $this->merchant_version = $var;
+        $this->agent_version = $var;
 
         return $this;
     }
@@ -394,9 +447,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setEffectiveVersion(string $var)
+    public function setEffectiveVersion($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->effective_version = $var;
 
         return $this;
@@ -416,8 +469,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param bool $var
      * @return $this
      */
-    public function setEnabled(bool $var)
+    public function setEnabled($var)
     {
+        GPBUtil::checkBool($var);
         $this->enabled = $var;
 
         return $this;
@@ -437,9 +491,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMinimumStake(string $var)
+    public function setMinimumStake($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->minimum_stake = $var;
 
         return $this;
@@ -459,9 +513,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMaximumStake(string $var)
+    public function setMaximumStake($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->maximum_stake = $var;
 
         return $this;
@@ -481,9 +535,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setFixedOdds(string $var)
+    public function setFixedOdds($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->fixed_odds = $var;
 
         return $this;
@@ -503,9 +557,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setTargetPayoutRate(string $var)
+    public function setTargetPayoutRate($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->target_payout_rate = $var;
 
         return $this;
@@ -525,9 +579,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMinimumOdds(string $var)
+    public function setMinimumOdds($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->minimum_odds = $var;
 
         return $this;
@@ -547,9 +601,9 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMaximumOdds(string $var)
+    public function setMaximumOdds($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->maximum_odds = $var;
 
         return $this;
@@ -569,10 +623,190 @@ class Gameplay extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setBetOpenSeconds(int|string $var)
+    public function setBetOpenSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->bet_open_seconds = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string market_id = 21;</code>
+     * @return string
+     */
+    public function getMarketId()
+    {
+        return $this->market_id;
+    }
+
+    /**
+     * Generated from protobuf field <code>string market_id = 21;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setMarketId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->market_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.StakeTier stake_tiers = 22;</code>
+     * @return RepeatedField<\Prediction\V1\StakeTier>
+     */
+    public function getStakeTiers()
+    {
+        return $this->stake_tiers;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.StakeTier stake_tiers = 22;</code>
+     * @param \Prediction\V1\StakeTier[] $var
+     * @return $this
+     */
+    public function setStakeTiers($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\StakeTier::class);
+        $this->stake_tiers = $arr;
+
+        return $this;
+    }
+
+    /**
+     * SITE_V1 配置归属，独立于玩家 agent 与资金 home_site。
+     *
+     * Generated from protobuf field <code>string config_site_id = 23;</code>
+     * @return string
+     */
+    public function getConfigSiteId()
+    {
+        return $this->config_site_id;
+    }
+
+    /**
+     * SITE_V1 配置归属，独立于玩家 agent 与资金 home_site。
+     *
+     * Generated from protobuf field <code>string config_site_id = 23;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setConfigSiteId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->config_site_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 site_config_version = 24;</code>
+     * @return int|string
+     */
+    public function getSiteConfigVersion()
+    {
+        return $this->site_config_version;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 site_config_version = 24;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setSiteConfigVersion($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->site_config_version = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string config_owner_agent_id = 25;</code>
+     * @return string
+     */
+    public function getConfigOwnerAgentId()
+    {
+        return $this->config_owner_agent_id;
+    }
+
+    /**
+     * Generated from protobuf field <code>string config_owner_agent_id = 25;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setConfigOwnerAgentId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->config_owner_agent_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 owner_config_revision = 26;</code>
+     * @return int|string
+     */
+    public function getOwnerConfigRevision()
+    {
+        return $this->owner_config_revision;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 owner_config_revision = 26;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setOwnerConfigRevision($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->owner_config_revision = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 rule_epoch = 27;</code>
+     * @return int|string
+     */
+    public function getRuleEpoch()
+    {
+        return $this->rule_epoch;
+    }
+
+    /**
+     * Generated from protobuf field <code>int64 rule_epoch = 27;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setRuleEpoch($var)
+    {
+        GPBUtil::checkInt64($var);
+        $this->rule_epoch = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string config_model = 28;</code>
+     * @return string
+     */
+    public function getConfigModel()
+    {
+        return $this->config_model;
+    }
+
+    /**
+     * Generated from protobuf field <code>string config_model = 28;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setConfigModel($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->config_model = $var;
 
         return $this;
     }
@@ -586,4 +820,3 @@ class Gameplay extends \Google\Protobuf\Internal\Message
     }
 
 }
-

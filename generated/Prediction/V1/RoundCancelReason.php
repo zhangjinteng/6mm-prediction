@@ -24,11 +24,16 @@ class RoundCancelReason
      * Generated from protobuf enum <code>ROUND_CANCEL_REASON_NO_VALID_PRICE = 2;</code>
      */
     const ROUND_CANCEL_REASON_NO_VALID_PRICE = 2;
+    /**
+     * Generated from protobuf enum <code>ROUND_CANCEL_REASON_SITE_BINDING_DRAIN = 3;</code>
+     */
+    const ROUND_CANCEL_REASON_SITE_BINDING_DRAIN = 3;
 
     private static $valueToName = [
         self::ROUND_CANCEL_REASON_UNSPECIFIED => 'ROUND_CANCEL_REASON_UNSPECIFIED',
         self::ROUND_CANCEL_REASON_SINGLE_SIDED_POOL => 'ROUND_CANCEL_REASON_SINGLE_SIDED_POOL',
         self::ROUND_CANCEL_REASON_NO_VALID_PRICE => 'ROUND_CANCEL_REASON_NO_VALID_PRICE',
+        self::ROUND_CANCEL_REASON_SITE_BINDING_DRAIN => 'ROUND_CANCEL_REASON_SITE_BINDING_DRAIN',
     ];
 
     public static function name($value)
@@ -51,4 +56,3 @@ class RoundCancelReason
         return constant($const);
     }
 }
-

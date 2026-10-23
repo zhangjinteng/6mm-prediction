@@ -66,4 +66,3 @@ class OrderResult
         return constant($const);
     }
 }
-

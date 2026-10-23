@@ -10,32 +10,12 @@ use Google\Protobuf\Internal\GPBUtil;
 use Google\Protobuf\RepeatedField;
 
 /**
- * GameplayConfigRule 是统一页面规则视图。平台和商户范围使用相同的扁平字段结构。
+ * GameplayConfigRule 是统一保存回执中的扁平规则视图。
  *
  * Generated from protobuf message <code>prediction.v1.GameplayConfigRule</code>
  */
 class GameplayConfigRule extends \Google\Protobuf\Internal\Message
 {
-    /**
-     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1 [deprecated = true];</code>
-     * @deprecated
-     */
-    protected $template_rule = null;
-    /**
-     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2 [deprecated = true];</code>
-     * @deprecated
-     */
-    protected $merchant_override = null;
-    /**
-     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3 [deprecated = true];</code>
-     * @deprecated
-     */
-    protected $effective_value = null;
-    /**
-     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4 [deprecated = true];</code>
-     * @deprecated
-     */
-    private $value_sources;
     /**
      * Generated from protobuf field <code>.prediction.v1.ConfigValidationStatus validation_status = 5;</code>
      */
@@ -53,6 +33,8 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      */
     protected $symbol = '';
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 9;</code>
      */
     protected $duration_seconds = 0;
@@ -100,6 +82,14 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.prediction.v1.PriceRule price_rule = 20;</code>
      */
     protected $price_rule = null;
+    /**
+     * Generated from protobuf field <code>string market_id = 21;</code>
+     */
+    protected $market_id = '';
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.GameplayStakeTier stake_tiers = 22;</code>
+     */
+    private $stake_tiers;
 
     /**
      * Constructor.
@@ -107,15 +97,12 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param array $data {
      *     Optional. Data for populating the Message object.
      *
-     *     @type \Prediction\V1\PlatformRuleTemplate $template_rule
-     *     @type \Prediction\V1\MerchantRuleOverride $merchant_override
-     *     @type \Prediction\V1\EffectiveRule $effective_value
-     *     @type \Prediction\V1\ConfigFieldSource[] $value_sources
      *     @type int $validation_status
      *     @type \Prediction\V1\ForcedConfigAdjustment[] $forced_adjustments
      *     @type int $game_type
      *     @type string $symbol
      *     @type int|string $duration_seconds
+     *           完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
      *     @type bool $enabled
      *     @type bool $enabled_by_default
      *     @type \Prediction\V1\IntegerConfigField $bet_open_seconds
@@ -127,6 +114,8 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      *     @type \Prediction\V1\DecimalConfigField $maximum_stake
      *     @type int|string $settlement_display_seconds
      *     @type \Prediction\V1\PriceRule $price_rule
+     *     @type string $market_id
+     *     @type \Prediction\V1\GameplayStakeTier[] $stake_tiers
      * }
      */
     public function __construct($data = NULL) {
@@ -135,161 +124,8 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1 [deprecated = true];</code>
-     * @return \Prediction\V1\PlatformRuleTemplate|null
-     * @deprecated
-     */
-    public function getTemplateRule()
-    {
-        if (isset($this->template_rule)) {
-            @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
-        }
-        return $this->template_rule;
-    }
-
-    public function hasTemplateRule()
-    {
-        if (isset($this->template_rule)) {
-            @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
-        }
-        return isset($this->template_rule);
-    }
-
-    public function clearTemplateRule()
-    {
-        @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
-        unset($this->template_rule);
-    }
-
-    /**
-     * Generated from protobuf field <code>.prediction.v1.PlatformRuleTemplate template_rule = 1 [deprecated = true];</code>
-     * @param \Prediction\V1\PlatformRuleTemplate $var
-     * @return $this
-     * @deprecated
-     */
-    public function setTemplateRule(\Prediction\V1\PlatformRuleTemplate|null $var)
-    {
-        @trigger_error('template_rule is deprecated.', E_USER_DEPRECATED);
-        $this->template_rule = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2 [deprecated = true];</code>
-     * @return \Prediction\V1\MerchantRuleOverride|null
-     * @deprecated
-     */
-    public function getMerchantOverride()
-    {
-        if (isset($this->merchant_override)) {
-            @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
-        }
-        return $this->merchant_override;
-    }
-
-    public function hasMerchantOverride()
-    {
-        if (isset($this->merchant_override)) {
-            @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
-        }
-        return isset($this->merchant_override);
-    }
-
-    public function clearMerchantOverride()
-    {
-        @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
-        unset($this->merchant_override);
-    }
-
-    /**
-     * Generated from protobuf field <code>optional .prediction.v1.MerchantRuleOverride merchant_override = 2 [deprecated = true];</code>
-     * @param \Prediction\V1\MerchantRuleOverride $var
-     * @return $this
-     * @deprecated
-     */
-    public function setMerchantOverride(\Prediction\V1\MerchantRuleOverride|null $var)
-    {
-        @trigger_error('merchant_override is deprecated.', E_USER_DEPRECATED);
-        $this->merchant_override = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3 [deprecated = true];</code>
-     * @return \Prediction\V1\EffectiveRule|null
-     * @deprecated
-     */
-    public function getEffectiveValue()
-    {
-        if (isset($this->effective_value)) {
-            @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
-        }
-        return $this->effective_value;
-    }
-
-    public function hasEffectiveValue()
-    {
-        if (isset($this->effective_value)) {
-            @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
-        }
-        return isset($this->effective_value);
-    }
-
-    public function clearEffectiveValue()
-    {
-        @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
-        unset($this->effective_value);
-    }
-
-    /**
-     * Generated from protobuf field <code>.prediction.v1.EffectiveRule effective_value = 3 [deprecated = true];</code>
-     * @param \Prediction\V1\EffectiveRule $var
-     * @return $this
-     * @deprecated
-     */
-    public function setEffectiveValue(\Prediction\V1\EffectiveRule|null $var)
-    {
-        @trigger_error('effective_value is deprecated.', E_USER_DEPRECATED);
-        $this->effective_value = $var;
-
-        return $this;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4 [deprecated = true];</code>
-     * @return RepeatedField<\Prediction\V1\ConfigFieldSource>
-     * @deprecated
-     */
-    public function getValueSources()
-    {
-        if (count($this->value_sources) !== 0) {
-            @trigger_error('value_sources is deprecated.', E_USER_DEPRECATED);
-        }
-        return $this->value_sources;
-    }
-
-    /**
-     * Generated from protobuf field <code>repeated .prediction.v1.ConfigFieldSource value_sources = 4 [deprecated = true];</code>
-     * @param \Prediction\V1\ConfigFieldSource[] $var
-     * @return $this
-     * @deprecated
-     */
-    public function setValueSources(array|RepeatedField $var)
-    {
-        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\ConfigFieldSource::class);
-        if (count($arr) !== 0) {
-            @trigger_error('value_sources is deprecated.', E_USER_DEPRECATED);
-        }
-        $this->value_sources = $arr;
-
-        return $this;
-    }
-
-    /**
      * Generated from protobuf field <code>.prediction.v1.ConfigValidationStatus validation_status = 5;</code>
-     * @return int one of the values in {@see \Prediction\V1\ConfigValidationStatus}
+     * @return int
      */
     public function getValidationStatus()
     {
@@ -298,10 +134,10 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.ConfigValidationStatus validation_status = 5;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\ConfigValidationStatus}
+     * @param int $var
      * @return $this
      */
-    public function setValidationStatus(int $var)
+    public function setValidationStatus($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\ConfigValidationStatus::class);
         $this->validation_status = $var;
@@ -323,7 +159,7 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\ForcedConfigAdjustment[] $var
      * @return $this
      */
-    public function setForcedAdjustments(array|RepeatedField $var)
+    public function setForcedAdjustments($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\ForcedConfigAdjustment::class);
         $this->forced_adjustments = $arr;
@@ -333,7 +169,7 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 7;</code>
-     * @return int one of the values in {@see \Prediction\V1\GameType}
+     * @return int
      */
     public function getGameType()
     {
@@ -342,10 +178,10 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 7;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\GameType}
+     * @param int $var
      * @return $this
      */
-    public function setGameType(int $var)
+    public function setGameType($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\GameType::class);
         $this->game_type = $var;
@@ -367,15 +203,17 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSymbol(string $var)
+    public function setSymbol($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->symbol = $var;
 
         return $this;
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 9;</code>
      * @return int|string
      */
@@ -385,11 +223,13 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 9;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -411,8 +251,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param bool $var
      * @return $this
      */
-    public function setEnabled(bool $var)
+    public function setEnabled($var)
     {
+        GPBUtil::checkBool($var);
         $this->enabled = $var;
 
         return $this;
@@ -432,8 +273,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param bool $var
      * @return $this
      */
-    public function setEnabledByDefault(bool $var)
+    public function setEnabledByDefault($var)
     {
+        GPBUtil::checkBool($var);
         $this->enabled_by_default = $var;
 
         return $this;
@@ -463,8 +305,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\IntegerConfigField $var
      * @return $this
      */
-    public function setBetOpenSeconds(\Prediction\V1\IntegerConfigField|null $var)
+    public function setBetOpenSeconds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\IntegerConfigField::class);
         $this->bet_open_seconds = $var;
 
         return $this;
@@ -494,8 +337,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConfigField $var
      * @return $this
      */
-    public function setTargetPayoutRate(\Prediction\V1\DecimalConfigField|null $var)
+    public function setTargetPayoutRate($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConfigField::class);
         $this->target_payout_rate = $var;
 
         return $this;
@@ -525,8 +369,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConfigField $var
      * @return $this
      */
-    public function setMinimumOdds(\Prediction\V1\DecimalConfigField|null $var)
+    public function setMinimumOdds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConfigField::class);
         $this->minimum_odds = $var;
 
         return $this;
@@ -556,8 +401,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConfigField $var
      * @return $this
      */
-    public function setMaximumOdds(\Prediction\V1\DecimalConfigField|null $var)
+    public function setMaximumOdds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConfigField::class);
         $this->maximum_odds = $var;
 
         return $this;
@@ -587,8 +433,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConfigField $var
      * @return $this
      */
-    public function setFixedOdds(\Prediction\V1\DecimalConfigField|null $var)
+    public function setFixedOdds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConfigField::class);
         $this->fixed_odds = $var;
 
         return $this;
@@ -618,8 +465,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConfigField $var
      * @return $this
      */
-    public function setMinimumStake(\Prediction\V1\DecimalConfigField|null $var)
+    public function setMinimumStake($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConfigField::class);
         $this->minimum_stake = $var;
 
         return $this;
@@ -649,8 +497,9 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConfigField $var
      * @return $this
      */
-    public function setMaximumStake(\Prediction\V1\DecimalConfigField|null $var)
+    public function setMaximumStake($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConfigField::class);
         $this->maximum_stake = $var;
 
         return $this;
@@ -670,7 +519,7 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setSettlementDisplaySeconds(int|string $var)
+    public function setSettlementDisplaySeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->settlement_display_seconds = $var;
@@ -702,12 +551,56 @@ class GameplayConfigRule extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PriceRule $var
      * @return $this
      */
-    public function setPriceRule(\Prediction\V1\PriceRule|null $var)
+    public function setPriceRule($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\PriceRule::class);
         $this->price_rule = $var;
 
         return $this;
     }
 
-}
+    /**
+     * Generated from protobuf field <code>string market_id = 21;</code>
+     * @return string
+     */
+    public function getMarketId()
+    {
+        return $this->market_id;
+    }
 
+    /**
+     * Generated from protobuf field <code>string market_id = 21;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setMarketId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->market_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.GameplayStakeTier stake_tiers = 22;</code>
+     * @return RepeatedField<\Prediction\V1\GameplayStakeTier>
+     */
+    public function getStakeTiers()
+    {
+        return $this->stake_tiers;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.GameplayStakeTier stake_tiers = 22;</code>
+     * @param \Prediction\V1\GameplayStakeTier[] $var
+     * @return $this
+     */
+    public function setStakeTiers($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\GameplayStakeTier::class);
+        $this->stake_tiers = $arr;
+
+        return $this;
+    }
+
+}

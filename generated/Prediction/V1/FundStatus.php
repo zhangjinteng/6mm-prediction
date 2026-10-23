@@ -44,6 +44,14 @@ class FundStatus
      * Generated from protobuf enum <code>FUND_STATUS_UNKNOWN = 7;</code>
      */
     const FUND_STATUS_UNKNOWN = 7;
+    /**
+     * Generated from protobuf enum <code>FUND_STATUS_REJECTED = 8;</code>
+     */
+    const FUND_STATUS_REJECTED = 8;
+    /**
+     * Generated from protobuf enum <code>FUND_STATUS_MANUAL_REQUIRED = 9;</code>
+     */
+    const FUND_STATUS_MANUAL_REQUIRED = 9;
 
     private static $valueToName = [
         self::FUND_STATUS_UNSPECIFIED => 'FUND_STATUS_UNSPECIFIED',
@@ -54,6 +62,8 @@ class FundStatus
         self::FUND_STATUS_REFUND_PENDING => 'FUND_STATUS_REFUND_PENDING',
         self::FUND_STATUS_REFUNDED => 'FUND_STATUS_REFUNDED',
         self::FUND_STATUS_UNKNOWN => 'FUND_STATUS_UNKNOWN',
+        self::FUND_STATUS_REJECTED => 'FUND_STATUS_REJECTED',
+        self::FUND_STATUS_MANUAL_REQUIRED => 'FUND_STATUS_MANUAL_REQUIRED',
     ];
 
     public static function name($value)
@@ -76,4 +86,3 @@ class FundStatus
         return constant($const);
     }
 }
-

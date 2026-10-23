@@ -66,4 +66,3 @@ class ReconciliationJobState
         return constant($const);
     }
 }
-

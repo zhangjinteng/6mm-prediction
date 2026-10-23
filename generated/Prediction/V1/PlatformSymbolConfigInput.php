@@ -15,13 +15,13 @@ use Google\Protobuf\RepeatedField;
 class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
 {
     /**
-     * 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
+     * 仅控制该交易对能否出现在预测玩法页面并接受新预测订单。
      *
      * Generated from protobuf field <code>optional bool enabled = 1;</code>
      */
     protected $enabled = null;
     /**
-     * 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
+     * 平台提交当前交易对的完整配置；UP_DOWN 必须提交 35/40/45/60/90 五个完整周期。
      *
      * Generated from protobuf field <code>repeated .prediction.v1.PlatformRuleTemplate rules = 2;</code>
      */
@@ -34,9 +34,9 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type bool $enabled
-     *           仅控制该币种能否出现在预测玩法页面并接受新预测订单。
+     *           仅控制该交易对能否出现在预测玩法页面并接受新预测订单。
      *     @type \Prediction\V1\PlatformRuleTemplate[] $rules
-     *           平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
+     *           平台提交当前交易对的完整配置；UP_DOWN 必须提交 35/40/45/60/90 五个完整周期。
      * }
      */
     public function __construct($data = NULL) {
@@ -45,7 +45,7 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
+     * 仅控制该交易对能否出现在预测玩法页面并接受新预测订单。
      *
      * Generated from protobuf field <code>optional bool enabled = 1;</code>
      * @return bool
@@ -66,21 +66,22 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
+     * 仅控制该交易对能否出现在预测玩法页面并接受新预测订单。
      *
      * Generated from protobuf field <code>optional bool enabled = 1;</code>
      * @param bool $var
      * @return $this
      */
-    public function setEnabled(bool $var)
+    public function setEnabled($var)
     {
+        GPBUtil::checkBool($var);
         $this->enabled = $var;
 
         return $this;
     }
 
     /**
-     * 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
+     * 平台提交当前交易对的完整配置；UP_DOWN 必须提交 35/40/45/60/90 五个完整周期。
      *
      * Generated from protobuf field <code>repeated .prediction.v1.PlatformRuleTemplate rules = 2;</code>
      * @return RepeatedField<\Prediction\V1\PlatformRuleTemplate>
@@ -91,13 +92,13 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
+     * 平台提交当前交易对的完整配置；UP_DOWN 必须提交 35/40/45/60/90 五个完整周期。
      *
      * Generated from protobuf field <code>repeated .prediction.v1.PlatformRuleTemplate rules = 2;</code>
      * @param \Prediction\V1\PlatformRuleTemplate[] $var
      * @return $this
      */
-    public function setRules(array|RepeatedField $var)
+    public function setRules($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\PlatformRuleTemplate::class);
         $this->rules = $arr;
@@ -106,4 +107,3 @@ class PlatformSymbolConfigInput extends \Google\Protobuf\Internal\Message
     }
 
 }
-

@@ -1,0 +1,186 @@
+syntax = "proto3";
+
+package prediction.v1;
+
+import "prediction/v1/common.proto";
+
+option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
+
+// PredictionPlatformRobotAdmin manages the platform-only robot registry and
+// audited operations. Registry registration alone never deposits or enables
+// an account; funds operations retain their immutable original command IDs.
+service PredictionPlatformRobotAdmin {
+  rpc GetPlatformRobot(GetPlatformRobotRequest) returns (GetPlatformRobotResponse);
+  rpc ListPlatformRobots(ListPlatformRobotsRequest) returns (ListPlatformRobotsResponse);
+  rpc RegisterPlatformRobot(RegisterPlatformRobotRequest) returns (RegisterPlatformRobotResponse);
+  rpc SetPlatformRobotEnabled(SetPlatformRobotEnabledRequest) returns (SetPlatformRobotEnabledResponse);
+  rpc GetPlatformRobotBalances(GetPlatformRobotBalancesRequest) returns (GetPlatformRobotBalancesResponse);
+  rpc CreatePlatformRobotOperation(CreatePlatformRobotOperationRequest) returns (CreatePlatformRobotOperationResponse);
+  rpc GetPlatformRobotOperation(GetPlatformRobotOperationRequest) returns (GetPlatformRobotOperationResponse);
+  rpc ListPlatformRobotOperations(ListPlatformRobotOperationsRequest) returns (ListPlatformRobotOperationsResponse);
+  rpc CreatePlatformRobotUser(CreatePlatformRobotUserRequest) returns (CreatePlatformRobotOperationResponse);
+  rpc GetPlatformRobotAutoDepositPolicy(GetPlatformRobotAutoDepositPolicyRequest) returns (GetPlatformRobotAutoDepositPolicyResponse);
+  rpc SavePlatformRobotAutoDepositPolicy(SavePlatformRobotAutoDepositPolicyRequest) returns (SavePlatformRobotAutoDepositPolicyResponse);
+}
+
+message PlatformRobot {
+  int64 user_id = 1;
+  string home_site_id = 2;
+  bool enabled = 3;
+  uint64 version = 4;
+  string registered_by = 5;
+  int64 registered_at_ms = 6;
+  string updated_by = 7;
+  int64 updated_at_ms = 8;
+  int64 last_market_making_at_ms = 9;
+  PlatformRobotFundingState funding_state = 10;
+  PlatformRobotDepositPending deposit_pending = 11;
+}
+
+message GetPlatformRobotRequest {
+  int64 user_id = 1;
+}
+
+message GetPlatformRobotResponse {
+  PlatformRobot robot = 1;
+}
+
+message ListPlatformRobotsRequest {
+  int32 page_size = 1;
+  string cursor = 2;
+  repeated int64 user_ids = 3;
+  optional bool enabled = 4;
+}
+
+message GetPlatformRobotBalancesRequest { repeated int64 user_ids = 1; }
+message PlatformRobotBalance {
+  int64 user_id = 1;
+  string asset_code = 2;
+  string available_amount = 3;
+  int64 observed_at_ms = 4;
+  string status = 5;
+  string account_status = 6;
+}
+message GetPlatformRobotBalancesResponse { repeated PlatformRobotBalance items = 1; }
+
+message PlatformRobotOperationTarget { int64 user_id = 1; uint64 based_on_version = 2; }
+message CreatePlatformRobotOperationRequest {
+ string kind = 1;
+ repeated PlatformRobotOperationTarget targets = 2;
+ optional bool enabled = 3;
+ string amount = 4;
+ string client_request_id = 5;
+ string reason = 6;
+}
+message CreatePlatformRobotOperationResponse { string batch_id = 1; }
+message GetPlatformRobotOperationRequest { string batch_id = 1; }
+message PlatformRobotOperationItem {
+ int64 user_id = 1;
+ string home_site_id = 2;
+ string asset_code = 3;
+ string amount = 4;
+ string state = 5;
+ string result_code = 6;
+ string result_message = 7;
+ int64 command_id = 8;
+ int64 ledger_id = 9;
+ int64 updated_at_ms = 10;
+ string observed_balance = 11;
+ int64 observed_at_ms = 12;
+ string trigger_reason = 13;
+}
+message PlatformRobotOperation {
+ string batch_id = 1;
+ string kind = 2;
+ string operator_id = 3;
+ int64 created_at_ms = 4;
+ repeated PlatformRobotOperationItem items = 5;
+ PlatformRobotCreationProgress creation = 6;
+ string source = 7;
+ uint64 policy_version = 8;
+}
+message CreatePlatformRobotUserRequest { string username = 1; string nick_name = 2; string client_request_id = 3; string reason = 4; }
+message PlatformRobotCreationProgress {
+ string phase = 1;
+ string username = 2;
+ string nick_name = 3;
+ string home_site_id = 4;
+ int64 user_id = 5;
+ int64 public_user_id = 6;
+ string result_code = 7;
+ string result_message = 8;
+}
+message GetPlatformRobotOperationResponse { PlatformRobotOperation operation = 1; }
+message ListPlatformRobotOperationsRequest { int32 page_size = 1; string cursor = 2; optional int64 user_id = 3; }
+message ListPlatformRobotOperationsResponse { repeated PlatformRobotOperation items = 1; string next_cursor = 2; }
+
+message ListPlatformRobotsResponse {
+  repeated PlatformRobot items = 1;
+  string next_cursor = 2;
+  uint64 catalog_revision = 3;
+}
+
+message RegisterPlatformRobotRequest {
+  int64 user_id = 1;
+  string home_site_id = 2;
+  string client_request_id = 3;
+  string reason = 4;
+}
+
+message RegisterPlatformRobotResponse {
+  PlatformRobot robot = 1;
+  OperationReceipt receipt = 2;
+}
+
+message SetPlatformRobotEnabledRequest {
+  int64 user_id = 1;
+  optional bool enabled = 2;
+  uint64 based_on_version = 3;
+  string client_request_id = 4;
+  string reason = 5;
+}
+
+message SetPlatformRobotEnabledResponse {
+  PlatformRobot robot = 1;
+  OperationReceipt receipt = 2;
+}
+
+message PlatformRobotAutoDepositPolicy {
+ bool enabled = 1;
+ string threshold_usdt = 2;
+ string deposit_amount_usdt = 3;
+ uint64 version = 4;
+ string updated_by = 5;
+ int64 updated_at_ms = 6;
+ bool configured = 7;
+}
+message GetPlatformRobotAutoDepositPolicyRequest {}
+message GetPlatformRobotAutoDepositPolicyResponse { PlatformRobotAutoDepositPolicy policy = 1; }
+message SavePlatformRobotAutoDepositPolicyRequest {
+ bool enabled = 1;
+ string threshold_usdt = 2;
+ string deposit_amount_usdt = 3;
+ uint64 based_on_version = 4;
+ string client_request_id = 5;
+ string reason = 6;
+}
+message SavePlatformRobotAutoDepositPolicyResponse {
+ PlatformRobotAutoDepositPolicy policy = 1;
+ OperationReceipt receipt = 2;
+}
+message PlatformRobotFundingState {
+ bool paused = 1;
+ uint64 version = 2;
+ string reason = 3;
+ string evidence_kind = 4;
+ int64 evidence_command_id = 5;
+ int64 evidence_observed_at_ms = 6;
+ int64 changed_at_ms = 7;
+}
+message PlatformRobotDepositPending {
+ string state = 1;
+ string batch_id = 2;
+ string source = 3;
+ int64 command_id = 4;
+ uint32 unresolved_count = 5;
+}

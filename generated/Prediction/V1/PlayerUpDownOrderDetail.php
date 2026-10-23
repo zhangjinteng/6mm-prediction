@@ -31,6 +31,8 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
      */
     protected $final_odds_denominator = '';
     /**
+     * 完整周期；页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 5;</code>
      */
     protected $duration_seconds = 0;
@@ -46,6 +48,7 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
      *     @type string $final_odds_numerator
      *     @type string $final_odds_denominator
      *     @type int|string $duration_seconds
+     *           完整周期；页面房间时长为 duration_seconds - 30 秒。
      * }
      */
     public function __construct($data = NULL) {
@@ -67,9 +70,9 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setRoundId(string $var)
+    public function setRoundId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->round_id = $var;
 
         return $this;
@@ -89,9 +92,9 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setRoomCode(string $var)
+    public function setRoomCode($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->room_code = $var;
 
         return $this;
@@ -111,9 +114,9 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setFinalOddsNumerator(string $var)
+    public function setFinalOddsNumerator($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->final_odds_numerator = $var;
 
         return $this;
@@ -133,15 +136,17 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setFinalOddsDenominator(string $var)
+    public function setFinalOddsDenominator($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->final_odds_denominator = $var;
 
         return $this;
     }
 
     /**
+     * 完整周期；页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 5;</code>
      * @return int|string
      */
@@ -151,11 +156,13 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 完整周期；页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 5;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -164,4 +171,3 @@ class PlayerUpDownOrderDetail extends \Google\Protobuf\Internal\Message
     }
 
 }
-

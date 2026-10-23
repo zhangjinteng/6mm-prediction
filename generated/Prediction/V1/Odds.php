@@ -52,9 +52,9 @@ class Odds extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setNumerator(string $var)
+    public function setNumerator($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->numerator = $var;
 
         return $this;
@@ -74,13 +74,12 @@ class Odds extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setDenominator(string $var)
+    public function setDenominator($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->denominator = $var;
 
         return $this;
     }
 
 }
-

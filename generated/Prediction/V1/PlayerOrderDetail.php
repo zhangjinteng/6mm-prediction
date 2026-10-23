@@ -65,8 +65,9 @@ class PlayerOrderDetail extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PlayerOrderSummary $var
      * @return $this
      */
-    public function setSummary(\Prediction\V1\PlayerOrderSummary|null $var)
+    public function setSummary($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\PlayerOrderSummary::class);
         $this->summary = $var;
 
         return $this;
@@ -91,8 +92,9 @@ class PlayerOrderDetail extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PlayerUpDownOrderDetail $var
      * @return $this
      */
-    public function setUpDown(\Prediction\V1\PlayerUpDownOrderDetail|null $var)
+    public function setUpDown($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\PlayerUpDownOrderDetail::class);
         $this->writeOneof(2, $var);
 
         return $this;
@@ -117,8 +119,9 @@ class PlayerOrderDetail extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PlayerHighLowOrderDetail $var
      * @return $this
      */
-    public function setHighLow(\Prediction\V1\PlayerHighLowOrderDetail|null $var)
+    public function setHighLow($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\PlayerHighLowOrderDetail::class);
         $this->writeOneof(3, $var);
 
         return $this;
@@ -138,7 +141,7 @@ class PlayerOrderDetail extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PriceEvidence[] $var
      * @return $this
      */
-    public function setPriceEvidence(array|RepeatedField $var)
+    public function setPriceEvidence($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\PriceEvidence::class);
         $this->price_evidence = $arr;
@@ -155,4 +158,3 @@ class PlayerOrderDetail extends \Google\Protobuf\Internal\Message
     }
 
 }
-

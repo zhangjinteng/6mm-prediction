@@ -6,57 +6,23 @@ import "prediction/v1/common.proto";
 
 option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
 
-// PredictionConfigAdmin 是平台管理员和商户管理员共用的玩法配置页面入口。
-// 服务根据可信 metadata 中是否存在 x-merchant-id 自动确定配置范围，请求体不得选择商户身份。
+// PredictionConfigAdmin 是平台管理员和商户管理员共用的当前玩法配置入口。
+// 服务根据可信 metadata 中是否存在 x-agent-id 自动确定配置范围，请求体不得选择商户身份。
 service PredictionConfigAdmin {
-  rpc GetGameplayConfig(GetGameplayConfigRequest) returns (GetGameplayConfigResponse);
-  // SaveSymbolConfig 对应玩法配置页的“保存配置”，成功即发布新版本。
+  // Identity-derived root merchant configuration; main accounts only.
+  rpc ListOwnerConfigs(ListOwnerConfigsRequest) returns (ListOwnerConfigsResponse);
+  rpc GetOwnerConfig(GetOwnerConfigRequest) returns (GetOwnerConfigResponse);
+  rpc SaveOwnerConfig(SaveOwnerConfigRequest) returns (SaveOwnerConfigResponse);
+  // ListSymbolConfigs 查询当前可信范围内的全部交易对配置，可按玩法过滤。
+  rpc ListSymbolConfigs(ListSymbolConfigsRequest) returns (ListSymbolConfigsResponse);
+  // GetSymbolConfig 查询当前可信范围内一个玩法和交易对的完整多周期配置。
+  rpc GetSymbolConfig(GetSymbolConfigRequest) returns (GetSymbolConfigResponse);
+  // SaveSymbolConfig 保存当前玩法和交易对的完整配置，成功即发布新版本。
   rpc SaveSymbolConfig(SaveSymbolConfigRequest) returns (SaveSymbolConfigResponse);
-}
-
-// PredictionPlatformAdmin 是兼容旧调用的管理接口；新玩法配置页面使用 PredictionConfigAdmin。
-service PredictionPlatformAdmin {
-  rpc GetPlatformTemplate(GetPlatformTemplateRequest) returns (GetPlatformTemplateResponse);
-  // SavePlatformSymbolConfig 对应玩法配置页的“保存配置”，成功即发布新版本。
-  rpc SavePlatformSymbolConfig(SavePlatformSymbolConfigRequest) returns (SavePlatformSymbolConfigResponse);
-  rpc SavePlatformTemplateDraft(SavePlatformTemplateDraftRequest) returns (SavePlatformTemplateDraftResponse);
-  rpc PublishPlatformTemplate(PublishPlatformTemplateRequest) returns (PublishPlatformTemplateResponse);
-  rpc ListPlatformTemplateVersions(ListPlatformTemplateVersionsRequest) returns (PlatformTemplateVersionPage);
-  rpc ActivatePlatformTemplateVersion(ActivatePlatformTemplateVersionRequest) returns (ActivatePlatformTemplateVersionResponse);
-  rpc ListMerchantConfigStates(ListMerchantConfigStatesRequest) returns (MerchantConfigStatePage);
-  rpc GetMerchantConfig(GetPlatformMerchantConfigRequest) returns (GetPlatformMerchantConfigResponse);
-  rpc DisableMerchantOverride(DisableMerchantOverrideRequest) returns (DisableMerchantOverrideResponse);
-  rpc ResetMerchantConfig(ResetMerchantConfigRequest) returns (ResetMerchantConfigResponse);
-  rpc GetTemplateReconciliationJob(GetTemplateReconciliationJobRequest) returns (GetTemplateReconciliationJobResponse);
-  rpc ListConfigAuditLogs(ListConfigAuditLogsRequest) returns (ListConfigAuditLogsResponse);
-  rpc GetFeatureAvailability(GetPlatformFeatureAvailabilityRequest) returns (GetPlatformFeatureAvailabilityResponse);
-}
-
-// PredictionMerchantAdmin 是兼容旧调用的商户接口；新玩法配置页面使用 PredictionConfigAdmin。
-service PredictionMerchantAdmin {
-  rpc GetMerchantConfig(GetOwnMerchantConfigRequest) returns (GetOwnMerchantConfigResponse);
-  // SaveMerchantSymbolConfig 对应商户玩法配置页的“保存配置”，成功即发布新商户版本。
-  rpc SaveMerchantSymbolConfig(SaveMerchantSymbolConfigRequest) returns (SaveMerchantSymbolConfigResponse);
-  rpc SaveMerchantConfigDraft(SaveMerchantConfigDraftRequest) returns (SaveMerchantConfigDraftResponse);
-  rpc PublishMerchantConfig(PublishMerchantConfigRequest) returns (PublishMerchantConfigResponse);
-  rpc ListMerchantConfigVersions(ListMerchantConfigVersionsRequest) returns (MerchantConfigVersionPage);
-  rpc ListMerchantConfigAuditLogs(ListMerchantConfigAuditLogsRequest) returns (ListMerchantConfigAuditLogsResponse);
-  rpc GetFeatureAvailability(GetMerchantFeatureAvailabilityRequest) returns (GetMerchantFeatureAvailabilityResponse);
-}
-
-enum ConfigVersionState {
-  CONFIG_VERSION_STATE_UNSPECIFIED = 0;
-  CONFIG_VERSION_STATE_DRAFT = 1;
-  CONFIG_VERSION_STATE_PUBLISHED = 2;
-  CONFIG_VERSION_STATE_ACTIVE = 3;
-  CONFIG_VERSION_STATE_SUPERSEDED = 4;
-}
-
-enum MerchantOverrideState {
-  MERCHANT_OVERRIDE_STATE_UNSPECIFIED = 0;
-  MERCHANT_OVERRIDE_STATE_ENABLED = 1;
-  MERCHANT_OVERRIDE_STATE_DISABLED = 2;
-  MERCHANT_OVERRIDE_STATE_INHERITED = 3;
+  // GetSiteConfig 查询精确站点、玩法和交易对的已存与当前生效配置。
+  rpc GetSiteConfig(GetSiteConfigRequest) returns (GetSiteConfigResponse);
+  // SaveSiteConfig 保存精确站点配置；授权站点只来自服务端文件门禁。
+  rpc SaveSiteConfig(SaveSiteConfigRequest) returns (SaveSiteConfigResponse);
 }
 
 enum ReconciliationJobState {
@@ -71,20 +37,13 @@ enum ReconciliationJobState {
 enum ConfigScope {
   CONFIG_SCOPE_UNSPECIFIED = 0;
   CONFIG_SCOPE_PLATFORM = 1;
-  CONFIG_SCOPE_MERCHANT = 2;
-}
-
-enum PredictionFeature {
-  PREDICTION_FEATURE_UNSPECIFIED = 0;
-  PREDICTION_FEATURE_UP_DOWN = 1;
-  PREDICTION_FEATURE_HIGH_LOW = 2;
-  PREDICTION_FEATURE_UP_DOWN_MARKET_MAKING = 3;
-  PREDICTION_FEATURE_PREDICTION_GRID = 4;
+  CONFIG_SCOPE_AGENT = 2;
 }
 
 message PlatformRuleTemplate {
   GameType game_type = 1;
   string symbol = 2;
+  // 完整周期；UP_DOWN 新配置仅允许 35/40/45/60/90，对应 30 秒下注加 5/10/15/30/60 秒观察。
   int64 duration_seconds = 3;
   bool enabled_by_default = 4;
   IntegerConstraint bet_open_seconds = 5;
@@ -96,28 +55,25 @@ message PlatformRuleTemplate {
   DecimalConstraint maximum_stake = 11;
   int64 settlement_display_seconds = 12;
   PriceRule price_rule = 13;
+  // market_id 是跨配置版本稳定的市场标识，由服务端生成并回显。
+  string market_id = 14;
+  // UP_DOWN 只使用一个未退役的稳定技术档位（可保留退役历史档位）；HIGH_LOW 保持顶层单区间。
+  repeated PlatformStakeTier stake_tiers = 15;
 }
 
-message PlatformTemplateDraft {
-  string draft_id = 1;
-  int64 based_on_version = 2;
-  repeated PlatformRuleTemplate rules = 3;
-  int64 updated_at_ms = 4;
+message PlatformStakeTier {
+  string stake_tier_id = 1;
+  bool enabled_by_default = 2;
+  int32 display_order = 3;
+  DecimalConstraint minimum_stake = 4;
+  DecimalConstraint maximum_stake = 5;
+  bool retired = 6;
 }
 
-message PlatformTemplateVersion {
-  string version_id = 1;
-  int64 version = 2;
-  ConfigVersionState state = 3;
-  repeated PlatformRuleTemplate rules = 4;
-  int64 created_at_ms = 5;
-  int64 published_at_ms = 6;
-  optional int64 activated_at_ms = 7;
-}
-
-message MerchantRuleOverride {
+message AgentRuleOverride {
   GameType game_type = 1;
   string symbol = 2;
+  // 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
   int64 duration_seconds = 3;
   optional bool enabled = 4;
   optional int64 bet_open_seconds = 5;
@@ -127,27 +83,15 @@ message MerchantRuleOverride {
   optional string fixed_odds = 9;
   optional string minimum_stake = 10;
   optional string maximum_stake = 11;
+  // UP_DOWN 商户只可提交唯一技术档位的 enabled/maximum_stake。
+  repeated AgentStakeTierOverride stake_tiers = 12;
 }
 
-message EffectiveRule {
-  GameType game_type = 1;
-  string symbol = 2;
-  int64 duration_seconds = 3;
-  bool enabled = 4;
-  int64 bet_open_seconds = 5;
-  string target_payout_rate = 6;
-  string minimum_odds = 7;
-  string maximum_odds = 8;
-  string fixed_odds = 9;
-  string minimum_stake = 10;
-  string maximum_stake = 11;
-  int64 settlement_display_seconds = 12;
-  PriceRule price_rule = 13;
-}
-
-message ConfigFieldSource {
-  string field = 1;
-  ConfigValueSource source = 2;
+message AgentStakeTierOverride {
+  string stake_tier_id = 1;
+  optional bool enabled = 2;
+  optional string minimum_stake = 3;
+  optional string maximum_stake = 4;
 }
 
 message ForcedConfigAdjustment {
@@ -158,30 +102,7 @@ message ForcedConfigAdjustment {
   int64 adjusted_at_ms = 5;
 }
 
-message MerchantEffectiveRule {
-  MerchantRuleOverride merchant_override = 1;
-  EffectiveRule effective_value = 2;
-  repeated ConfigFieldSource value_sources = 3;
-  int64 template_version = 4;
-  int64 merchant_version = 5;
-  string effective_version = 6;
-  ConfigValidationStatus validation_status = 7;
-  repeated ForcedConfigAdjustment forced_adjustments = 8;
-  // template_rule 是商户当前可调整的总平台约束，页面据此展示范围和可编辑性。
-  PlatformRuleTemplate template_rule = 9;
-}
-
-message MerchantConfig {
-  string merchant_id = 1;
-  MerchantOverrideState override_state = 2;
-  int64 based_on_template_version = 3;
-  int64 merchant_version = 4;
-  string effective_version = 5;
-  repeated MerchantEffectiveRule rules = 6;
-  int64 updated_at_ms = 7;
-}
-
-// IntegerConfigField 让平台和商户页面使用同一字段结构。
+// IntegerConfigField 让平台和商户保存回执使用同一字段结构。
 // value 是当前范围的生效值，template_value 是商户不可突破的平台模板值。
 message IntegerConfigField {
   int64 value = 1;
@@ -189,7 +110,7 @@ message IntegerConfigField {
   int64 default_value = 3;
   int64 minimum_value = 4;
   int64 maximum_value = 5;
-  bool merchant_editable = 6;
+  bool agent_editable = 6;
   bool overridden = 7;
 }
 
@@ -199,20 +120,19 @@ message DecimalConfigField {
   string default_value = 3;
   string minimum_value = 4;
   string maximum_value = 5;
-  bool merchant_editable = 6;
+  bool agent_editable = 6;
   bool overridden = 7;
 }
 
-// GameplayConfigRule 是统一页面规则视图。平台和商户范围使用相同的扁平字段结构。
+// GameplayConfigRule 是统一保存回执中的扁平规则视图。
 message GameplayConfigRule {
-  PlatformRuleTemplate template_rule = 1 [deprecated = true];
-  optional MerchantRuleOverride merchant_override = 2 [deprecated = true];
-  EffectiveRule effective_value = 3 [deprecated = true];
-  repeated ConfigFieldSource value_sources = 4 [deprecated = true];
+  reserved 1 to 4;
+  reserved "template_rule", "agent_override", "effective_value", "value_sources";
   ConfigValidationStatus validation_status = 5;
   repeated ForcedConfigAdjustment forced_adjustments = 6;
   GameType game_type = 7;
   string symbol = 8;
+  // 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
   int64 duration_seconds = 9;
   bool enabled = 10;
   bool enabled_by_default = 11;
@@ -225,54 +145,80 @@ message GameplayConfigRule {
   DecimalConfigField maximum_stake = 18;
   int64 settlement_display_seconds = 19;
   PriceRule price_rule = 20;
+  string market_id = 21;
+  repeated GameplayStakeTier stake_tiers = 22;
+}
+
+message GameplayStakeTier {
+  string stake_tier_id = 1;
+  bool enabled = 2;
+  bool enabled_by_default = 3;
+  int32 display_order = 4;
+  DecimalConfigField minimum_stake = 5;
+  DecimalConfigField maximum_stake = 6;
+  bool retired = 7;
 }
 
 message GameplayConfig {
   ConfigScope scope = 1;
-  // merchant_id 只由服务根据可信 metadata 回显，平台范围为空。
-  string merchant_id = 2;
+  // agent_id 只由服务根据可信 metadata 回显，平台范围为空。
+  string agent_id = 2;
   int64 template_version = 3;
-  int64 merchant_version = 4;
+  int64 agent_version = 4;
   string effective_version = 5;
   repeated GameplayConfigRule rules = 6;
   int64 updated_at_ms = 7;
+  // 独立币种总开关；房间存在状态由 enabled_by_default 表示。
+  optional bool symbol_enabled = 8;
 }
 
-message GetGameplayConfigRequest {
+message PlatformSymbolConfigInput {
+  // 仅控制该交易对能否出现在预测玩法页面并接受新预测订单。
+  optional bool enabled = 1;
+  // 平台提交当前交易对的完整配置；UP_DOWN 必须提交 35/40/45/60/90 五个完整周期。
+  repeated PlatformRuleTemplate rules = 2;
+}
+
+message AgentSymbolConfigInput {
+  // 仅控制该交易对能否在当前商户的预测玩法页面游玩。
+  optional bool enabled = 1;
+  // 只提交本次需要替换的周期；UP_DOWN 仅允许房间启停及唯一技术档位最大额。
+  repeated AgentRuleOverride overrides = 2;
+}
+
+// ListSymbolConfigsRequest 不接受商户或操作人字段；查询范围只来自可信 metadata。
+message ListSymbolConfigsRequest {
+  // 未设置时返回 UP_DOWN 与 HIGH_LOW 的全部当前配置。
+  optional GameType game_type = 1;
+}
+
+message ListSymbolConfigsResponse {
+  // 每项对应一个稳定的 (game_type, symbol)，rules 包含该交易对的全部周期。
+  repeated GameplayConfig configurations = 1;
+}
+
+// GetSymbolConfigRequest 不接受商户或操作人字段；查询范围只来自可信 metadata。
+message GetSymbolConfigRequest {
   GameType game_type = 1;
   string symbol = 2;
 }
 
-message GetGameplayConfigResponse {
+message GetSymbolConfigResponse {
   GameplayConfig configuration = 1;
 }
 
-message PlatformSymbolConfigInput {
-  // 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
-  optional bool enabled = 1;
-  // 平台提交当前币种的完整周期；周期内可省略与外层重复的 game_type、symbol 和 enabled_by_default。
-  repeated PlatformRuleTemplate rules = 2;
-}
-
-message MerchantSymbolConfigInput {
-  // 仅控制该币种能否在当前商户的预测玩法页面游玩。
-  optional bool enabled = 1;
-  // 只提交本次需要替换的周期；周期内可省略与外层重复的 game_type、symbol。
-  // 未提交周期保持不变，已提交周期中未设置的 optional 字段恢复继承平台模板。
-  repeated MerchantRuleOverride overrides = 2;
-}
-
 message SaveSymbolConfigRequest {
-  uint32 schema_version = 1;
+  reserved 1;
+  reserved "schema_version";
   string client_request_id = 2;
   string reason = 3;
   int64 based_on_template_version = 4;
-  int64 based_on_merchant_version = 5;
+  int64 based_on_agent_version = 5;
   GameType game_type = 6;
   string symbol = 7;
   oneof configuration {
     PlatformSymbolConfigInput platform_template = 8;
-    MerchantSymbolConfigInput merchant_override = 9;
+    AgentSymbolConfigInput agent_override = 9;
   }
 }
 
@@ -282,31 +228,92 @@ message SaveSymbolConfigResponse {
   optional TemplateReconciliationJob reconciliation_job = 3;
 }
 
-message MerchantConfigDraft {
-  string draft_id = 1;
-  int64 based_on_template_version = 2;
-  repeated MerchantRuleOverride overrides = 3;
-  int64 updated_at_ms = 4;
+message GetSiteConfigRequest {
+  string site_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
 }
 
-message MerchantConfigVersion {
-  string version_id = 1;
-  int64 version = 2;
-  int64 based_on_template_version = 3;
-  ConfigVersionState state = 4;
-  MerchantOverrideState override_state = 5;
-  repeated MerchantRuleOverride overrides = 6;
-  int64 published_at_ms = 7;
+message SaveSiteConfigRequest {
+  string client_request_id = 1;
+  string reason = 2;
+  string site_id = 3;
+  GameType game_type = 4;
+  string symbol = 5;
+  int64 based_on_public_version = 6;
+  int64 based_on_site_version = 7;
+  bool enabled = 8;
+  repeated AgentRuleOverride overrides = 9;
 }
 
-message MerchantConfigState {
-  string merchant_id = 1;
-  MerchantOverrideState override_state = 2;
-  int64 template_version = 3;
-  int64 merchant_version = 4;
-  string effective_version = 5;
-  ConfigValidationStatus validation_status = 6;
-  int64 updated_at_ms = 7;
+message SiteConfigVersion {
+  string site_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
+  int64 version = 4;
+  int64 based_on_public_version = 5;
+  bool enabled = 6;
+  repeated AgentRuleOverride overrides = 7;
+}
+
+message SiteEffectiveRule {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 duration_seconds = 3;
+  string market_id = 4;
+  repeated SiteEffectiveStakeTier stake_tiers = 5;
+  bool enabled = 6;
+  int64 bet_open_seconds = 7;
+  string target_payout_rate = 8;
+  string minimum_odds = 9;
+  string maximum_odds = 10;
+  string fixed_odds = 11;
+  string minimum_stake = 12;
+  string maximum_stake = 13;
+  int64 settlement_display_seconds = 14;
+  PriceRule price_rule = 15;
+  ConfigValidationStatus validation_status = 16;
+}
+
+message SiteEffectiveStakeTier {
+  string stake_tier_id = 1;
+  bool enabled = 2;
+  int32 display_order = 3;
+  string minimum_stake = 4;
+  string maximum_stake = 5;
+  bool retired = 6;
+}
+
+message SiteEffectiveConfig {
+  string site_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
+  int64 public_version = 4;
+  int64 site_version = 5;
+  int64 based_on_public_version = 6;
+  bool enabled = 7;
+  repeated SiteEffectiveRule rules = 8;
+}
+
+message SiteConfigAdjustment {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 duration_seconds = 3;
+  string field = 4;
+  string before_value = 5;
+  string after_value = 6;
+  string reason = 7;
+}
+
+message GetSiteConfigResponse {
+  SiteConfigVersion stored = 1;
+  SiteEffectiveConfig effective = 2;
+  repeated SiteConfigAdjustment adjustments = 3;
+}
+
+message SaveSiteConfigResponse {
+  SiteConfigVersion stored = 1;
+  OperationReceipt receipt = 2;
 }
 
 message TemplateReconciliationJob {
@@ -323,269 +330,51 @@ message TemplateReconciliationJob {
   optional int64 completed_at_ms = 11;
 }
 
-message ConfigAuditLog {
-  string operation_id = 1;
-  string operator_id = 2;
-  string merchant_id = 3;
-  string source = 4;
-  string action = 5;
-  string target_type = 6;
-  string target_id = 7;
-  string reason = 8;
-  bytes before_json = 9;
-  bytes after_json = 10;
-  OperationResult result = 11;
-  string error_code = 12;
-  int64 created_at_ms = 13;
-  int64 completed_at_ms = 14;
+// Owner and funding site are never accepted as writable request fields.
+message ListOwnerConfigsRequest { GameType game_type = 1; }
+message GetOwnerConfigRequest { GameType game_type = 1; string symbol = 2; }
+message OwnerLimitChange {
+  int64 duration_seconds = 1;
+  string stake_tier_id = 2;
+  int64 based_rule_epoch = 3;
+  string minimum_stake = 4;
+  string maximum_stake = 5;
+  optional bool enabled = 6;
+  optional string target_payout_rate = 7;
+  optional string maximum_odds = 8;
+  optional string fixed_odds = 9;
 }
-
-message FeatureAvailability {
-  PredictionFeature feature = 1;
-  FeatureState state = 2;
-  string reason = 3;
+message SaveOwnerConfigRequest {
+  GameType game_type = 1;
+  string symbol = 2;
+  int64 based_owner_revision = 3;
+  repeated OwnerLimitChange changes = 4;
+  string client_request_id = 5;
+  string reason = 6;
+  optional bool enabled = 7;
 }
-
-message GetPlatformTemplateRequest {
-  int64 version = 1;
-  bool include_draft = 2;
+message OwnerEffectiveRule {
+  SiteEffectiveRule rule = 1;
+  int64 rule_epoch = 2;
+  string platform_minimum_stake = 3;
+  string platform_maximum_stake = 4;
+  bool custom = 5;
+  bool platform_enabled = 6;
+  bool owner_enabled = 7;
+  string platform_target_payout_rate = 8;
+  string platform_maximum_odds = 9;
+  string platform_fixed_odds = 10;
 }
-
-message GetPlatformTemplateResponse {
-  optional PlatformTemplateDraft draft = 1;
-  PlatformTemplateVersion current = 2;
+message OwnerConfig {
+  string owner_agent_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
+  int64 public_version = 4;
+  int64 owner_revision = 5;
+  repeated OwnerEffectiveRule rules = 6;
+  bool enabled = 7;
+  bool platform_enabled = 8;
 }
-
-message SavePlatformSymbolConfigRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  int64 based_on_version = 4;
-  GameType game_type = 5;
-  string symbol = 6;
-  // 仅控制该币种能否出现在预测玩法页面并接受新预测订单。
-  optional bool platform_enabled = 7;
-  // 当前玩法和币种的完整周期配置；每条规则的 game_type、symbol 必须与请求一致。
-  repeated PlatformRuleTemplate rules = 8;
-}
-
-message SavePlatformSymbolConfigResponse {
-  PlatformTemplateVersion version = 1;
-  OperationReceipt receipt = 2;
-}
-
-message SavePlatformTemplateDraftRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  string draft_id = 4;
-  int64 based_on_version = 5;
-  repeated PlatformRuleTemplate rules = 6;
-}
-
-message SavePlatformTemplateDraftResponse {
-  PlatformTemplateDraft draft = 1;
-  OperationReceipt receipt = 2;
-}
-
-message PublishPlatformTemplateRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  string draft_id = 4;
-}
-
-message PublishPlatformTemplateResponse {
-  PlatformTemplateVersion version = 1;
-  TemplateReconciliationJob reconciliation_job = 2;
-  OperationReceipt receipt = 3;
-}
-
-message ListPlatformTemplateVersionsRequest {
-  int32 page_size = 1;
-  string cursor = 2;
-}
-
-message PlatformTemplateVersionPage {
-  repeated PlatformTemplateVersion items = 1;
-  string next_cursor = 2;
-}
-
-message ActivatePlatformTemplateVersionRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  int64 version = 4;
-}
-
-message ActivatePlatformTemplateVersionResponse {
-  PlatformTemplateVersion version = 1;
-  TemplateReconciliationJob reconciliation_job = 2;
-  OperationReceipt receipt = 3;
-}
-
-message ListMerchantConfigStatesRequest {
-  string merchant_id = 1;
-  MerchantOverrideState override_state = 2;
-  ConfigValidationStatus validation_status = 3;
-  int32 page_size = 4;
-  string cursor = 5;
-}
-
-message MerchantConfigStatePage {
-  repeated MerchantConfigState items = 1;
-  string next_cursor = 2;
-}
-
-message GetPlatformMerchantConfigRequest {
-  string merchant_id = 1;
-}
-
-message GetOwnMerchantConfigRequest {
-  bool include_draft = 1;
-}
-
-message GetPlatformMerchantConfigResponse {
-  MerchantConfig configuration = 1;
-  optional MerchantConfigDraft draft = 2;
-}
-
-message GetOwnMerchantConfigResponse {
-  MerchantConfig configuration = 1;
-  optional MerchantConfigDraft draft = 2;
-}
-
-message SaveMerchantSymbolConfigRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  int64 based_on_template_version = 4;
-  int64 based_on_merchant_version = 5;
-  GameType game_type = 6;
-  string symbol = 7;
-  // 仅控制该币种能否在当前商户的预测玩法页面游玩。
-  optional bool merchant_enabled = 8;
-  // 当前玩法和币种在总平台模板中的完整周期覆盖；不允许漏传或增加平台未配置周期。
-  repeated MerchantRuleOverride overrides = 9;
-}
-
-message SaveMerchantSymbolConfigResponse {
-  MerchantConfigVersion version = 1;
-  MerchantConfig configuration = 2;
-  OperationReceipt receipt = 3;
-}
-
-message DisableMerchantOverrideRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  string merchant_id = 4;
-}
-
-message ResetMerchantConfigRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  string merchant_id = 4;
-}
-
-message DisableMerchantOverrideResponse {
-  MerchantConfigVersion version = 1;
-  MerchantConfig configuration = 2;
-  OperationReceipt receipt = 3;
-}
-
-message ResetMerchantConfigResponse {
-  MerchantConfigVersion version = 1;
-  MerchantConfig configuration = 2;
-  OperationReceipt receipt = 3;
-}
-
-message GetTemplateReconciliationJobRequest {
-  string job_id = 1;
-}
-
-message GetTemplateReconciliationJobResponse {
-  TemplateReconciliationJob job = 1;
-}
-
-message ListConfigAuditLogsRequest {
-  string merchant_id = 1;
-  string operator_id = 2;
-  string action = 3;
-  OperationResult result = 4;
-  int64 from_ms = 5;
-  int64 to_ms = 6;
-  int32 page_size = 7;
-  string cursor = 8;
-}
-
-message ListMerchantConfigAuditLogsRequest {
-  string operator_id = 1;
-  string action = 2;
-  OperationResult result = 3;
-  int64 from_ms = 4;
-  int64 to_ms = 5;
-  int32 page_size = 6;
-  string cursor = 7;
-}
-
-message ListConfigAuditLogsResponse {
-  repeated ConfigAuditLog items = 1;
-  string next_cursor = 2;
-}
-
-message ListMerchantConfigAuditLogsResponse {
-  repeated ConfigAuditLog items = 1;
-  string next_cursor = 2;
-}
-
-message GetPlatformFeatureAvailabilityRequest {}
-
-message GetMerchantFeatureAvailabilityRequest {}
-
-message GetPlatformFeatureAvailabilityResponse {
-  repeated FeatureAvailability items = 1;
-}
-
-message GetMerchantFeatureAvailabilityResponse {
-  repeated FeatureAvailability items = 1;
-}
-
-message SaveMerchantConfigDraftRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  string draft_id = 4;
-  int64 based_on_template_version = 5;
-  repeated MerchantRuleOverride overrides = 6;
-}
-
-message SaveMerchantConfigDraftResponse {
-  MerchantConfigDraft draft = 1;
-  OperationReceipt receipt = 2;
-}
-
-message PublishMerchantConfigRequest {
-  uint32 schema_version = 1;
-  string client_request_id = 2;
-  string reason = 3;
-  string draft_id = 4;
-  int64 based_on_template_version = 5;
-}
-
-message PublishMerchantConfigResponse {
-  MerchantConfigVersion version = 1;
-  MerchantConfig configuration = 2;
-  OperationReceipt receipt = 3;
-}
-
-message ListMerchantConfigVersionsRequest {
-  int32 page_size = 1;
-  string cursor = 2;
-}
-
-message MerchantConfigVersionPage {
-  repeated MerchantConfigVersion items = 1;
-  string next_cursor = 2;
-}
+message ListOwnerConfigsResponse { repeated OwnerConfig items = 1; }
+message GetOwnerConfigResponse { OwnerConfig configuration = 1; }
+message SaveOwnerConfigResponse { OwnerConfig configuration = 1; OperationReceipt receipt = 2; }

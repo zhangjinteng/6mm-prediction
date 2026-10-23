@@ -1,0 +1,244 @@
+syntax = "proto3";
+
+package prediction.v1;
+
+import "prediction/v1/common.proto";
+
+option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
+
+// PredictionAdminQuery 仅供已认证的 platform_admin / agent_admin 服务调用。
+// platform_admin 可按 agent_id 查询；agent_admin 的商户范围始终由可信 principal 覆盖。
+service PredictionAdminQuery {
+  rpc ListRounds(ListAdminRoundsRequest) returns (AdminRoundPage);
+  rpc ListOrders(ListAdminOrdersRequest) returns (AdminOrderPage);
+  rpc GetOrder(GetAdminOrderRequest) returns (AdminOrderDetail);
+}
+
+enum AdminQueryTimeField {
+  ADMIN_QUERY_TIME_FIELD_UNSPECIFIED = 0;
+  ADMIN_QUERY_TIME_FIELD_CREATED_AT = 1;
+  ADMIN_QUERY_TIME_FIELD_FUNDS_COMPLETED_AT = 2;
+  ADMIN_QUERY_TIME_FIELD_DRAW_AT = 3;
+}
+// Message presence distinguishes no filtering from an intentionally empty match.
+message AdminUserFilter {
+  repeated string user_ids = 1;
+}
+
+enum AdminOrderView {
+  ADMIN_ORDER_VIEW_UNSPECIFIED = 0;
+  ADMIN_ORDER_VIEW_CURRENT = 1;
+  ADMIN_ORDER_VIEW_HISTORY = 2;
+}
+
+enum AdminSortDirection {
+  ADMIN_SORT_DIRECTION_UNSPECIFIED = 0;
+  ADMIN_SORT_DIRECTION_ASC = 1;
+  ADMIN_SORT_DIRECTION_DESC = 2;
+}
+
+enum AdminOrderSortField {
+  ADMIN_ORDER_SORT_FIELD_UNSPECIFIED = 0;
+  ADMIN_ORDER_SORT_FIELD_CREATED_AT = 1;
+  ADMIN_ORDER_SORT_FIELD_SETTLED_AT = 2;
+  ADMIN_ORDER_SORT_FIELD_STAKE = 3;
+  ADMIN_ORDER_SORT_FIELD_FINAL_RETURN = 4;
+}
+
+enum AdminRoundSortField {
+  ADMIN_ROUND_SORT_FIELD_UNSPECIFIED = 0;
+  ADMIN_ROUND_SORT_FIELD_BET_OPEN_AT = 1;
+  ADMIN_ROUND_SORT_FIELD_BET_CLOSE_AT = 2;
+  ADMIN_ROUND_SORT_FIELD_TOTAL_STAKE = 3;
+  ADMIN_ROUND_SORT_FIELD_AGENT_REVENUE = 4;
+}
+
+message ListAdminRoundsRequest {
+  string agent_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
+  string market_id = 4;
+  RoundState status = 5;
+  int64 created_from_ms = 6;
+  int64 created_to_ms = 7;
+  int32 page_number = 8;
+  int32 page_size = 9;
+  AdminRoundSortField sort_field = 10;
+  AdminSortDirection sort_direction = 11;
+  string round_id = 12;
+  int64 duration_seconds = 13;
+  OrderResult result = 14;
+  // New field/from/to must be complete and cannot mix with created_* inputs.
+  AdminQueryTimeField time_field = 15;
+  int64 time_from_ms = 16;
+  int64 time_to_ms = 17;
+}
+
+message ListAdminOrdersRequest {
+  string agent_id = 1;
+  GameType game_type = 2;
+  string symbol = 3;
+  string market_id = 4;
+  string home_site_id = 5;
+  string round_id = 6;
+  string order_id = 7;
+  string user_id = 8;
+  Direction direction = 9;
+  OrderSource order_source = 10;
+  AdminOrderView view = 11;
+  BusinessStatus business_status = 12;
+  FundStatus fund_status = 13;
+  OrderResult result = 14;
+  int64 created_from_ms = 15;
+  int64 created_to_ms = 16;
+  int32 page_number = 17;
+  int32 page_size = 18;
+  AdminOrderSortField sort_field = 19;
+  AdminSortDirection sort_direction = 20;
+  int64 duration_seconds = 21;
+  // New field/from/to must be complete and cannot mix with created_* inputs.
+  AdminQueryTimeField time_field = 22;
+  int64 time_from_ms = 23;
+  int64 time_to_ms = 24;
+  AdminUserFilter user_filter = 25;
+}
+
+message GetAdminOrderRequest {
+  string order_id = 1;
+}
+
+message AdminRoundPage {
+  repeated AdminRound items = 1;
+  int32 page_number = 2;
+  int32 page_size = 3;
+  int64 total_count = 4;
+  int64 total_pages = 5;
+  uint32 query_contract_version = 6;
+}
+
+message AdminOrderPage {
+  repeated AdminOrderSummary items = 1;
+  int32 page_number = 2;
+  int32 page_size = 3;
+  int64 total_count = 4;
+  int64 total_pages = 5;
+  uint32 query_contract_version = 6;
+}
+
+message AdminRound {
+  string agent_id = 1;
+  string round_id = 2;
+  string generation_id = 3;
+  string market_id = 4;
+  string symbol = 5;
+  int64 duration_seconds = 6;
+  string room_code = 7;
+  RoundState status = 8;
+  OrderResult result = 9;
+  RoundCancelReason cancel_reason = 10;
+  int64 config_version = 11;
+  string settlement_asset = 12;
+  string pool_share = 13;
+  string up_pool = 14;
+  string down_pool = 15;
+  string locked_up_pool = 16;
+  string locked_down_pool = 17;
+  Odds up_odds = 18;
+  Odds down_odds = 19;
+  optional string start_price = 20;
+  optional string end_price = 21;
+  int64 bet_open_at_ms = 22;
+  int64 bet_close_at_ms = 23;
+  int64 observe_end_at_ms = 24;
+  int64 display_end_at_ms = 25;
+  optional int64 result_at_ms = 26;
+  int64 participant_count = 27;
+  int64 order_count = 28;
+  string total_stake = 29;
+  string total_return = 30;
+  string platform_revenue = 31;
+  string truncation_tail = 32;
+  string agent_profit = 33;
+  optional int64 settled_at_ms = 34;
+  string player_stake = 35;
+  string market_maker_stake = 36;
+  int64 player_order_count = 37;
+  int64 market_maker_order_count = 38;
+  int64 draw_at_ms = 39;
+}
+
+message AdminOrderSummary {
+  string order_id = 1;
+  string agent_id = 2;
+  string user_id = 3;
+  string home_site_id = 4;
+  OrderSource order_source = 5;
+  GameType game_type = 6;
+  string symbol = 7;
+  string market_id = 8;
+  Direction direction = 9;
+  string settlement_asset = 10;
+  string stake = 11;
+  string estimated_net_profit = 12;
+  string estimated_return = 13;
+  optional string final_net_profit = 14;
+  optional string final_return = 15;
+  BusinessStatus business_status = 16;
+  FundStatus fund_status = 17;
+  FundStatus unknown_from = 18;
+  OrderResult result = 19;
+  int64 config_version = 20;
+  int64 created_at_ms = 21;
+  optional int64 accepted_at_ms = 22;
+  optional int64 expire_at_ms = 23;
+  optional int64 result_at_ms = 24;
+  optional int64 settled_at_ms = 25;
+  string round_id = 26;
+  int64 duration_seconds = 27;
+  optional string open_price = 28;
+  optional string result_price = 29;
+  string funds_transaction_id = 30;
+  string agent_profit = 31;
+  string client_request_id = 32;
+  uint64 order_version = 33;
+  optional string fixed_odds = 34;
+  Odds placement_odds = 35;
+  optional string actual_direction = 36;
+  optional string actual_return = 37;
+  optional string realized_pnl = 38;
+  optional string settlement_ledger_id = 39;
+  optional int64 funds_completed_at_ms = 40;
+  // Actual per-order settlement odds; absent until persisted. Not placement odds.
+  Odds final_odds = 41;
+  optional string order_no = 42;
+  optional string debit_ledger_id = 43;
+}
+
+message AdminUpDownOrderDetail {
+  string round_id = 1;
+  string room_code = 2;
+  Odds final_odds = 3;
+  repeated PriceEvidence price_evidence = 4;
+  string platform_revenue = 5;
+  string truncation_tail = 6;
+  int64 duration_seconds = 7;
+  string agent_profit = 8;
+}
+
+message AdminHighLowOrderDetail {
+  int64 duration_seconds = 1;
+  string net_return_rate = 2;
+  string open_price = 3;
+  optional string expiry_price = 4;
+  string risk_reserve = 5;
+  repeated PriceEvidence price_evidence = 6;
+  string agent_profit = 7;
+}
+
+message AdminOrderDetail {
+  AdminOrderSummary summary = 1;
+  oneof game_detail {
+    AdminUpDownOrderDetail up_down = 2;
+    AdminHighLowOrderDetail high_low = 3;
+  }
+}

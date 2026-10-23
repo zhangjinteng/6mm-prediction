@@ -67,9 +67,9 @@ class ForcedConfigAdjustment extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setField(string $var)
+    public function setField($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->field = $var;
 
         return $this;
@@ -89,9 +89,9 @@ class ForcedConfigAdjustment extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setBeforeValue(string $var)
+    public function setBeforeValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->before_value = $var;
 
         return $this;
@@ -111,9 +111,9 @@ class ForcedConfigAdjustment extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setAfterValue(string $var)
+    public function setAfterValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->after_value = $var;
 
         return $this;
@@ -133,9 +133,9 @@ class ForcedConfigAdjustment extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setReason(string $var)
+    public function setReason($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->reason = $var;
 
         return $this;
@@ -155,7 +155,7 @@ class ForcedConfigAdjustment extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setAdjustedAtMs(int|string $var)
+    public function setAdjustedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->adjusted_at_ms = $var;
@@ -164,4 +164,3 @@ class ForcedConfigAdjustment extends \Google\Protobuf\Internal\Message
     }
 
 }
-

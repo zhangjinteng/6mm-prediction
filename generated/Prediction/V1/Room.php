@@ -57,9 +57,9 @@ class Room extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setCode(string $var)
+    public function setCode($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->code = $var;
 
         return $this;
@@ -79,9 +79,9 @@ class Room extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMinStake(string $var)
+    public function setMinStake($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->min_stake = $var;
 
         return $this;
@@ -101,13 +101,12 @@ class Room extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMaxStake(string $var)
+    public function setMaxStake($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->max_stake = $var;
 
         return $this;
     }
 
 }
-

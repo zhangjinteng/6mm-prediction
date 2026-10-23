@@ -67,7 +67,7 @@ class PlayerHighLowOrderDetail extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -89,9 +89,9 @@ class PlayerHighLowOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setNetReturnRate(string $var)
+    public function setNetReturnRate($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->net_return_rate = $var;
 
         return $this;
@@ -111,9 +111,9 @@ class PlayerHighLowOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setOpenPrice(string $var)
+    public function setOpenPrice($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->open_price = $var;
 
         return $this;
@@ -143,9 +143,9 @@ class PlayerHighLowOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setExpiryPrice(string $var)
+    public function setExpiryPrice($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->expiry_price = $var;
 
         return $this;
@@ -165,13 +165,12 @@ class PlayerHighLowOrderDetail extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setFixedOdds(string $var)
+    public function setFixedOdds($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->fixed_odds = $var;
 
         return $this;
     }
 
 }
-

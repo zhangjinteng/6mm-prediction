@@ -21,14 +21,14 @@ class ConfigScope
      */
     const CONFIG_SCOPE_PLATFORM = 1;
     /**
-     * Generated from protobuf enum <code>CONFIG_SCOPE_MERCHANT = 2;</code>
+     * Generated from protobuf enum <code>CONFIG_SCOPE_AGENT = 2;</code>
      */
-    const CONFIG_SCOPE_MERCHANT = 2;
+    const CONFIG_SCOPE_AGENT = 2;
 
     private static $valueToName = [
         self::CONFIG_SCOPE_UNSPECIFIED => 'CONFIG_SCOPE_UNSPECIFIED',
         self::CONFIG_SCOPE_PLATFORM => 'CONFIG_SCOPE_PLATFORM',
-        self::CONFIG_SCOPE_MERCHANT => 'CONFIG_SCOPE_MERCHANT',
+        self::CONFIG_SCOPE_AGENT => 'CONFIG_SCOPE_AGENT',
     ];
 
     public static function name($value)
@@ -51,4 +51,3 @@ class ConfigScope
         return constant($const);
     }
 }
-

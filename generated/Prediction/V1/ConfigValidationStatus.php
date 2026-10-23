@@ -56,4 +56,3 @@ class ConfigValidationStatus
         return constant($const);
     }
 }
-

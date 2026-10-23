@@ -23,7 +23,8 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      */
     protected $symbol = '';
     /**
-     * Generated from protobuf field <code>string room_code = 3;</code>
+     * Generated from protobuf field <code>string room_code = 3 [deprecated = true];</code>
+     * @deprecated
      */
     protected $room_code = '';
     /**
@@ -47,23 +48,28 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      */
     protected $settlement_asset = '';
     /**
-     * Generated from protobuf field <code>string pool_share = 9;</code>
+     * Generated from protobuf field <code>string pool_share = 9 [deprecated = true];</code>
+     * @deprecated
      */
     protected $pool_share = '';
     /**
-     * Generated from protobuf field <code>string up_pool = 10;</code>
+     * Generated from protobuf field <code>string up_pool = 10 [deprecated = true];</code>
+     * @deprecated
      */
     protected $up_pool = '';
     /**
-     * Generated from protobuf field <code>string down_pool = 11;</code>
+     * Generated from protobuf field <code>string down_pool = 11 [deprecated = true];</code>
+     * @deprecated
      */
     protected $down_pool = '';
     /**
-     * Generated from protobuf field <code>.prediction.v1.Odds up_odds = 12;</code>
+     * Generated from protobuf field <code>.prediction.v1.Odds up_odds = 12 [deprecated = true];</code>
+     * @deprecated
      */
     protected $up_odds = null;
     /**
-     * Generated from protobuf field <code>.prediction.v1.Odds down_odds = 13;</code>
+     * Generated from protobuf field <code>.prediction.v1.Odds down_odds = 13 [deprecated = true];</code>
+     * @deprecated
      */
     protected $down_odds = null;
     /**
@@ -91,17 +97,37 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      */
     protected $display_end_at_ms = 0;
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 20;</code>
      */
     protected $duration_seconds = 0;
     /**
-     * Generated from protobuf field <code>int64 participant_count = 21;</code>
+     * Generated from protobuf field <code>int64 participant_count = 21 [deprecated = true];</code>
+     * @deprecated
      */
     protected $participant_count = 0;
     /**
-     * Generated from protobuf field <code>int64 order_count = 22;</code>
+     * Generated from protobuf field <code>int64 order_count = 22 [deprecated = true];</code>
+     * @deprecated
      */
     protected $order_count = 0;
+    /**
+     * Generated from protobuf field <code>string market_id = 23;</code>
+     */
+    protected $market_id = '';
+    /**
+     * Generated from protobuf field <code>uint64 round_version = 24;</code>
+     */
+    protected $round_version = 0;
+    /**
+     * Generated from protobuf field <code>.prediction.v1.UpDownRoundOutcome outcome = 25;</code>
+     */
+    protected $outcome = 0;
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.UpDownPool pools = 26;</code>
+     */
+    private $pools;
 
     /**
      * Constructor.
@@ -129,8 +155,13 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      *     @type int|string $observe_end_at_ms
      *     @type int|string $display_end_at_ms
      *     @type int|string $duration_seconds
+     *           完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
      *     @type int|string $participant_count
      *     @type int|string $order_count
+     *     @type string $market_id
+     *     @type int|string $round_version
+     *     @type int $outcome
+     *     @type \Prediction\V1\UpDownPool[] $pools
      * }
      */
     public function __construct($data = NULL) {
@@ -152,9 +183,9 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setRoundId(string $var)
+    public function setRoundId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->round_id = $var;
 
         return $this;
@@ -174,31 +205,37 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSymbol(string $var)
+    public function setSymbol($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->symbol = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string room_code = 3;</code>
+     * Generated from protobuf field <code>string room_code = 3 [deprecated = true];</code>
      * @return string
+     * @deprecated
      */
     public function getRoomCode()
     {
+        if ($this->room_code !== '') {
+            @trigger_error('room_code is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->room_code;
     }
 
     /**
-     * Generated from protobuf field <code>string room_code = 3;</code>
+     * Generated from protobuf field <code>string room_code = 3 [deprecated = true];</code>
      * @param string $var
      * @return $this
+     * @deprecated
      */
-    public function setRoomCode(string $var)
+    public function setRoomCode($var)
     {
-        GPBUtil::checkString($var, true);
+        @trigger_error('room_code is deprecated.', E_USER_DEPRECATED);
+        GPBUtil::checkString($var, True);
         $this->room_code = $var;
 
         return $this;
@@ -206,7 +243,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.RoundState state = 4;</code>
-     * @return int one of the values in {@see \Prediction\V1\RoundState}
+     * @return int
      */
     public function getState()
     {
@@ -215,10 +252,10 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.RoundState state = 4;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\RoundState}
+     * @param int $var
      * @return $this
      */
-    public function setState(int $var)
+    public function setState($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\RoundState::class);
         $this->state = $var;
@@ -228,7 +265,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.OrderResult result = 5;</code>
-     * @return int one of the values in {@see \Prediction\V1\OrderResult}
+     * @return int
      */
     public function getResult()
     {
@@ -237,10 +274,10 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.OrderResult result = 5;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\OrderResult}
+     * @param int $var
      * @return $this
      */
-    public function setResult(int $var)
+    public function setResult($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\OrderResult::class);
         $this->result = $var;
@@ -250,7 +287,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.RoundCancelReason cancel_reason = 6;</code>
-     * @return int one of the values in {@see \Prediction\V1\RoundCancelReason}
+     * @return int
      */
     public function getCancelReason()
     {
@@ -259,10 +296,10 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.RoundCancelReason cancel_reason = 6;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\RoundCancelReason}
+     * @param int $var
      * @return $this
      */
-    public function setCancelReason(int $var)
+    public function setCancelReason($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\RoundCancelReason::class);
         $this->cancel_reason = $var;
@@ -284,7 +321,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setConfigVersion(int|string $var)
+    public function setConfigVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->config_version = $var;
@@ -306,137 +343,177 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSettlementAsset(string $var)
+    public function setSettlementAsset($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->settlement_asset = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string pool_share = 9;</code>
+     * Generated from protobuf field <code>string pool_share = 9 [deprecated = true];</code>
      * @return string
+     * @deprecated
      */
     public function getPoolShare()
     {
+        if ($this->pool_share !== '') {
+            @trigger_error('pool_share is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->pool_share;
     }
 
     /**
-     * Generated from protobuf field <code>string pool_share = 9;</code>
+     * Generated from protobuf field <code>string pool_share = 9 [deprecated = true];</code>
      * @param string $var
      * @return $this
+     * @deprecated
      */
-    public function setPoolShare(string $var)
+    public function setPoolShare($var)
     {
-        GPBUtil::checkString($var, true);
+        @trigger_error('pool_share is deprecated.', E_USER_DEPRECATED);
+        GPBUtil::checkString($var, True);
         $this->pool_share = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string up_pool = 10;</code>
+     * Generated from protobuf field <code>string up_pool = 10 [deprecated = true];</code>
      * @return string
+     * @deprecated
      */
     public function getUpPool()
     {
+        if ($this->up_pool !== '') {
+            @trigger_error('up_pool is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->up_pool;
     }
 
     /**
-     * Generated from protobuf field <code>string up_pool = 10;</code>
+     * Generated from protobuf field <code>string up_pool = 10 [deprecated = true];</code>
      * @param string $var
      * @return $this
+     * @deprecated
      */
-    public function setUpPool(string $var)
+    public function setUpPool($var)
     {
-        GPBUtil::checkString($var, true);
+        @trigger_error('up_pool is deprecated.', E_USER_DEPRECATED);
+        GPBUtil::checkString($var, True);
         $this->up_pool = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>string down_pool = 11;</code>
+     * Generated from protobuf field <code>string down_pool = 11 [deprecated = true];</code>
      * @return string
+     * @deprecated
      */
     public function getDownPool()
     {
+        if ($this->down_pool !== '') {
+            @trigger_error('down_pool is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->down_pool;
     }
 
     /**
-     * Generated from protobuf field <code>string down_pool = 11;</code>
+     * Generated from protobuf field <code>string down_pool = 11 [deprecated = true];</code>
      * @param string $var
      * @return $this
+     * @deprecated
      */
-    public function setDownPool(string $var)
+    public function setDownPool($var)
     {
-        GPBUtil::checkString($var, true);
+        @trigger_error('down_pool is deprecated.', E_USER_DEPRECATED);
+        GPBUtil::checkString($var, True);
         $this->down_pool = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.Odds up_odds = 12;</code>
+     * Generated from protobuf field <code>.prediction.v1.Odds up_odds = 12 [deprecated = true];</code>
      * @return \Prediction\V1\Odds|null
+     * @deprecated
      */
     public function getUpOdds()
     {
+        if (isset($this->up_odds)) {
+            @trigger_error('up_odds is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->up_odds;
     }
 
     public function hasUpOdds()
     {
+        if (isset($this->up_odds)) {
+            @trigger_error('up_odds is deprecated.', E_USER_DEPRECATED);
+        }
         return isset($this->up_odds);
     }
 
     public function clearUpOdds()
     {
+        @trigger_error('up_odds is deprecated.', E_USER_DEPRECATED);
         unset($this->up_odds);
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.Odds up_odds = 12;</code>
+     * Generated from protobuf field <code>.prediction.v1.Odds up_odds = 12 [deprecated = true];</code>
      * @param \Prediction\V1\Odds $var
      * @return $this
+     * @deprecated
      */
-    public function setUpOdds(\Prediction\V1\Odds|null $var)
+    public function setUpOdds($var)
     {
+        @trigger_error('up_odds is deprecated.', E_USER_DEPRECATED);
+        GPBUtil::checkMessage($var, \Prediction\V1\Odds::class);
         $this->up_odds = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.Odds down_odds = 13;</code>
+     * Generated from protobuf field <code>.prediction.v1.Odds down_odds = 13 [deprecated = true];</code>
      * @return \Prediction\V1\Odds|null
+     * @deprecated
      */
     public function getDownOdds()
     {
+        if (isset($this->down_odds)) {
+            @trigger_error('down_odds is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->down_odds;
     }
 
     public function hasDownOdds()
     {
+        if (isset($this->down_odds)) {
+            @trigger_error('down_odds is deprecated.', E_USER_DEPRECATED);
+        }
         return isset($this->down_odds);
     }
 
     public function clearDownOdds()
     {
+        @trigger_error('down_odds is deprecated.', E_USER_DEPRECATED);
         unset($this->down_odds);
     }
 
     /**
-     * Generated from protobuf field <code>.prediction.v1.Odds down_odds = 13;</code>
+     * Generated from protobuf field <code>.prediction.v1.Odds down_odds = 13 [deprecated = true];</code>
      * @param \Prediction\V1\Odds $var
      * @return $this
+     * @deprecated
      */
-    public function setDownOdds(\Prediction\V1\Odds|null $var)
+    public function setDownOdds($var)
     {
+        @trigger_error('down_odds is deprecated.', E_USER_DEPRECATED);
+        GPBUtil::checkMessage($var, \Prediction\V1\Odds::class);
         $this->down_odds = $var;
 
         return $this;
@@ -466,9 +543,9 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setStartPrice(string $var)
+    public function setStartPrice($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->start_price = $var;
 
         return $this;
@@ -498,9 +575,9 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setEndPrice(string $var)
+    public function setEndPrice($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->end_price = $var;
 
         return $this;
@@ -520,7 +597,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setBetOpenAtMs(int|string $var)
+    public function setBetOpenAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->bet_open_at_ms = $var;
@@ -542,7 +619,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setBetCloseAtMs(int|string $var)
+    public function setBetCloseAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->bet_close_at_ms = $var;
@@ -564,7 +641,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setObserveEndAtMs(int|string $var)
+    public function setObserveEndAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->observe_end_at_ms = $var;
@@ -586,7 +663,7 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setDisplayEndAtMs(int|string $var)
+    public function setDisplayEndAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->display_end_at_ms = $var;
@@ -595,6 +672,8 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 20;</code>
      * @return int|string
      */
@@ -604,11 +683,13 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 20;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -617,21 +698,27 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 participant_count = 21;</code>
+     * Generated from protobuf field <code>int64 participant_count = 21 [deprecated = true];</code>
      * @return int|string
+     * @deprecated
      */
     public function getParticipantCount()
     {
+        if ($this->participant_count !== 0) {
+            @trigger_error('participant_count is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->participant_count;
     }
 
     /**
-     * Generated from protobuf field <code>int64 participant_count = 21;</code>
+     * Generated from protobuf field <code>int64 participant_count = 21 [deprecated = true];</code>
      * @param int|string $var
      * @return $this
+     * @deprecated
      */
-    public function setParticipantCount(int|string $var)
+    public function setParticipantCount($var)
     {
+        @trigger_error('participant_count is deprecated.', E_USER_DEPRECATED);
         GPBUtil::checkInt64($var);
         $this->participant_count = $var;
 
@@ -639,26 +726,119 @@ class PlayerRound extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 order_count = 22;</code>
+     * Generated from protobuf field <code>int64 order_count = 22 [deprecated = true];</code>
      * @return int|string
+     * @deprecated
      */
     public function getOrderCount()
     {
+        if ($this->order_count !== 0) {
+            @trigger_error('order_count is deprecated.', E_USER_DEPRECATED);
+        }
         return $this->order_count;
     }
 
     /**
-     * Generated from protobuf field <code>int64 order_count = 22;</code>
+     * Generated from protobuf field <code>int64 order_count = 22 [deprecated = true];</code>
      * @param int|string $var
      * @return $this
+     * @deprecated
      */
-    public function setOrderCount(int|string $var)
+    public function setOrderCount($var)
     {
+        @trigger_error('order_count is deprecated.', E_USER_DEPRECATED);
         GPBUtil::checkInt64($var);
         $this->order_count = $var;
 
         return $this;
     }
 
-}
+    /**
+     * Generated from protobuf field <code>string market_id = 23;</code>
+     * @return string
+     */
+    public function getMarketId()
+    {
+        return $this->market_id;
+    }
 
+    /**
+     * Generated from protobuf field <code>string market_id = 23;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setMarketId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->market_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>uint64 round_version = 24;</code>
+     * @return int|string
+     */
+    public function getRoundVersion()
+    {
+        return $this->round_version;
+    }
+
+    /**
+     * Generated from protobuf field <code>uint64 round_version = 24;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setRoundVersion($var)
+    {
+        GPBUtil::checkUint64($var);
+        $this->round_version = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.UpDownRoundOutcome outcome = 25;</code>
+     * @return int
+     */
+    public function getOutcome()
+    {
+        return $this->outcome;
+    }
+
+    /**
+     * Generated from protobuf field <code>.prediction.v1.UpDownRoundOutcome outcome = 25;</code>
+     * @param int $var
+     * @return $this
+     */
+    public function setOutcome($var)
+    {
+        GPBUtil::checkEnum($var, \Prediction\V1\UpDownRoundOutcome::class);
+        $this->outcome = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.UpDownPool pools = 26;</code>
+     * @return RepeatedField<\Prediction\V1\UpDownPool>
+     */
+    public function getPools()
+    {
+        return $this->pools;
+    }
+
+    /**
+     * Generated from protobuf field <code>repeated .prediction.v1.UpDownPool pools = 26;</code>
+     * @param \Prediction\V1\UpDownPool[] $var
+     * @return $this
+     */
+    public function setPools($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\UpDownPool::class);
+        $this->pools = $arr;
+
+        return $this;
+    }
+
+}

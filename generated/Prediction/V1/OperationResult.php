@@ -51,4 +51,3 @@ class OperationResult
         return constant($const);
     }
 }
-

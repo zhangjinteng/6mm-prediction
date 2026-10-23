@@ -19,19 +19,19 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
      */
     protected $scope = 0;
     /**
-     * merchant_id 只由服务根据可信 metadata 回显，平台范围为空。
+     * agent_id 只由服务根据可信 metadata 回显，平台范围为空。
      *
-     * Generated from protobuf field <code>string merchant_id = 2;</code>
+     * Generated from protobuf field <code>string agent_id = 2;</code>
      */
-    protected $merchant_id = '';
+    protected $agent_id = '';
     /**
      * Generated from protobuf field <code>int64 template_version = 3;</code>
      */
     protected $template_version = 0;
     /**
-     * Generated from protobuf field <code>int64 merchant_version = 4;</code>
+     * Generated from protobuf field <code>int64 agent_version = 4;</code>
      */
-    protected $merchant_version = 0;
+    protected $agent_version = 0;
     /**
      * Generated from protobuf field <code>string effective_version = 5;</code>
      */
@@ -44,6 +44,12 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>int64 updated_at_ms = 7;</code>
      */
     protected $updated_at_ms = 0;
+    /**
+     * 独立币种总开关；房间存在状态由 enabled_by_default 表示。
+     *
+     * Generated from protobuf field <code>optional bool symbol_enabled = 8;</code>
+     */
+    protected $symbol_enabled = null;
 
     /**
      * Constructor.
@@ -52,13 +58,15 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
      *     Optional. Data for populating the Message object.
      *
      *     @type int $scope
-     *     @type string $merchant_id
-     *           merchant_id 只由服务根据可信 metadata 回显，平台范围为空。
+     *     @type string $agent_id
+     *           agent_id 只由服务根据可信 metadata 回显，平台范围为空。
      *     @type int|string $template_version
-     *     @type int|string $merchant_version
+     *     @type int|string $agent_version
      *     @type string $effective_version
      *     @type \Prediction\V1\GameplayConfigRule[] $rules
      *     @type int|string $updated_at_ms
+     *     @type bool $symbol_enabled
+     *           独立币种总开关；房间存在状态由 enabled_by_default 表示。
      * }
      */
     public function __construct($data = NULL) {
@@ -68,7 +76,7 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.ConfigScope scope = 1;</code>
-     * @return int one of the values in {@see \Prediction\V1\ConfigScope}
+     * @return int
      */
     public function getScope()
     {
@@ -77,10 +85,10 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.ConfigScope scope = 1;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\ConfigScope}
+     * @param int $var
      * @return $this
      */
-    public function setScope(int $var)
+    public function setScope($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\ConfigScope::class);
         $this->scope = $var;
@@ -89,27 +97,27 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * merchant_id 只由服务根据可信 metadata 回显，平台范围为空。
+     * agent_id 只由服务根据可信 metadata 回显，平台范围为空。
      *
-     * Generated from protobuf field <code>string merchant_id = 2;</code>
+     * Generated from protobuf field <code>string agent_id = 2;</code>
      * @return string
      */
-    public function getMerchantId()
+    public function getAgentId()
     {
-        return $this->merchant_id;
+        return $this->agent_id;
     }
 
     /**
-     * merchant_id 只由服务根据可信 metadata 回显，平台范围为空。
+     * agent_id 只由服务根据可信 metadata 回显，平台范围为空。
      *
-     * Generated from protobuf field <code>string merchant_id = 2;</code>
+     * Generated from protobuf field <code>string agent_id = 2;</code>
      * @param string $var
      * @return $this
      */
-    public function setMerchantId(string $var)
+    public function setAgentId($var)
     {
-        GPBUtil::checkString($var, true);
-        $this->merchant_id = $var;
+        GPBUtil::checkString($var, True);
+        $this->agent_id = $var;
 
         return $this;
     }
@@ -128,7 +136,7 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setTemplateVersion(int|string $var)
+    public function setTemplateVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->template_version = $var;
@@ -137,23 +145,23 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
     }
 
     /**
-     * Generated from protobuf field <code>int64 merchant_version = 4;</code>
+     * Generated from protobuf field <code>int64 agent_version = 4;</code>
      * @return int|string
      */
-    public function getMerchantVersion()
+    public function getAgentVersion()
     {
-        return $this->merchant_version;
+        return $this->agent_version;
     }
 
     /**
-     * Generated from protobuf field <code>int64 merchant_version = 4;</code>
+     * Generated from protobuf field <code>int64 agent_version = 4;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setMerchantVersion(int|string $var)
+    public function setAgentVersion($var)
     {
         GPBUtil::checkInt64($var);
-        $this->merchant_version = $var;
+        $this->agent_version = $var;
 
         return $this;
     }
@@ -172,9 +180,9 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setEffectiveVersion(string $var)
+    public function setEffectiveVersion($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->effective_version = $var;
 
         return $this;
@@ -194,7 +202,7 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\GameplayConfigRule[] $var
      * @return $this
      */
-    public function setRules(array|RepeatedField $var)
+    public function setRules($var)
     {
         $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\GameplayConfigRule::class);
         $this->rules = $arr;
@@ -216,7 +224,7 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setUpdatedAtMs(int|string $var)
+    public function setUpdatedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->updated_at_ms = $var;
@@ -224,5 +232,40 @@ class GameplayConfig extends \Google\Protobuf\Internal\Message
         return $this;
     }
 
-}
+    /**
+     * 独立币种总开关；房间存在状态由 enabled_by_default 表示。
+     *
+     * Generated from protobuf field <code>optional bool symbol_enabled = 8;</code>
+     * @return bool
+     */
+    public function getSymbolEnabled()
+    {
+        return isset($this->symbol_enabled) ? $this->symbol_enabled : false;
+    }
 
+    public function hasSymbolEnabled()
+    {
+        return isset($this->symbol_enabled);
+    }
+
+    public function clearSymbolEnabled()
+    {
+        unset($this->symbol_enabled);
+    }
+
+    /**
+     * 独立币种总开关；房间存在状态由 enabled_by_default 表示。
+     *
+     * Generated from protobuf field <code>optional bool symbol_enabled = 8;</code>
+     * @param bool $var
+     * @return $this
+     */
+    public function setSymbolEnabled($var)
+    {
+        GPBUtil::checkBool($var);
+        $this->symbol_enabled = $var;
+
+        return $this;
+    }
+
+}

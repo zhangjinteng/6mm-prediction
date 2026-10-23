@@ -23,6 +23,8 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      */
     protected $symbol = '';
     /**
+     * 完整周期；UP_DOWN 新配置仅允许 35/40/45/60/90，对应 30 秒下注加 5/10/15/30/60 秒观察。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 3;</code>
      */
     protected $duration_seconds = 0;
@@ -66,6 +68,18 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.prediction.v1.PriceRule price_rule = 13;</code>
      */
     protected $price_rule = null;
+    /**
+     * market_id 是跨配置版本稳定的市场标识，由服务端生成并回显。
+     *
+     * Generated from protobuf field <code>string market_id = 14;</code>
+     */
+    protected $market_id = '';
+    /**
+     * UP_DOWN 只使用一个未退役的稳定技术档位（可保留退役历史档位）；HIGH_LOW 保持顶层单区间。
+     *
+     * Generated from protobuf field <code>repeated .prediction.v1.PlatformStakeTier stake_tiers = 15;</code>
+     */
+    private $stake_tiers;
 
     /**
      * Constructor.
@@ -76,6 +90,7 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      *     @type int $game_type
      *     @type string $symbol
      *     @type int|string $duration_seconds
+     *           完整周期；UP_DOWN 新配置仅允许 35/40/45/60/90，对应 30 秒下注加 5/10/15/30/60 秒观察。
      *     @type bool $enabled_by_default
      *     @type \Prediction\V1\IntegerConstraint $bet_open_seconds
      *     @type \Prediction\V1\DecimalConstraint $target_payout_rate
@@ -86,6 +101,10 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      *     @type \Prediction\V1\DecimalConstraint $maximum_stake
      *     @type int|string $settlement_display_seconds
      *     @type \Prediction\V1\PriceRule $price_rule
+     *     @type string $market_id
+     *           market_id 是跨配置版本稳定的市场标识，由服务端生成并回显。
+     *     @type \Prediction\V1\PlatformStakeTier[] $stake_tiers
+     *           UP_DOWN 只使用一个未退役的稳定技术档位（可保留退役历史档位）；HIGH_LOW 保持顶层单区间。
      * }
      */
     public function __construct($data = NULL) {
@@ -95,7 +114,7 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 1;</code>
-     * @return int one of the values in {@see \Prediction\V1\GameType}
+     * @return int
      */
     public function getGameType()
     {
@@ -104,10 +123,10 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 1;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\GameType}
+     * @param int $var
      * @return $this
      */
-    public function setGameType(int $var)
+    public function setGameType($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\GameType::class);
         $this->game_type = $var;
@@ -129,15 +148,17 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSymbol(string $var)
+    public function setSymbol($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->symbol = $var;
 
         return $this;
     }
 
     /**
+     * 完整周期；UP_DOWN 新配置仅允许 35/40/45/60/90，对应 30 秒下注加 5/10/15/30/60 秒观察。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 3;</code>
      * @return int|string
      */
@@ -147,11 +168,13 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 完整周期；UP_DOWN 新配置仅允许 35/40/45/60/90，对应 30 秒下注加 5/10/15/30/60 秒观察。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 3;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -173,8 +196,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param bool $var
      * @return $this
      */
-    public function setEnabledByDefault(bool $var)
+    public function setEnabledByDefault($var)
     {
+        GPBUtil::checkBool($var);
         $this->enabled_by_default = $var;
 
         return $this;
@@ -204,8 +228,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\IntegerConstraint $var
      * @return $this
      */
-    public function setBetOpenSeconds(\Prediction\V1\IntegerConstraint|null $var)
+    public function setBetOpenSeconds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\IntegerConstraint::class);
         $this->bet_open_seconds = $var;
 
         return $this;
@@ -235,8 +260,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConstraint $var
      * @return $this
      */
-    public function setTargetPayoutRate(\Prediction\V1\DecimalConstraint|null $var)
+    public function setTargetPayoutRate($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConstraint::class);
         $this->target_payout_rate = $var;
 
         return $this;
@@ -266,8 +292,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConstraint $var
      * @return $this
      */
-    public function setMinimumOdds(\Prediction\V1\DecimalConstraint|null $var)
+    public function setMinimumOdds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConstraint::class);
         $this->minimum_odds = $var;
 
         return $this;
@@ -297,8 +324,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConstraint $var
      * @return $this
      */
-    public function setMaximumOdds(\Prediction\V1\DecimalConstraint|null $var)
+    public function setMaximumOdds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConstraint::class);
         $this->maximum_odds = $var;
 
         return $this;
@@ -328,8 +356,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConstraint $var
      * @return $this
      */
-    public function setFixedOdds(\Prediction\V1\DecimalConstraint|null $var)
+    public function setFixedOdds($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConstraint::class);
         $this->fixed_odds = $var;
 
         return $this;
@@ -359,8 +388,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConstraint $var
      * @return $this
      */
-    public function setMinimumStake(\Prediction\V1\DecimalConstraint|null $var)
+    public function setMinimumStake($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConstraint::class);
         $this->minimum_stake = $var;
 
         return $this;
@@ -390,8 +420,9 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\DecimalConstraint $var
      * @return $this
      */
-    public function setMaximumStake(\Prediction\V1\DecimalConstraint|null $var)
+    public function setMaximumStake($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\DecimalConstraint::class);
         $this->maximum_stake = $var;
 
         return $this;
@@ -411,7 +442,7 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setSettlementDisplaySeconds(int|string $var)
+    public function setSettlementDisplaySeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->settlement_display_seconds = $var;
@@ -443,12 +474,64 @@ class PlatformRuleTemplate extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\PriceRule $var
      * @return $this
      */
-    public function setPriceRule(\Prediction\V1\PriceRule|null $var)
+    public function setPriceRule($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\PriceRule::class);
         $this->price_rule = $var;
 
         return $this;
     }
 
-}
+    /**
+     * market_id 是跨配置版本稳定的市场标识，由服务端生成并回显。
+     *
+     * Generated from protobuf field <code>string market_id = 14;</code>
+     * @return string
+     */
+    public function getMarketId()
+    {
+        return $this->market_id;
+    }
 
+    /**
+     * market_id 是跨配置版本稳定的市场标识，由服务端生成并回显。
+     *
+     * Generated from protobuf field <code>string market_id = 14;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setMarketId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->market_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * UP_DOWN 只使用一个未退役的稳定技术档位（可保留退役历史档位）；HIGH_LOW 保持顶层单区间。
+     *
+     * Generated from protobuf field <code>repeated .prediction.v1.PlatformStakeTier stake_tiers = 15;</code>
+     * @return RepeatedField<\Prediction\V1\PlatformStakeTier>
+     */
+    public function getStakeTiers()
+    {
+        return $this->stake_tiers;
+    }
+
+    /**
+     * UP_DOWN 只使用一个未退役的稳定技术档位（可保留退役历史档位）；HIGH_LOW 保持顶层单区间。
+     *
+     * Generated from protobuf field <code>repeated .prediction.v1.PlatformStakeTier stake_tiers = 15;</code>
+     * @param \Prediction\V1\PlatformStakeTier[] $var
+     * @return $this
+     */
+    public function setStakeTiers($var)
+    {
+        $arr = GPBUtil::checkRepeatedField($var, \Google\Protobuf\Internal\GPBType::MESSAGE, \Prediction\V1\PlatformStakeTier::class);
+        $this->stake_tiers = $arr;
+
+        return $this;
+    }
+
+}

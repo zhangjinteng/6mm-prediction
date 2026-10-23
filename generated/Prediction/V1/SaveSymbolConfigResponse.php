@@ -67,8 +67,9 @@ class SaveSymbolConfigResponse extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\GameplayConfig $var
      * @return $this
      */
-    public function setConfiguration(\Prediction\V1\GameplayConfig|null $var)
+    public function setConfiguration($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\GameplayConfig::class);
         $this->configuration = $var;
 
         return $this;
@@ -98,8 +99,9 @@ class SaveSymbolConfigResponse extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\OperationReceipt $var
      * @return $this
      */
-    public function setReceipt(\Prediction\V1\OperationReceipt|null $var)
+    public function setReceipt($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\OperationReceipt::class);
         $this->receipt = $var;
 
         return $this;
@@ -129,12 +131,12 @@ class SaveSymbolConfigResponse extends \Google\Protobuf\Internal\Message
      * @param \Prediction\V1\TemplateReconciliationJob $var
      * @return $this
      */
-    public function setReconciliationJob(\Prediction\V1\TemplateReconciliationJob|null $var)
+    public function setReconciliationJob($var)
     {
+        GPBUtil::checkMessage($var, \Prediction\V1\TemplateReconciliationJob::class);
         $this->reconciliation_job = $var;
 
         return $this;
     }
 
 }
-

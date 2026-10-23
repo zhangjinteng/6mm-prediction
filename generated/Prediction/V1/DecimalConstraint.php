@@ -27,9 +27,9 @@ class DecimalConstraint extends \Google\Protobuf\Internal\Message
      */
     protected $maximum_value = '';
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 4;</code>
+     * Generated from protobuf field <code>bool agent_editable = 4;</code>
      */
-    protected $merchant_editable = false;
+    protected $agent_editable = false;
 
     /**
      * Constructor.
@@ -40,7 +40,7 @@ class DecimalConstraint extends \Google\Protobuf\Internal\Message
      *     @type string $default_value
      *     @type string $minimum_value
      *     @type string $maximum_value
-     *     @type bool $merchant_editable
+     *     @type bool $agent_editable
      * }
      */
     public function __construct($data = NULL) {
@@ -62,9 +62,9 @@ class DecimalConstraint extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setDefaultValue(string $var)
+    public function setDefaultValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->default_value = $var;
 
         return $this;
@@ -84,9 +84,9 @@ class DecimalConstraint extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMinimumValue(string $var)
+    public function setMinimumValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->minimum_value = $var;
 
         return $this;
@@ -106,34 +106,34 @@ class DecimalConstraint extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setMaximumValue(string $var)
+    public function setMaximumValue($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->maximum_value = $var;
 
         return $this;
     }
 
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 4;</code>
+     * Generated from protobuf field <code>bool agent_editable = 4;</code>
      * @return bool
      */
-    public function getMerchantEditable()
+    public function getAgentEditable()
     {
-        return $this->merchant_editable;
+        return $this->agent_editable;
     }
 
     /**
-     * Generated from protobuf field <code>bool merchant_editable = 4;</code>
+     * Generated from protobuf field <code>bool agent_editable = 4;</code>
      * @param bool $var
      * @return $this
      */
-    public function setMerchantEditable(bool $var)
+    public function setAgentEditable($var)
     {
-        $this->merchant_editable = $var;
+        GPBUtil::checkBool($var);
+        $this->agent_editable = $var;
 
         return $this;
     }
 
 }
-

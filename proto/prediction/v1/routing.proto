@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+package prediction.v1;
+
+import "prediction/v1/common.proto";
+
+option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
+
+// PredictionRoutingAdmin 仅供可信 platform_admin 控制面调用。
+// operator、source_service、trace_id 与 capability 全部来自服务端认证 metadata，
+// 请求体不得自报或覆盖这些身份字段。
+service PredictionRoutingAdmin {
+  rpc GetSiteBinding(GetSiteBindingRequest) returns (GetSiteBindingResponse);
+  rpc PrepareSiteBindingChange(PrepareSiteBindingChangeRequest) returns (PrepareSiteBindingChangeResponse);
+  rpc CommitSiteBindingChange(CommitSiteBindingChangeRequest) returns (CommitSiteBindingChangeResponse);
+  rpc CancelSiteBindingChange(CancelSiteBindingChangeRequest) returns (CancelSiteBindingChangeResponse);
+}
+
+enum SiteBindingState {
+  SITE_BINDING_STATE_UNSPECIFIED = 0;
+  SITE_BINDING_STATE_UNBOUND = 1;
+  SITE_BINDING_STATE_DRAINING = 2;
+  SITE_BINDING_STATE_ACTIVE = 3;
+}
+
+message SiteBindingVersion {
+  // site_binding_version 是全平台唯一递增版本，跨商户也不复用。
+  uint64 site_binding_version = 1;
+  string agent_id = 2;
+  string tenant_id = 3;
+  // routing_site_id 必须是规范正 int64 十进制字符串。
+  string routing_site_id = 4;
+  optional uint64 previous_site_binding_version = 5;
+  int64 published_at_ms = 6;
+}
+
+message PendingSiteBindingChange {
+  string change_id = 1;
+  string agent_id = 2;
+  string tenant_id = 3;
+  string routing_site_id = 4;
+  // 首次绑定固定为 0，换绑必须等于 current.site_binding_version。
+  uint64 based_on_version = 5;
+  int64 prepared_at_ms = 6;
+}
+
+message SiteBinding {
+  string agent_id = 1;
+  SiteBindingState state = 2;
+  // UNBOUND 和初次绑定的 DRAINING 没有 current。
+  SiteBindingVersion current = 3;
+  // 仅 DRAINING 存在 pending。
+  PendingSiteBindingChange pending = 4;
+  // 已提交历史按 site_binding_version 降序返回；历史版本不可修改或删除。
+  repeated SiteBindingVersion history = 5;
+  int64 updated_at_ms = 6;
+  // GetSiteBinding 不设置 receipt；Commit 成功或幂等重放时设置。
+  OperationReceipt receipt = 7;
+}
+
+message SiteBindingChange {
+  string change_id = 1;
+  SiteBinding binding = 2;
+  OperationReceipt receipt = 3;
+}
+
+message GetSiteBindingRequest {
+  // agent_id 是平台已验证的根商户 ID，不是登录操作人所属商户。
+  string agent_id = 1;
+}
+
+message GetSiteBindingResponse {
+  SiteBinding binding = 1;
+}
+
+message PrepareSiteBindingChangeRequest {
+  string agent_id = 1;
+  string tenant_id = 2;
+  string routing_site_id = 3;
+  uint64 based_on_version = 4;
+  string client_request_id = 5;
+  string reason = 6;
+}
+
+message PrepareSiteBindingChangeResponse {
+  SiteBindingChange change = 1;
+}
+
+message CommitSiteBindingChangeRequest {
+  string agent_id = 1;
+  string change_id = 2;
+  uint64 based_on_version = 3;
+  string client_request_id = 4;
+  string reason = 5;
+}
+
+message CommitSiteBindingChangeResponse {
+  SiteBinding binding = 1;
+}
+
+message CancelSiteBindingChangeRequest {
+  string agent_id = 1;
+  string change_id = 2;
+  uint64 based_on_version = 3;
+  string client_request_id = 4;
+  string reason = 5;
+}
+
+message CancelSiteBindingChangeResponse {
+  SiteBindingChange change = 1;
+}

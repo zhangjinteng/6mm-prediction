@@ -51,4 +51,3 @@ class PlayerOrderView
         return constant($const);
     }
 }
-

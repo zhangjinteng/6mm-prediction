@@ -99,9 +99,27 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      */
     protected $round_id = '';
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 22;</code>
      */
     protected $duration_seconds = 0;
+    /**
+     * Generated from protobuf field <code>string client_request_id = 23;</code>
+     */
+    protected $client_request_id = '';
+    /**
+     * Generated from protobuf field <code>string market_id = 24;</code>
+     */
+    protected $market_id = '';
+    /**
+     * Generated from protobuf field <code>string stake_tier_id = 25;</code>
+     */
+    protected $stake_tier_id = '';
+    /**
+     * Generated from protobuf field <code>uint64 order_version = 26;</code>
+     */
+    protected $order_version = 0;
 
     /**
      * Constructor.
@@ -131,6 +149,11 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      *     @type int|string $settled_at_ms
      *     @type string $round_id
      *     @type int|string $duration_seconds
+     *           完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *     @type string $client_request_id
+     *     @type string $market_id
+     *     @type string $stake_tier_id
+     *     @type int|string $order_version
      * }
      */
     public function __construct($data = NULL) {
@@ -152,9 +175,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setOrderId(string $var)
+    public function setOrderId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->order_id = $var;
 
         return $this;
@@ -162,7 +185,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 2;</code>
-     * @return int one of the values in {@see \Prediction\V1\GameType}
+     * @return int
      */
     public function getGameType()
     {
@@ -171,10 +194,10 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.GameType game_type = 2;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\GameType}
+     * @param int $var
      * @return $this
      */
-    public function setGameType(int $var)
+    public function setGameType($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\GameType::class);
         $this->game_type = $var;
@@ -196,9 +219,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSymbol(string $var)
+    public function setSymbol($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->symbol = $var;
 
         return $this;
@@ -206,7 +229,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.Direction direction = 4;</code>
-     * @return int one of the values in {@see \Prediction\V1\Direction}
+     * @return int
      */
     public function getDirection()
     {
@@ -215,10 +238,10 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.Direction direction = 4;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\Direction}
+     * @param int $var
      * @return $this
      */
-    public function setDirection(int $var)
+    public function setDirection($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\Direction::class);
         $this->direction = $var;
@@ -240,9 +263,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setSettlementAsset(string $var)
+    public function setSettlementAsset($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->settlement_asset = $var;
 
         return $this;
@@ -262,9 +285,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setStake(string $var)
+    public function setStake($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->stake = $var;
 
         return $this;
@@ -284,9 +307,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setEstimatedNetProfit(string $var)
+    public function setEstimatedNetProfit($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->estimated_net_profit = $var;
 
         return $this;
@@ -306,9 +329,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setEstimatedReturn(string $var)
+    public function setEstimatedReturn($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->estimated_return = $var;
 
         return $this;
@@ -338,9 +361,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setFinalNetProfit(string $var)
+    public function setFinalNetProfit($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->final_net_profit = $var;
 
         return $this;
@@ -370,9 +393,9 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setFinalReturn(string $var)
+    public function setFinalReturn($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->final_return = $var;
 
         return $this;
@@ -380,7 +403,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.BusinessStatus business_status = 11;</code>
-     * @return int one of the values in {@see \Prediction\V1\BusinessStatus}
+     * @return int
      */
     public function getBusinessStatus()
     {
@@ -389,10 +412,10 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.BusinessStatus business_status = 11;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\BusinessStatus}
+     * @param int $var
      * @return $this
      */
-    public function setBusinessStatus(int $var)
+    public function setBusinessStatus($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\BusinessStatus::class);
         $this->business_status = $var;
@@ -402,7 +425,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.FundStatus fund_status = 12;</code>
-     * @return int one of the values in {@see \Prediction\V1\FundStatus}
+     * @return int
      */
     public function getFundStatus()
     {
@@ -411,10 +434,10 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.FundStatus fund_status = 12;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\FundStatus}
+     * @param int $var
      * @return $this
      */
-    public function setFundStatus(int $var)
+    public function setFundStatus($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\FundStatus::class);
         $this->fund_status = $var;
@@ -424,7 +447,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.FundStatus unknown_from = 13;</code>
-     * @return int one of the values in {@see \Prediction\V1\FundStatus}
+     * @return int
      */
     public function getUnknownFrom()
     {
@@ -433,10 +456,10 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.FundStatus unknown_from = 13;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\FundStatus}
+     * @param int $var
      * @return $this
      */
-    public function setUnknownFrom(int $var)
+    public function setUnknownFrom($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\FundStatus::class);
         $this->unknown_from = $var;
@@ -446,7 +469,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.OrderResult result = 14;</code>
-     * @return int one of the values in {@see \Prediction\V1\OrderResult}
+     * @return int
      */
     public function getResult()
     {
@@ -455,10 +478,10 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
 
     /**
      * Generated from protobuf field <code>.prediction.v1.OrderResult result = 14;</code>
-     * @param int $var one of the values in {@see \Prediction\V1\OrderResult}
+     * @param int $var
      * @return $this
      */
-    public function setResult(int $var)
+    public function setResult($var)
     {
         GPBUtil::checkEnum($var, \Prediction\V1\OrderResult::class);
         $this->result = $var;
@@ -480,7 +503,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setConfigVersion(int|string $var)
+    public function setConfigVersion($var)
     {
         GPBUtil::checkInt64($var);
         $this->config_version = $var;
@@ -502,7 +525,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setCreatedAtMs(int|string $var)
+    public function setCreatedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->created_at_ms = $var;
@@ -516,7 +539,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      */
     public function getAcceptedAtMs()
     {
-        return isset($this->accepted_at_ms) ? $this->accepted_at_ms : GPBUtil::compatibleInt64(0, '0');
+        return isset($this->accepted_at_ms) ? $this->accepted_at_ms : 0;
     }
 
     public function hasAcceptedAtMs()
@@ -534,7 +557,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setAcceptedAtMs(int|string $var)
+    public function setAcceptedAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->accepted_at_ms = $var;
@@ -548,7 +571,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      */
     public function getExpireAtMs()
     {
-        return isset($this->expire_at_ms) ? $this->expire_at_ms : GPBUtil::compatibleInt64(0, '0');
+        return isset($this->expire_at_ms) ? $this->expire_at_ms : 0;
     }
 
     public function hasExpireAtMs()
@@ -566,7 +589,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setExpireAtMs(int|string $var)
+    public function setExpireAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->expire_at_ms = $var;
@@ -580,7 +603,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      */
     public function getResultAtMs()
     {
-        return isset($this->result_at_ms) ? $this->result_at_ms : GPBUtil::compatibleInt64(0, '0');
+        return isset($this->result_at_ms) ? $this->result_at_ms : 0;
     }
 
     public function hasResultAtMs()
@@ -598,7 +621,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setResultAtMs(int|string $var)
+    public function setResultAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->result_at_ms = $var;
@@ -612,7 +635,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      */
     public function getSettledAtMs()
     {
-        return isset($this->settled_at_ms) ? $this->settled_at_ms : GPBUtil::compatibleInt64(0, '0');
+        return isset($this->settled_at_ms) ? $this->settled_at_ms : 0;
     }
 
     public function hasSettledAtMs()
@@ -630,7 +653,7 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param int|string $var
      * @return $this
      */
-    public function setSettledAtMs(int|string $var)
+    public function setSettledAtMs($var)
     {
         GPBUtil::checkInt64($var);
         $this->settled_at_ms = $var;
@@ -652,15 +675,17 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
      * @param string $var
      * @return $this
      */
-    public function setRoundId(string $var)
+    public function setRoundId($var)
     {
-        GPBUtil::checkString($var, true);
+        GPBUtil::checkString($var, True);
         $this->round_id = $var;
 
         return $this;
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 22;</code>
      * @return int|string
      */
@@ -670,11 +695,13 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
     }
 
     /**
+     * 完整周期；UP_DOWN 页面房间时长为 duration_seconds - 30 秒。
+     *
      * Generated from protobuf field <code>int64 duration_seconds = 22;</code>
      * @param int|string $var
      * @return $this
      */
-    public function setDurationSeconds(int|string $var)
+    public function setDurationSeconds($var)
     {
         GPBUtil::checkInt64($var);
         $this->duration_seconds = $var;
@@ -682,5 +709,92 @@ class PlayerOrderSummary extends \Google\Protobuf\Internal\Message
         return $this;
     }
 
-}
+    /**
+     * Generated from protobuf field <code>string client_request_id = 23;</code>
+     * @return string
+     */
+    public function getClientRequestId()
+    {
+        return $this->client_request_id;
+    }
 
+    /**
+     * Generated from protobuf field <code>string client_request_id = 23;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setClientRequestId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->client_request_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string market_id = 24;</code>
+     * @return string
+     */
+    public function getMarketId()
+    {
+        return $this->market_id;
+    }
+
+    /**
+     * Generated from protobuf field <code>string market_id = 24;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setMarketId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->market_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>string stake_tier_id = 25;</code>
+     * @return string
+     */
+    public function getStakeTierId()
+    {
+        return $this->stake_tier_id;
+    }
+
+    /**
+     * Generated from protobuf field <code>string stake_tier_id = 25;</code>
+     * @param string $var
+     * @return $this
+     */
+    public function setStakeTierId($var)
+    {
+        GPBUtil::checkString($var, True);
+        $this->stake_tier_id = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>uint64 order_version = 26;</code>
+     * @return int|string
+     */
+    public function getOrderVersion()
+    {
+        return $this->order_version;
+    }
+
+    /**
+     * Generated from protobuf field <code>uint64 order_version = 26;</code>
+     * @param int|string $var
+     * @return $this
+     */
+    public function setOrderVersion($var)
+    {
+        GPBUtil::checkUint64($var);
+        $this->order_version = $var;
+
+        return $this;
+    }
+
+}
