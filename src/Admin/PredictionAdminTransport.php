@@ -33,7 +33,7 @@ final class PredictionAdminTransport
             'ListRuntimeStatuses',
         ],
         'PredictionRoutingAdmin' => ['GetSiteBinding', 'PrepareSiteBindingChange', 'CommitSiteBindingChange', 'CancelSiteBindingChange'],
-        'PredictionPlatformRobotAdmin' => ['GetPlatformRobot', 'ListPlatformRobots', 'RegisterPlatformRobot', 'SetPlatformRobotEnabled', 'GetPlatformRobotBalances', 'CreatePlatformRobotOperation', 'GetPlatformRobotOperation', 'ListPlatformRobotOperations', 'CreatePlatformRobotUser', 'GetPlatformRobotAutoDepositPolicy', 'SavePlatformRobotAutoDepositPolicy'],
+        'PredictionPlatformRobotAdmin' => ['RemovePlatformRobot', 'GetPlatformRobot', 'ListPlatformRobots', 'RegisterPlatformRobot', 'SetPlatformRobotEnabled', 'GetPlatformRobotBalances', 'CreatePlatformRobotOperation', 'GetPlatformRobotOperation', 'ListPlatformRobotOperations', 'CreatePlatformRobotUser', 'GetPlatformRobotAutoDepositPolicy', 'SavePlatformRobotAutoDepositPolicy'],
     ];
     private const WRITES = [
         'SaveSymbolConfiguration',
@@ -44,6 +44,7 @@ final class PredictionAdminTransport
         'PrepareSiteBindingChange',
         'CommitSiteBindingChange',
         'CancelSiteBindingChange',
+        'RemovePlatformRobot',
         'RegisterPlatformRobot',
         'SetPlatformRobotEnabled',
         'CreatePlatformRobotOperation',

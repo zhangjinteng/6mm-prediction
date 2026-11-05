@@ -50,7 +50,7 @@ Classes and interfaces are under `SixMm\Prediction\Admin` and its `Contracts` na
 - `GrpcPredictionOperationGateway`: rounds and current/history order queries.
 - `GrpcPredictionMarketMakerGateway`: symbol/room strategies, bindings, readiness/runtime.
 - `GrpcPredictionRoutingGateway`: query/prepare/commit/cancel site bindings.
-- `GrpcPredictionPlatformRobotGateway`: robots, balances, operations and auto-deposit policies.
+- `GrpcPredictionPlatformRobotGateway`: robots, roster removal, balances, operations and auto-deposit policies.
 
 Each implements the correspondingly named `Prediction...Gateway` interface with the
 existing platform method signatures. Bind those interfaces in the host and inject an
@@ -62,11 +62,36 @@ and exact 64-bit/decimal strings. `PredictionConfigRpcException` exposes
 `grpcStatusCode()`, `errorCode()` and `detail()`. Structured allowlisted business
 diagnostics are surfaced instead of raw gRPC failures.
 
+## Robot roster removal
+
+`removePlatformRobot` calls the existing `PredictionPlatformRobotAdmin.RemovePlatformRobot`
+service using the platform administrator's trusted service identity. The host keeps its
+existing `robot_disable` permission check. Send `user_id`, `based_on_version`,
+`client_request_id` and `reason`; IDs and versions remain decimal strings.
+
+Removal disables and hides the roster entry. It does not delete the User/Asset account,
+balances or order history, and does not cancel recovery of accepted funding commands.
+This RPC returns a durable receipt for both successful removal and committed business
+rejection. A gRPC OK status alone is not success. The gateway validates the receipt's
+operator, service, action, target and original request ID before accepting the result.
+Verified known rejections use the existing `PredictionConfigRpcException` with
+`detail.client_request_id` and `detail.control.submission_outcome=REJECTED`.
+Timeouts and mismatched receipts provide no such proof: keep the original request and
+payload for verification, without generating a replacement request.
+
+Deploy the server's PG0040 roster migration and matching Prediction binary before
+the host enables removal. Custom implementations of `PredictionPlatformRobotGateway`
+must also implement the new `removePlatformRobot` method.
+The separate robot funding-home update also needs PG0041. Existing host database
+credentials do not gain roster write access. Management configuration remains in PHP.
+
 ## Protocol ownership and tests
 
 Canonical files are in `proto/prediction/v1`, rich-status inputs in `proto/google`,
-and generated PHP in `generated`. Current `Prediction\V1` wire types and service paths
-are unchanged. `SixMm\Prediction\Protocol` locates the installed proto directory and
+and generated PHP in `generated`. Existing `Prediction\V1` service paths and field
+numbers are preserved. Roster removal adds its RPC and messages,
+`PlatformRobot.removed=12` and `ADMIN_ACTION_PLATFORM_ROBOT_REMOVE=26`.
+`SixMm\Prediction\Protocol` locates the installed proto directory and
 generator. Do not co-load another incompatible generated `Prediction\V1` tree.
 
 ```bash

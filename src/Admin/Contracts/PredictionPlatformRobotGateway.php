@@ -6,6 +6,7 @@ namespace SixMm\Prediction\Admin\Contracts;
 
 interface PredictionPlatformRobotGateway
 {
+    public function removePlatformRobot(array $payload, string $operatorId, string $traceId): array;
     public function getPlatformRobot(array $payload, string $operatorId, string $traceId): array;
     public function listPlatformRobots(array $payload, string $operatorId, string $traceId): array;
     public function registerPlatformRobot(array $payload, string $operatorId, string $traceId): array;

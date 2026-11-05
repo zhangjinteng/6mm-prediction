@@ -58,6 +58,10 @@ class PlatformRobot extends \Google\Protobuf\Internal\Message
      * Generated from protobuf field <code>.prediction.v1.PlatformRobotDepositPending deposit_pending = 11;</code>
      */
     protected $deposit_pending = null;
+    /**
+     * Generated from protobuf field <code>bool removed = 12;</code>
+     */
+    protected $removed = false;
 
     /**
      * Constructor.
@@ -76,6 +80,7 @@ class PlatformRobot extends \Google\Protobuf\Internal\Message
      *     @type int|string $last_market_making_at_ms
      *     @type \Prediction\V1\PlatformRobotFundingState $funding_state
      *     @type \Prediction\V1\PlatformRobotDepositPending $deposit_pending
+     *     @type bool $removed
      * }
      */
     public function __construct($data = NULL) {
@@ -341,6 +346,28 @@ class PlatformRobot extends \Google\Protobuf\Internal\Message
     {
         GPBUtil::checkMessage($var, \Prediction\V1\PlatformRobotDepositPending::class);
         $this->deposit_pending = $var;
+
+        return $this;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool removed = 12;</code>
+     * @return bool
+     */
+    public function getRemoved()
+    {
+        return $this->removed;
+    }
+
+    /**
+     * Generated from protobuf field <code>bool removed = 12;</code>
+     * @param bool $var
+     * @return $this
+     */
+    public function setRemoved($var)
+    {
+        GPBUtil::checkBool($var);
+        $this->removed = $var;
 
         return $this;
     }

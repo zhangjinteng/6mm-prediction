@@ -20,10 +20,25 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
     }
 
     /**
+     * Soft removal: disable new work and hide from the roster; keep history.
+     * @param \Prediction\V1\RemovePlatformRobotRequest $argument input argument
+     * @param array $metadata metadata
+     * @param array $options call options
+     * @return \Grpc\UnaryCall
+     */
+    public function RemovePlatformRobot(\Prediction\V1\RemovePlatformRobotRequest $argument,
+      $metadata = [], $options = []) {
+        return $this->_simpleRequest('/prediction.v1.PredictionPlatformRobotAdmin/RemovePlatformRobot',
+        $argument,
+        ['\Prediction\V1\RemovePlatformRobotResponse', 'decode'],
+        $metadata, $options);
+    }
+
+    /**
      * @param \Prediction\V1\GetPlatformRobotRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\GetPlatformRobotResponse>
+     * @return \Grpc\UnaryCall
      */
     public function GetPlatformRobot(\Prediction\V1\GetPlatformRobotRequest $argument,
       $metadata = [], $options = []) {
@@ -37,7 +52,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\ListPlatformRobotsRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\ListPlatformRobotsResponse>
+     * @return \Grpc\UnaryCall
      */
     public function ListPlatformRobots(\Prediction\V1\ListPlatformRobotsRequest $argument,
       $metadata = [], $options = []) {
@@ -51,7 +66,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\RegisterPlatformRobotRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\RegisterPlatformRobotResponse>
+     * @return \Grpc\UnaryCall
      */
     public function RegisterPlatformRobot(\Prediction\V1\RegisterPlatformRobotRequest $argument,
       $metadata = [], $options = []) {
@@ -65,7 +80,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\SetPlatformRobotEnabledRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\SetPlatformRobotEnabledResponse>
+     * @return \Grpc\UnaryCall
      */
     public function SetPlatformRobotEnabled(\Prediction\V1\SetPlatformRobotEnabledRequest $argument,
       $metadata = [], $options = []) {
@@ -79,7 +94,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\GetPlatformRobotBalancesRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\GetPlatformRobotBalancesResponse>
+     * @return \Grpc\UnaryCall
      */
     public function GetPlatformRobotBalances(\Prediction\V1\GetPlatformRobotBalancesRequest $argument,
       $metadata = [], $options = []) {
@@ -93,7 +108,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\CreatePlatformRobotOperationRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\CreatePlatformRobotOperationResponse>
+     * @return \Grpc\UnaryCall
      */
     public function CreatePlatformRobotOperation(\Prediction\V1\CreatePlatformRobotOperationRequest $argument,
       $metadata = [], $options = []) {
@@ -107,7 +122,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\GetPlatformRobotOperationRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\GetPlatformRobotOperationResponse>
+     * @return \Grpc\UnaryCall
      */
     public function GetPlatformRobotOperation(\Prediction\V1\GetPlatformRobotOperationRequest $argument,
       $metadata = [], $options = []) {
@@ -121,7 +136,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\ListPlatformRobotOperationsRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\ListPlatformRobotOperationsResponse>
+     * @return \Grpc\UnaryCall
      */
     public function ListPlatformRobotOperations(\Prediction\V1\ListPlatformRobotOperationsRequest $argument,
       $metadata = [], $options = []) {
@@ -135,7 +150,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\CreatePlatformRobotUserRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\CreatePlatformRobotOperationResponse>
+     * @return \Grpc\UnaryCall
      */
     public function CreatePlatformRobotUser(\Prediction\V1\CreatePlatformRobotUserRequest $argument,
       $metadata = [], $options = []) {
@@ -149,7 +164,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\GetPlatformRobotAutoDepositPolicyRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\GetPlatformRobotAutoDepositPolicyResponse>
+     * @return \Grpc\UnaryCall
      */
     public function GetPlatformRobotAutoDepositPolicy(\Prediction\V1\GetPlatformRobotAutoDepositPolicyRequest $argument,
       $metadata = [], $options = []) {
@@ -163,7 +178,7 @@ class PredictionPlatformRobotAdminClient extends \Grpc\BaseStub {
      * @param \Prediction\V1\SavePlatformRobotAutoDepositPolicyRequest $argument input argument
      * @param array $metadata metadata
      * @param array $options call options
-     * @return \Grpc\UnaryCall<\Prediction\V1\SavePlatformRobotAutoDepositPolicyResponse>
+     * @return \Grpc\UnaryCall
      */
     public function SavePlatformRobotAutoDepositPolicy(\Prediction\V1\SavePlatformRobotAutoDepositPolicyRequest $argument,
       $metadata = [], $options = []) {

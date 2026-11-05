@@ -10,6 +10,8 @@ option go_package = "prediction-service/api/proto/prediction/v1;predictionv1";
 // audited operations. Registry registration alone never deposits or enables
 // an account; funds operations retain their immutable original command IDs.
 service PredictionPlatformRobotAdmin {
+  // Soft removal: disable new work and hide from the roster; keep history.
+  rpc RemovePlatformRobot(RemovePlatformRobotRequest) returns (RemovePlatformRobotResponse);
   rpc GetPlatformRobot(GetPlatformRobotRequest) returns (GetPlatformRobotResponse);
   rpc ListPlatformRobots(ListPlatformRobotsRequest) returns (ListPlatformRobotsResponse);
   rpc RegisterPlatformRobot(RegisterPlatformRobotRequest) returns (RegisterPlatformRobotResponse);
@@ -35,6 +37,22 @@ message PlatformRobot {
   int64 last_market_making_at_ms = 9;
   PlatformRobotFundingState funding_state = 10;
   PlatformRobotDepositPending deposit_pending = 11;
+  bool removed = 12;
+}
+
+message RemovePlatformRobotRequest {
+  int64 user_id = 1;
+  uint64 based_on_version = 2;
+  string client_request_id = 3;
+  string reason = 4;
+}
+
+message RemovePlatformRobotResponse {
+  // A durable FAILED receipt is returned as an OK RPC response, removed=false.
+  // Check receipt.result; transport/auth/unknown failures remain gRPC errors.
+  int64 user_id = 1;
+  bool removed = 2;
+  OperationReceipt receipt = 3;
 }
 
 message GetPlatformRobotRequest {
